@@ -33,9 +33,14 @@
                     <input type="text" class="form-control" id="nidn_1" name="nidn">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group mb-2">
                     <label for="nrk_1">NRK:</label>
                     <input type="text" class="form-control" id="nrk_1" name="nrk">
+                </div>
+
+                <div class="form-group mb-2">
+                    <label for="btn_tambah">Tambah Anggota:</label><br>
+                    <a href="/tambah-anggota" class="btn btn-dark">Tambah</a>
                 </div>
 
                 <div class="form-group">

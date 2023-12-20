@@ -41,7 +41,9 @@
             <tbody>
                 @foreach($hki_penelitian as $item)
                 <tr>
-                    <td>{{ basename($item->file) }}</td>
+                    <td>{{ basename($item->judul) }}</td>
+                    <td>{{ basename($item->nama_pemegang) }}</td>
+                    <td>{{ basename($item->nomor_sertifikat) }}</td>
                     <td>
                         <form action="{{ route('hkipenelitian.delete', $item->id) }}" method="POST">
                             @csrf

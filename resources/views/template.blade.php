@@ -79,14 +79,13 @@
                 </div>
                 <div class="sb-sidenav-footer">
                     <div class="small">Logged in as:</div>
-                    User
+                    {{ Auth::check() ? Auth::user()->email : 'Guest' }}
                 </div>
             </nav>
         </div>
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <!-- content -->
                     @yield('content')
                 </div>
             </main>

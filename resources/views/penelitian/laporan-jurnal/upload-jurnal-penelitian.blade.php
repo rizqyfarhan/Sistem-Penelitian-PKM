@@ -19,17 +19,15 @@
         <div class="container">
             <form action="{{ route('artikeljurnal.store') }}" method="POST" enctype="multipart/form-datav">
                 @csrf
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label for="Judul Jurnal">Judul Jurnal:</label>
                     <input type="text" id="Judul Jurnal" class="form-control" name="judul">
                 </div>
-
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label for="Penerbit">Penerbit:</label>
                     <input type="text" id="Penerbit" class="form-control" name="penerbit">
                 </div>
-                <br>
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label for="Tahun">Tahun</label>
                     <select id="Tahun" name="tahun">
                         <option value="2015">2015</option>
@@ -43,26 +41,26 @@
                         <option value="2023">2023</option>
                     </select>
                 </div>
-                <br>
-                <label for="Volume">Volume</label>
-                <input type="number" id="Volume" min="1" max="99" value="1" class="form-control" name="volume">
-                <br>
-                <label for="Nomor">Nomor</label>
-                <input type="number" id="Nomor" min="1" max="99" value="1" name="nomor">
-                <br>
-                <br>
-                <label for="Jumlah Halaman">Jumlah Halaman</label>
-                <input type="number" id="Jumlah Halaman" min="1" max="99" value="1" name="jumlah_halaman">
-                <br>
-                <br>
-                <label for="Link URL">Link URL:</label>
-                <input id="Link URL" class="form-control" name="url"></input>
-                <br>
-                <label for=" file">file</label>
-                <input type="file" id="file" name="file">
-                <br>
-                <br>
-
+                <div class="form-group mb-3">
+                    <label for="Volume">Volume</label>
+                    <input type="number" id="Volume" min="1" max="99" value="1" class="form-control" name="volume">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="Nomor">Nomor</label>
+                    <input type="number" id="Nomor" min="1" max="99" value="1" name="nomor">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="Jumlah Halaman">Jumlah Halaman</label>
+                    <input type="number" id="Jumlah Halaman" min="1" max="99" value="1" name="jumlah_halaman">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="Link URL">Link URL:</label>
+                    <input id="Link URL" class="form-control" name="url"></input>
+                </div>
+                <div class="form-group mb-3">
+                    <label for=" file">file</label>
+                    <input type="file" id="file" name="file">
+                </div>
                 <div class="w3-bar">
                     <input type="submit" button class="btn btn-primary"></button>
                     <input type="reset" button class="btn btn-secondary"></button>
