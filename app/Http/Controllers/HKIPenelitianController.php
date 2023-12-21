@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\HKIPenelitian;
 
-class ArtikelJurnalPenelitianController extends Controller
+class HKIPenelitianController extends Controller
 {
     public function index() 
     {

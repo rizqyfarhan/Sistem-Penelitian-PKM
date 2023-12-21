@@ -9,6 +9,7 @@ use App\Http\Controllers\AkhirPenelitianController;
 use App\Http\Controllers\KemajuanPKMController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,10 +28,12 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/register', [RegisterController::class, 'show']);
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
-Route::middleware(['auth'])->group(function() {
+Route::middleware(['auth', 'role:dosen'])->group(function() {
     Route::get('/', function () {
         return view('penelitian.proposal-penelitian.upload-proposal-penelitian');
     });
+
+    Route::post('/logout', [LogoutController::class,'logout'])->name('logout');
     
     /******  PENELITIAN -> PROPOSAL **************/
     Route::get('/upload-proposal-penelitian', function () {
@@ -45,6 +48,10 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/upload-proposal-penelitian', [ProposalPenelitianController::class, 'store'])->name('proposalpenelitian.store');
     // DELETE
     Route::delete('/lihat-proposal-penelitian/{id}', [ProposalPenelitianController::class, 'delete'])->name('proposalpenelitian.delete');
+    // TAMBAH ANGGOTA PENELITI
+    Route::get('/tambah-anggota', function() {
+        return view('penelitian.proposal-penelitian.tambah-anggota');
+    });
     /********************************************/
     
     /******  PENELITIAN -> LAPORAN KEMAJUAN *****/
@@ -162,6 +169,12 @@ Route::middleware(['auth'])->group(function() {
     /********************************************/
 });
 
+Route::middleware(['auth', 'role:reviewer'])->group(function () {
+    Route::get('/review-proposal-penelitian', [ReviewerController::class, 'showProposalPenelitian']);
+
+    Route::get('/review-proposal-pkm', [ReviewerController::class, 'showProposalPKM']);
+});
+
 Route::get('/lihat-kemajuan-penelitian', [KemajuanPenelitianController::class, 'index']);
 
 // ADD
@@ -179,7 +192,3 @@ Route::put('laporan-kemajuan-penelitian/{id}', function () {
 
 // DELETE
 Route::delete('/lihat-kemajuan-penelitian/{id}', [KemajuanPenelitianController::class, 'delete'])->name('lapkempenelitian.delete');
-
-Route::get('/tambah-anggota', function() {
-    return view('penelitian.tambah-anggota');
-});

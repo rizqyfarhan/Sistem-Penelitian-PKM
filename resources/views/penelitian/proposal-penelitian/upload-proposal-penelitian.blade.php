@@ -81,8 +81,28 @@
                     </select>
                 </div>
 
+                <div class="form-group">
+                    <label for="Semester">Sumber Dana:</label>
+                    <select class="form-control" id="Semester" name="sumber_dana">
+                        <option value="Pilih">Pilih...</option>
+                        <option value="Ganjil">Pribadi</option>
+                        <option value="Genap">External</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="LembagaPendana">Nama Lembaga Pendana: *diisi untuk sumber dana external</label>
+                    <input type="text" class="form-control" id="LembagaPendana" name="lembaga_pendana">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="JumlahDana">Jumlah Dana:</label>
+                    <input type="text" class="form-control" id="JumlahDana" name="jumlah_dana">
+                </div>
+
                 <div class="form-group mb-2">
-                    <label for="file">File:</label>
+                    <label for="file">Proposal Penelitian:</label>
                     <input type="file" class="form-control" id="file" name="file">
                 </div>
 
