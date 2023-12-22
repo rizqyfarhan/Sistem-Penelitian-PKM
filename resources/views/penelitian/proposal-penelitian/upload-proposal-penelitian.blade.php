@@ -69,15 +69,13 @@
                     <label for="TahunAkademik">Tahun Akademik:</label>
                     <select class="form-control" id="TahunAkademik" name="tahun_akademik">
                         <option value="Pilih">Pilih...</option>
-                        <option value="2015/2016">2015/2016</option>
-                        <option value="2016/2017">2016/2017</option>
-                        <option value="2017/2018">2017/2018</option>
-                        <option value="2018/2019">2018/2019</option>
-                        <option value="2019/2020">2019/2020</option>
-                        <option value="2020/2021">2020/2021</option>
-                        <option value="2021/2022">2021/2022</option>
-                        <option value="2022/2023">2022/2023</option>
-                        <option value="2023/2024">2023/2024</option>
+                        <?php
+                        $currentYear = date('Y');
+                        for ($i = $currentYear - 5; $i <= $currentYear; $i++) {
+                            $academicYear = $i . '/' . ($i + 1);
+                            echo "<option value=\"$academicYear\">$academicYear</option>";
+                        }
+                        ?>
                     </select>
                 </div>
 
@@ -85,8 +83,8 @@
                     <label for="Semester">Sumber Dana:</label>
                     <select class="form-control" id="Semester" name="sumber_dana">
                         <option value="Pilih">Pilih...</option>
-                        <option value="Ganjil">Pribadi</option>
-                        <option value="Genap">External</option>
+                        <option value="pribadi">Pribadi</option>
+                        <option value="external">External</option>
                     </select>
                 </div>
 
@@ -94,7 +92,6 @@
                     <label for="LembagaPendana">Nama Lembaga Pendana: *diisi untuk sumber dana external</label>
                     <input type="text" class="form-control" id="LembagaPendana" name="lembaga_pendana">
                 </div>
-
 
                 <div class="form-group">
                     <label for="JumlahDana">Jumlah Dana:</label>

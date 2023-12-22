@@ -48,13 +48,19 @@
                     <td>{{ $item->nomor }}</td>
                     <td>{{ $item->jumlah_halaman }}</td>
                     <td>
-                        <form action="{{ route('artikeljurnal.delete', $item->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="fas fa-trash"></i> <!-- Font Awesome trash icon -->
-                            </button>
-                        </form>
+                        <div class="d-flex">
+                            <a href="" class="btn btn-primary btn-sm me-2">
+                                <i class="fa-solid fa-file-arrow-down"></i>
+                            </a>
+
+                            <form action="{{ route('artikeljurnal.delete', $item->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 @endforeach

@@ -58,7 +58,7 @@
                     <input id="Link URL" class="form-control" name="url"></input>
                 </div>
                 <div class="form-group mb-3">
-                    <label for=" file">file</label>
+                    <label for=" file">Artikel Jurnal:</label>
                     <input type="file" id="file" name="file">
                 </div>
                 <div class="w3-bar">

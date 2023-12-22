@@ -2,11 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KemajuanPenelitianController;
-use App\Http\Controllers\ArtikelJurnalController;
+use App\Http\Controllers\ArtikelJurnalPenelitianController;
 use App\Http\Controllers\HKIPenelitianController;
 use App\Http\Controllers\ProposalPenelitianController;
 use App\Http\Controllers\AkhirPenelitianController;
 use App\Http\Controllers\KemajuanPKMController;
+use App\Http\Controllers\Reviewer\ReviewerController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
@@ -88,18 +89,18 @@ Route::middleware(['auth', 'role:dosen'])->group(function() {
     
     /******  PENELITIAN -> ARTIKEL JURNAL *******/
     Route::get('/upload-jurnal-penelitian', function () {
-        return view('penelitian.laporan-jurnal.upload-jurnal-penelitian');
+        return view('penelitian.artikel-jurnal.upload-jurnal-penelitian');
     });
     Route::get('/lihat-jurnal-penelitian', function () {
-        return view('penelitian.laporan-jurnal.lihat-jurnal-penelitian');
+        return view('penelitian.artikel-jurnal.lihat-jurnal-penelitian');
     });
     
     // INDEX
-    Route::get('/lihat-jurnal-penelitian', [ArtikelJurnalController::class, 'index']);
+    Route::get('/lihat-jurnal-penelitian', [ArtikelJurnalPenelitianController::class, 'index']);
     // ADD
-    Route::post('/upload-jurnal-penelitian', [ArtikelJurnalController::class, 'store'])->name('artikeljurnal.store');
+    Route::post('/upload-jurnal-penelitian', [ArtikelJurnalPenelitianController::class, 'store'])->name('artikeljurnal.store');
     // DELETE
-    Route::delete('/lihat-jurnal-penelitian/{id}', [ArtikelJurnalController::class, 'delete'])->name('artikeljurnal.delete');
+    Route::delete('/lihat-jurnal-penelitian/{id}', [ArtikelJurnalPenelitianController::class, 'delete'])->name('artikeljurnal.delete');
     /********************************************/
     
     /******  PENELITIAN -> HKI *****************/
@@ -115,6 +116,21 @@ Route::middleware(['auth', 'role:dosen'])->group(function() {
     Route::post('/upload-HKI-penelitian', [HKIPenelitianController::class, 'store'])->name('hkipenelitian.store');
     // DELETE
     Route::delete('/lihat-HKI-penelitian/{id}', [HKIPenelitianController::class, 'delete'])->name('hkipenelitian.delete');
+    /********************************************/
+    
+    /******  PKM -> PROPOSAL ********************/
+    Route::get('/upload-proposal-pkm', function () {
+        return view('pkm.proposal-pkm.upload-proposal-pkm');
+    });
+    Route::get('/lihat-proposal-pkm', function () {
+        return view('pkm.proposal-pkm.lihat-proposal-pkm');
+    });
+    // INDEX
+    Route::get('/lihat-proposal-pkm', [ProposalPKMController::class, 'index']);
+    // ADD
+    Route::post('/upload-proposal-pkm', [ProposalPKMController::class, 'store']);
+    // DELETE
+    Route::delete('/lihat-proposal-pkm/{id}', [ProposalPKMController::class, 'delete']);
     /********************************************/
     
     /******  PKM -> LAPORAN KEMAJUAN ************/

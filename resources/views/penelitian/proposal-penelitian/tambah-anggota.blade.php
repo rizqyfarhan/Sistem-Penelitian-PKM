@@ -22,22 +22,17 @@
                             @csrf
 
                             <div class="form-group">
-                                <label for="nidn_ketua">NIDN Ketua Peneliti</label>
-                                <input type="text" class="form-control" id="nidn_ketua" name="nidn_ketua" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="nama">Nama Anggota</label>
+                                <label for="nama">Nama</label>
                                 <input type="text" class="form-control" id="nama" name="nama" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="nidn">NIDN Anggota</label>
+                                <label for="nidn">NIDN</label>
                                 <input type="text" class="form-control" id="nidn" name="nidn" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="nrk">NRK Anggota</label>
+                                <label for="nrk">NRK</label>
                                 <input type="text" class="form-control" id="nrk" name="nrk" required>
                             </div>
 

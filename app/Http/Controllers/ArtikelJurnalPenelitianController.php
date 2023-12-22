@@ -18,7 +18,7 @@ class ArtikelJurnalPenelitianController extends Controller
             'table_headers' => $table_headers
         ];
 
-        return view('penelitian.laporan-jurnal.lihat-jurnal-penelitian', $data);
+        return view('penelitian.artikel-jurnal.lihat-jurnal-penelitian', $data);
     }
 
     public function store(Request $request)

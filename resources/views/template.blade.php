@@ -73,6 +73,7 @@
                         <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                <a class="nav-link" href="/upload-proposal-pkm">Proposal PKM</a>
                                 <a class="nav-link" href="/upload-lap-kemajuan-pkm">Laporan Kemajuan PKM</a>
                                 <a class="nav-link" href="/upload-lap-akhir-pkm">Laporan Akhir PKM</a>
                                 <a class="nav-link" href="/upload-lap-jurnal-pkm">Laporan Jurnal PKM</a>
@@ -112,8 +113,7 @@
     </script>
     <script src="js/template.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <!-- <script src="assets/demo/chart-area-demo.js"></script>
-    <script src="assets/demo/chart-bar-demo.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
         crossorigin="anonymous"></script>
     <script src="js/datatables-simple-demo.js"></script>

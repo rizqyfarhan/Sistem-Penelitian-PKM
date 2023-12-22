@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('nama_pendana')->nullable();
             $table->bigInteger('jumlah_dana');
             $table->string('file');
+            $table->enum('status', ['pending', 'checking', 'accept', 'reject'])->default('pending');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 

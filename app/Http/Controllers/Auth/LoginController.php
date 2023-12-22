@@ -14,20 +14,26 @@ class LoginController extends Controller
     }
 
     public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'email' => 'required|string|email',
+        'password' => 'required|string',
+    ]);
 
-        $credentials = $request->only('email', 'password');
+    $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+        if ($user->role === 'dosen') {
             return redirect('/upload-proposal-penelitian');
+        } elseif ($user->role === 'reviewer') {
+            return redirect('/review-proposal-penelitian');
         }
-
-        return back()->withErrors([
-            'email' => 'Invalid credentials',
-        ])->withInput($request->only('email'));
     }
+
+    return back()->withErrors([
+        'email' => 'Invalid credentials',
+    ])->withInput($request->only('email'));
+}
+
 }
