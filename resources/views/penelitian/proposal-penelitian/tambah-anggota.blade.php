@@ -18,7 +18,7 @@
                         Tambah Anggota
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="">
+                        <form action="{{ route('anggota.store') }}" method="POST">
                             @csrf
 
                             <div class="form-group">

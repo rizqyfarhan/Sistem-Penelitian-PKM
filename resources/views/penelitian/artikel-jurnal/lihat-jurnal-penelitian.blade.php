@@ -49,7 +49,8 @@
                     <td>{{ $item->jumlah_halaman }}</td>
                     <td>
                         <div class="d-flex">
-                            <a href="" class="btn btn-primary btn-sm me-2">
+                            <a href="{{ route('artikel-jurnal.download', $item->id) }}"
+                                class="btn btn-primary btn-sm me-2">
                                 <i class="fa-solid fa-file-arrow-down"></i>
                             </a>
 

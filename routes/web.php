@@ -102,6 +102,8 @@ Route::middleware(['auth', 'role:dosen'])->group(function() {
     Route::post('/upload-jurnal-penelitian', [ArtikelJurnalPenelitianController::class, 'store'])->name('artikeljurnal.store');
     // DELETE
     Route::delete('/lihat-jurnal-penelitian/{id}', [ArtikelJurnalPenelitianController::class, 'delete'])->name('artikeljurnal.delete');
+    // DOWNLOAD
+    Route::get('/download-jurnal-penelitian/{id}', [ArtikelJurnalPenelitianController::class, 'download'])->name('artikel-jurnal.download');
     /********************************************/
     
     /******  PENELITIAN -> HKI *****************/

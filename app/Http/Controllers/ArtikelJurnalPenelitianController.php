@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ArtikelJurnalPenelitian;
+use Illuminate\Support\Facades\Storage;
 
 class ArtikelJurnalPenelitianController extends Controller
 {
@@ -33,5 +34,19 @@ class ArtikelJurnalPenelitianController extends Controller
         ArtikelJurnalPenelitian::destroy($id);
         
         return redirect()->back();
+    }
+
+    public function download($id)
+    {
+        $artikelJurnal = ArtikelJurnalPenelitian::findOrFail($id);
+        $filePath = $artikelJurnal->file_path;
+
+        if ($filePath !== null && Storage::exists($filePath)) {
+        $fileName = pathinfo($filePath, PATHINFO_BASENAME);
+
+        return Storage::download($filePath, $fileName);
+        } else {
+            abort(404, 'File not found');
+        }
     }
 }
