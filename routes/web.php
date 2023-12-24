@@ -53,6 +53,7 @@ Route::middleware(['auth', 'role:dosen'])->group(function() {
     Route::get('/tambah-anggota', function() {
         return view('penelitian.proposal-penelitian.tambah-anggota');
     });
+    Route::post('/tambah-anggota', [AnggotaPenelitianController::class, 'store'])->name('anggota.store');
     /********************************************/
     
     /******  PENELITIAN -> LAPORAN KEMAJUAN *****/
@@ -186,7 +187,7 @@ Route::middleware(['auth', 'role:dosen'])->group(function() {
 });
 
 Route::middleware(['auth', 'role:reviewer'])->group(function () {
-    Route::get('/review-proposal-penelitian', [ReviewerController::class, 'showProposalPenelitian']);
+    Route::get('/review-proposal-penelitian', [ProposalPenelitianController::class, 'showReviewerView']);
 
     Route::get('/review-proposal-pkm', [ReviewerController::class, 'showProposalPKM']);
 });

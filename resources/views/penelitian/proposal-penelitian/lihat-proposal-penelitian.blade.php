@@ -21,6 +21,8 @@
                     @foreach($table_headers as $header)
                     @if ($header == 'Aksi')
                     <th data-sortable="false">{{ $header }}</th>
+                    @elseif ($header == 'Status')
+                    <th data-sortable="false">{{ $header }}</th>
                     @else
                     <th>{{ $header }}</th>
                     @endif
@@ -31,6 +33,8 @@
                 <tr>
                     @foreach($table_headers as $header)
                     @if ($header == 'Aksi')
+                    <th data-sortable="false">{{ $header }}</th>
+                    @elseif ($header == 'Status')
                     <th data-sortable="false">{{ $header }}</th>
                     @else
                     <th>{{ $header }}</th>
@@ -45,6 +49,7 @@
                     <td>{{ $item->ketua_peneliti }}</td>
                     <td>{{ $item->semester }}</td>
                     <td>{{ $item->tahun_akademik }}</td>
+                    <td>status</td>
                     <td>
                         <form action="{{ route('proposalpenelitian.delete', $item->id) }}" method="POST"
                             style="display: inline;">
