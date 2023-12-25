@@ -40,6 +40,11 @@ class ProposalPenelitianController extends Controller
 
         $request->validate($rules);
 
+        $filePath = $request->file('file')->store('proposals');
+
+        $requestData = $request->all();
+        $requestData['file_path'] = $filePath;
+
         ProposalPenelitian::create($request->all());
     }
 
