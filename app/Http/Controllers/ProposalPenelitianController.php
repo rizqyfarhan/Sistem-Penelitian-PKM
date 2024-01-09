@@ -22,30 +22,9 @@ class ProposalPenelitianController extends Controller
 
     public function store(Request $request)
     {
-        $rules = [
-            'judul' => 'required|string|max:255',
-            'ketua_peneliti' => 'required|string|max:255',
-            'nidn' => 'required|string|max:20',
-            'nrk' => 'required|string|max:20',
-            'program_studi' => 'required|string|max:255',
-            'semester' => 'required|string|max:255',
-            'tahun_akademik' => 'required|string|max:255',
-            'sumber_dana' => 'required|string|max:255',
-            'nama_pendana' => 'nullable|string|max:255',
-            'jumlah_dana' => 'required|integer',
-            'file' => 'required|file|mimes:pdf|max:51200', 
-            'status' => 'required|in:pending,checking,accept,reject',
-            'user_id' => 'required|exists:users,id',
-        ];
-
-        $request->validate($rules);
-
-        $filePath = $request->file('file')->store('proposals');
-
-        $requestData = $request->all();
-        $requestData['file_path'] = $filePath;
-
         ProposalPenelitian::create($request->all());
+
+        return redirect()->to('/upload-proposal-penelitian');
     }
 
     public function showReviewerProposalPenelitian()

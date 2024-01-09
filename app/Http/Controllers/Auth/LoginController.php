@@ -32,7 +32,7 @@ class LoginController extends Controller
     }
 
     return back()->withErrors([
-        'email' => 'Invalid credentials',
+        'email' => 'Email atau Password Salah',
     ])->withInput($request->only('email'));
 }
 

@@ -81,7 +81,7 @@
 
                 <div class="form-group">
                     <label for="Semester">Sumber Dana:</label>
-                    <select class="form-control" id="Semester" name="sumber_dana">
+                    <select class="form-control" id="SumberDana" name="sumber_dana" onchange="toggleLembagaPendana()">
                         <option value="Pilih">Pilih...</option>
                         <option value="pribadi">Pribadi</option>
                         <option value="external">External</option>
@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="LembagaPendana">Nama Lembaga Pendana: *diisi untuk sumber dana external</label>
+                    <label for="LembagaPendana" id="LabelLembagaPendana">Nama Lembaga Pendana: </label>
                     <input type="text" class="form-control" id="LembagaPendana" name="lembaga_pendana">
                 </div>
 

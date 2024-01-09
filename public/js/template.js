@@ -7,6 +7,13 @@
 // Scripts
 //
 
+let sumberDanaDropDown = document.getElementById("SumberDana");
+let lembagaPendanaField = document.getElementById("LembagaPendana");
+let lembagaPendanaLabel = document.getElementById("LabelLembagaPendana");
+
+lembagaPendanaLabel.style.display = "none";
+lembagaPendanaField.style.display = "none";
+
 window.addEventListener("DOMContentLoaded", (event) => {
     // Toggle the side navigation
     const sidebarToggle = document.body.querySelector("#sidebarToggle");
@@ -25,3 +32,15 @@ window.addEventListener("DOMContentLoaded", (event) => {
         });
     }
 });
+
+function toggleLembagaPendana() {
+    if (sumberDanaDropDown.value === "external") {
+        lembagaPendanaLabel.style.display = "block";
+        lembagaPendanaField.style.display = "block";
+    } else {
+        lembagaPendanaLabel.style.display = "none";
+        lembagaPendanaField.style.display = "none";
+    }
+
+    toggleLembagaPendana();
+}

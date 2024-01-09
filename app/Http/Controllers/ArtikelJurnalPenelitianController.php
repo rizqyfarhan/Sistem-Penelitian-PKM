@@ -23,7 +23,7 @@ class ArtikelJurnalPenelitianController extends Controller
     }
 
     public function store(Request $request)
-    {
+    {    
         ArtikelJurnalPenelitian::create($request->all());
 
         return redirect()->to('/upload-jurnal-penelitian');
@@ -36,17 +36,8 @@ class ArtikelJurnalPenelitianController extends Controller
         return redirect()->back();
     }
 
-    public function download($id)
+    public function download($filename)
     {
-        $artikelJurnal = ArtikelJurnalPenelitian::findOrFail($id);
-        $filePath = $artikelJurnal->file_path;
-
-        if ($filePath !== null && Storage::exists($filePath)) {
-        $fileName = pathinfo($filePath, PATHINFO_BASENAME);
-
-        return Storage::download($filePath, $fileName);
-        } else {
-            abort(404, 'File not found');
-        }
+        return Storage::download("uploads/{$filename}");
     }
 }

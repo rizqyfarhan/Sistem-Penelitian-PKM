@@ -97,7 +97,7 @@ Route::middleware(['auth', 'role:dosen'])->group(function() {
     });
     
     // INDEX
-    Route::get('/lihat-jurnal-penelitian', [ArtikelJurnalPenelitianController::class, 'index']);
+    Route::get('/lihat-jurnal-penelitian', [ArtikelJurnalPenelitianController::class, 'index'])->name('artikeljurnal.index');
     // ADD
     Route::post('/upload-jurnal-penelitian', [ArtikelJurnalPenelitianController::class, 'store'])->name('artikeljurnal.store');
     // DELETE
@@ -192,6 +192,8 @@ Route::middleware(['auth', 'role:reviewer'])->group(function () {
     Route::get('/review-proposal-penelitian', [ProposalPenelitianController::class, 'showReviewerView']);
 
     Route::get('/review-proposal-pkm', [ReviewerController::class, 'showProposalPKM']);
+
+    Route::post('/logout', [LogoutController::class,'logout'])->name('logout');
 });
 
 Route::get('/lihat-kemajuan-penelitian', [KemajuanPenelitianController::class, 'index']);
