@@ -1,12 +1,3 @@
-/*!
- * Start Bootstrap - SB Admin v7.0.7 (https://startbootstrap.com/template/sb-admin)
- * Copyright 2013-2023 Start Bootstrap
- * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-sb-admin/blob/master/LICENSE)
- */
-//
-// Scripts
-//
-
 let sumberDanaDropDown = document.getElementById("SumberDana");
 let lembagaPendanaField = document.getElementById("LembagaPendana");
 let lembagaPendanaLabel = document.getElementById("LabelLembagaPendana");
@@ -14,14 +5,29 @@ let lembagaPendanaLabel = document.getElementById("LabelLembagaPendana");
 lembagaPendanaLabel.style.display = "none";
 lembagaPendanaField.style.display = "none";
 
+// $(document).ready(function () {
+//     $("#statusSelect").on("change", function () {
+//         $("#updateStatusForm").submit();
+//     });
+// });
+
+$(document).ready(function () {
+    let selectedValue = "";
+
+    $("#statusSelect").on("change", function () {
+        selectedValue = $(this).val();
+        $("#updateStatusForm").submit();
+    });
+
+    $(document).ajaxComplete(function () {
+        console.log("Selected value after form submission:", selectedValue);
+        $("#statusSelect").val(selectedValue);
+    });
+});
+
 window.addEventListener("DOMContentLoaded", (event) => {
-    // Toggle the side navigation
     const sidebarToggle = document.body.querySelector("#sidebarToggle");
     if (sidebarToggle) {
-        // Uncomment Below to persist sidebar toggle between refreshes
-        // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-        //     document.body.classList.toggle('sb-sidenav-toggled');
-        // }
         sidebarToggle.addEventListener("click", (event) => {
             event.preventDefault();
             document.body.classList.toggle("sb-sidenav-toggled");

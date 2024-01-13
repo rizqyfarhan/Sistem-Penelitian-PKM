@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use App\Models\ProposalPenelitian;
 use App\Models\User;
 
@@ -22,7 +24,39 @@ class ProposalPenelitianController extends Controller
 
     public function store(Request $request)
     {
-        ProposalPenelitian::create($request->all());
+        $validator = Validator::make($request->all(), [
+            'judul' => 'required',
+            'ketua_peneliti' => 'required',
+            'nidn' => 'required',
+            'nrk' => 'required',
+            'program_studi' => 'required',
+            'semester' => 'required',
+            'tahun_akademik' => 'required',
+            'sumber_dana' => 'required',
+            'jumlah_dana' => 'required',
+            'file' => 'required|mimes:pdf,doc,docx|max:20480',
+        ]);
+
+        if($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
+
+        $file = $request->file('file');
+        $filename = $file->getClientOriginalName();
+
+        $data = [
+            'judul' => $request->judul,
+            'ketua_peneliti' => $request->ketua_peneliti,
+            'nidn' => $request->nidn,
+            'nrk' => $request->nrk,
+            'program_studi' => $request->program_studi,
+            'semester' => $request->semester,
+            'tahun_akademik' => $request->tahun_akademik,
+            'sumber_dana' => $request->sumber_dana,
+            'jumlah_dana' => $request->jumlah_dana,
+            'file' => $filename,
+            'user_id' => Auth::id(),
+        ];
+        
+        ProposalPenelitian::create($data);
 
         return redirect()->to('/upload-proposal-penelitian');
     }
@@ -51,5 +85,14 @@ class ProposalPenelitianController extends Controller
         } else {
             abort(403, 'Unauthorized access');
         }
+    }
+
+    public function updateStatus(Request $request, $id) 
+    {
+        $proposal = ProposalPenelitian::find($id);
+        $proposal->status = $request->input('status');
+        $proposal->save();
+
+        return redirect()->back();
     }
 }

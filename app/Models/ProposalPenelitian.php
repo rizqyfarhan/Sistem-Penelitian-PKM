@@ -21,7 +21,7 @@ class ProposalPenelitian extends Model
         'nama_pendana',
         'jumlah_dana',
         'file',
-        'status'
+        'user_id'
     ];
 
     public function user()

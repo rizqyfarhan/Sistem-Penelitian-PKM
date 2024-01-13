@@ -7,6 +7,7 @@ use App\Http\Controllers\HKIPenelitianController;
 use App\Http\Controllers\ProposalPenelitianController;
 use App\Http\Controllers\AkhirPenelitianController;
 use App\Http\Controllers\KemajuanPKMController;
+use App\Http\Controllers\AnggotaPenelitianController;
 use App\Http\Controllers\Reviewer\ReviewerController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
@@ -33,8 +34,6 @@ Route::middleware(['auth', 'role:dosen'])->group(function() {
     Route::get('/', function () {
         return view('penelitian.proposal-penelitian.upload-proposal-penelitian');
     });
-
-    Route::post('/logout', [LogoutController::class,'logout'])->name('logout');
     
     /******  PENELITIAN -> PROPOSAL **************/
     Route::get('/upload-proposal-penelitian', function () {
@@ -190,11 +189,11 @@ Route::middleware(['auth', 'role:dosen'])->group(function() {
 
 Route::middleware(['auth', 'role:reviewer'])->group(function () {
     Route::get('/review-proposal-penelitian', [ProposalPenelitianController::class, 'showReviewerView']);
-
     Route::get('/review-proposal-pkm', [ReviewerController::class, 'showProposalPKM']);
-
-    Route::post('/logout', [LogoutController::class,'logout'])->name('logout');
+    Route::post('/update-status/{id}', [ProposalPenelitianController::class, 'updateStatus'])->name('proposalpenelitian.updateStatus');
 });
+
+Route::post('/logout', [LogoutController::class,'logout'])->name('logout');
 
 Route::get('/lihat-kemajuan-penelitian', [KemajuanPenelitianController::class, 'index']);
 
