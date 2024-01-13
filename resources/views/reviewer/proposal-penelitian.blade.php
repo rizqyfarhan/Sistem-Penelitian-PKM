@@ -49,10 +49,9 @@
                             class="d-flex align-items-center">
                             @csrf
                             <select class="form-select w-50" name="status" id="statusSelect">
-                                <option value="Pending">Pending</option>
-                                <option value="Checking">Checking</option>
-                                <option value="Accept">Accept</option>
-                                <option value="Reject">Reject</option>
+                                <option value="checking">Review</option>
+                                <option value="accept">Accept</option>
+                                <option value="reject">Reject</option>
                             </select>
 
                             <button type="submit" class="btn btn-primary btn-sm ml-2">

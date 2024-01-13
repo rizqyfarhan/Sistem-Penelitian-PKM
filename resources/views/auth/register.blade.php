@@ -15,7 +15,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        Registration
+                        Penelitian dan PKM
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('register') }}">

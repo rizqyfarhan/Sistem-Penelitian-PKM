@@ -50,34 +50,9 @@
                     <td>{{ $item->semester }}</td>
                     <td>{{ $item->tahun_akademik }}</td>
                     <td>
-                        <!-- @if ($item->status == 'pending')
-                        <div class="card text-bg-primary w-50 d-flex align-items-center">
-                            <h5 class="card-text">{{ $item->status }}</h5>
-                        </div>
-                        @elseif ($item->status == 'checked')
-                        <div class="card text-bg-warning w-50 d-flex align-items-center">
-                            <h5 class="card-text">{{ $item->status }}</h5>
-                        </div>
-                        @elseif ($item->status == 'accepted')
-                        <div class="card text-bg-success w-50 d-flex align-items-center">
-                            <h5 class="card-text">{{ $item->status }}</h5>
-                        </div>
-                        @elseif ($item->status == 'declined')
-                        <div class="card text-bg-danger w-50 d-flex align-items-center">
-                            <h5 class="card-text">{{ $item->status }}</h5>
-                        </div>
-                        @endif -->
                         {{ $item->status }}
                     </td>
                     <td>
-                        <form action="{{ route('proposalpenelitian.delete', $item->id) }}" method="POST"
-                            style="display: inline;">
-                            @csrf
-                            @method(' DELETE') <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </form>
-
                         <form action="{{ route('proposalpenelitian.delete', $item->id) }}" method="GET"
                             style="display: inline;">
                             @csrf
@@ -85,7 +60,13 @@
                                 <i class="fa-solid fa-file-arrow-down"></i>
                             </button>
                         </form>
-
+                        <form action="{{ route('proposalpenelitian.delete', $item->id) }}" method="POST"
+                            style="display: inline;">
+                            @csrf
+                            @method(' DELETE') <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach

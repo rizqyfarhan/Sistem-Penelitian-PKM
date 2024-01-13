@@ -43,6 +43,9 @@ function toggleLembagaPendana() {
     if (sumberDanaDropDown.value === "external") {
         lembagaPendanaLabel.style.display = "block";
         lembagaPendanaField.style.display = "block";
+    } else if (sumberDanaDropDown.value === "internal") {
+        lembagaPendanaLabel.style.display = "block";
+        lembagaPendanaField.style.display = "block";
     } else {
         lembagaPendanaLabel.style.display = "none";
         lembagaPendanaField.style.display = "none";

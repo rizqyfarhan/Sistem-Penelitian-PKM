@@ -84,6 +84,7 @@
                     <select class="form-control" id="SumberDana" name="sumber_dana" onchange="toggleLembagaPendana()">
                         <option value="Pilih">Pilih...</option>
                         <option value="pribadi">Pribadi</option>
+                        <option value="internal">Internal</option>
                         <option value="external">External</option>
                     </select>
                 </div>
