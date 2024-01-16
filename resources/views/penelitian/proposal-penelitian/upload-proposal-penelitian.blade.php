@@ -4,7 +4,7 @@
 <title>Proposal Penelitian</title>
 @endsection
 
-@section('content')
+@section('content-1')
 <h1 class="mt-4">Proposal Penelitian</h1>
 <div class="nav-scroller py-1 mb-3 border-bottom">
     <nav class="nav nav-underline justify-content-start">

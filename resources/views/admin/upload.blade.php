@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    @yield('title')
+    <title>Admin - Upload</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/template.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -52,13 +52,9 @@
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-table-cells"></i></div>
                             Dashboard
                         </a>
-                        <a class="nav-link collapsed" href="{{ route('penelitian') }}" aria-expanded="false">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-flask"></i></div>
-                            Penelitian
-                        </a>
-                        <a class="nav-link collapsed" href="{{ route('pkm') }}" aria-expanded="false">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                            PKM
+                        <a class="nav-link collapsed" href="{{ route('admin.upload') }}" aria-expanded="false">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-upload"></i></div>
+                            Upload
                         </a>
                         <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
                             data-bs-parent="#sidenavAccordion">
@@ -76,7 +72,75 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    @yield('content')
+                    <div class="nav-scroller py-1 mb-3 border-bottom">
+                        <nav class="nav nav-underline justify-content-start">
+                            <a class="nav-item nav-link link-body-emphasis active"
+                                href="{{ route('penelitian') }}">Upload</a>
+                            <a class="nav-item nav-link link-body-emphasis" href="{{ route('show.penelitian') }}">Upload
+                                Saya</a>
+                        </nav>
+                    </div>
+
+                    <div class="card mb-4 mt-2">
+                        <div class="card-body">
+                            <h1 class="mt-4">Upload Pengumuman</h1>
+                            <div class="nav-scroller py-1 mb-3 border-bottom">
+                                <nav class="nav nav-underline justify-content-start">
+                                </nav>
+                            </div>
+
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="container">
+                                        <form action="{{ route('admin.uploadPengumuman') }}" method="POST"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="form-group mb-2">
+                                                <label for="JumlahDana">Judul Pengumuman:</label>
+                                                <input type="text" class="form-control" id="JudulPengumuman"
+                                                    name="judul_pengumuman">
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                <label for="IsiPengumuman" class="form-label">Isi Pengumuman:</label>
+                                                <textarea class="form-control" id="IsiPengumuman" name="isi_pengumuman"
+                                                    rows="4"></textarea>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary">Upload</button>
+                                            <button type="reset" class="btn btn-secondary">Reset</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4 mt-2">
+                        <div class="card-body">
+                            <h1 class="mt-4">Upload File</h1>
+                            <div class="nav-scroller py-1 mb-3 border-bottom">
+                                <nav class="nav nav-underline justify-content-start">
+                                </nav>
+                            </div>
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="container">
+                                        <form action="{{ route('admin.uploadFile') }}" method="POST"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="form-group mb-2">
+                                                <label for="file">File:</label>
+                                                <input type="file" class="form-control" id="file" name="file">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Upload</button>
+                                            <button type="reset" class="btn btn-secondary">Reset</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </main>
             <footer class="py-4 bg-light mt-auto">
