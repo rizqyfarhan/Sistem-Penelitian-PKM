@@ -11,6 +11,8 @@ use App\Models\ProposalPKM;
 use App\Models\JurnalPKM;
 use App\Models\HKIPKM;
 use App\Models\MediaPKM;
+use App\Models\LaporanKemajuanPKM;
+use App\Models\LaporanAkhirPKM;
 
 class PKMController extends Controller
 {
@@ -24,20 +26,26 @@ class PKMController extends Controller
     public function indexPKM() 
     {
         $proposal_pkm = ProposalPKM::all();
+        $laporan_kemajuan = LaporanKemajuanPKM::with('proposalPKM')->get();
+        $laporan_akhir = LaporanAkhirPKM::with('proposalPKM')->get();
         $jurnal_pkm = JurnalPKM::all();
         $hki_pkm = HKIPKM::all();
         $media_massa = MediaPKM::all();
-        $headers_proposal_pkm = ['Judul Penelitian','Nama Pelaksana','Semester','Tahun Akademik','Status','Aksi'];
+        $headers_proposal_pkm = ['Judul','Nama Pelaksana','Semester','Tahun Akademik','Status','Aksi'];
+        $headers_kemajuan_pkm = ['Judul','Nama pelaksana','Semester','Tahun Akademik', 'Tanggal Dikirim','Aksi'];
+        $headers_akhir_pkm = ['Judul', 'Nama Pelaksana', 'Semster', 'Tahun Akademik', 'Aksi'];
         $headers_jurnal_pkm = ['Judul', 'Penerbit', 'Tahun', 'Volume', 'Nomor', 'Aksi'];
         $headers_hki = ['Judul','Nama Pemegang', 'Nomor Sertifikat', 'Aksi'];
         $headers_media = ['Judul', 'Nama Media Massa', 'Bulan Terbit', 'Tahun Terbit', 'Aksi'];
 
         $data_pkm = [
             'proposal_pkm' => $proposal_pkm,
+            'laporan_kemajuan' => $laporan_kemajuan,
             'jurnal_pkm' => $jurnal_pkm,
             'media_massa' => $media_massa,
             'hki_pkm' => $hki_pkm,
             'headers_proposal_pkm' => $headers_proposal_pkm, 
+            'headers_kemajuan_pkm' => $headers_kemajuan_pkm,
             'headers_jurnal_pkm' => $headers_jurnal_pkm,
             'headers_media' => $headers_media,
             'headers_hki' => $headers_hki,
@@ -193,14 +201,6 @@ class PKMController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'judul' => 'required',
-            'nama_pelaksana' => 'required',
-            'nidn' => 'required',
-            'nrk' => 'required',
-            'program_studi' => 'required',
-            'semester' => 'required',
-            'tahun_akademik' => 'required',
-            'nama_mitra' => 'required',
-            'alamat_mitra' => 'required',
             'file' => 'required|mimes:pdf,doc,docx|max:20480',
         ]);
 
@@ -215,20 +215,63 @@ class PKMController extends Controller
 
         $data = [
             'judul' => $request->judul,
-            'nama_pelaksana' => $request->nama_pelaksana,
-            'nidn' => $request->nidn,
-            'nrk' => $request->nrk,
-            'program_studi' => $request->program_studi,
-            'semester' => $request->semester,
-            'tahun_akademik' => $request->tahun_akademik,
-            'nama_mitra' => $request->nama_mitra,
-            'alamat_mitra' => $request->alamat_mitra,
             'file' => $filename,
+            'kemajuan_pkm_id' => Auth::user()->proposalPKM->id,
         ];
         
-        KemajuanPKM::create($data);
+        LaporanKemajuanPKM::create($data);
 
         return redirect()->to('/pkm');
+    }
+
+    public function viewKemajuanPKM($filename)
+    {
+        $path = 'Kemajuan_pkm/' . $filename;
+
+        if (!Storage::exists($path)) {
+            abort(404, 'File not found');
+        }
+
+        $file = Storage::get($path);
+        $type = Storage::mimeType($path);
+
+        return Response::make($file, 200, [
+            'Content-Type' => $type,
+            'Content-Disposition' => 'inline; filename="' . $filename . '"',
+        ]);
+    }
+
+    public function editKemajuanPKM($id)
+    {
+        $proposal = LaporanKemajuanPKM::findOrFail($id);
+
+        return view('pkm.edit-kemajuan', compact('proposal'));
+    }
+
+    public function downloadKemajuanPKM($filename)
+    { 
+        $path = 'kemajuan_pkm/' . $filename;
+
+        if (!Storage::exists($path)) {
+            abort(404, 'File not found');
+        }
+
+        return Storage::download($path, $filename);
+    }
+
+    public function deleteKemajuanPKM($id)
+    {
+        $laporan = LaporanKemajuanPKM::find($id);
+
+        if (!$laporan) {
+            return redirect()->back()->with('error', 'Report not found');
+        }
+
+        Storage::delete('kemajuan_pkm/' . $laporan->file);
+
+        $laporan->delete();
+
+        return redirect()->back();
     }
 
     // HKI PKM

@@ -240,10 +240,6 @@
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
 
-                                <!-- <a href="{{ route('edit.akhirpenelitian', $item->id) }}" class="btn btn-warning btn-sm">
-                                    <i class="fa-solid fa-edit"></i>
-                                </a> -->
-
                                 <form action="{{ route('delete.akhirpenelitian', $item->id) }}" method="POST"
                                     style="display: inline;">
                                     @csrf

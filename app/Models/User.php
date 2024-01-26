@@ -46,11 +46,11 @@ class User extends Authenticatable
 
     public function proposal()
     {
-        return $this->hasMany(ProposalPenelitian::class);
+        return $this->hasOne(ProposalPenelitian::class);
     }
 
     public function proposalPKM()
     {
-        return $this->hasMany(proposalPKM::class);
+        return $this->hasOne(ProposalPKM::class);
     }
 }

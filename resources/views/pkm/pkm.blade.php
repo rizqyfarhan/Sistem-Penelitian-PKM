@@ -177,72 +177,16 @@
         <div class="card mb-4">
             <div class="card-body">
                 <div class="container">
-                    <form action="{{ route('lapkempenelitian.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('store.akhirpkm') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label for="JudulPKM">Judul PKM:</label>
-                            <input type="text" class="form-control" id="JudulPKM" name="JudulPKM" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="NamaPelaksana">Nama Pelaksana:</label>
-                            <input type="text" class="form-control" id="NamaPelaksana" name="NamaPelaksana">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="NIK">NIDN:</label>
-                            <input type="text" class="form-control" id="NIK" name="NIK">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="NIM">NRK:</label>
-                            <input type="text" class="form-control" id="NIM" name="NIM">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="ProgramStudi">Program Studi:</label>
-                            <select class="form-control" id="ProgramStudi" name="ProgramStudi">
-                                <option value="Pilih">Pilih...</option>
-                                <option value="Informatika">Teknik Informatika</option>
-                                <option value="Industri">Teknik Industri</option>
-                                <option value="SI">Sistem Informasi</option>
-                                <option value="Elektro">Teknik Elektro</option>
-                                <option value="Mesin">Teknik Mesin</option>
-                                <option value="Sipil">Teknik Sipil</option>
+                            <select class="form-control" id="JudulPKM" name="judul" required>
+                                <option value="">Pilih...</option>
+                                @foreach($judulPKMs as $id => $judulPKM)
+                                <option value="{{  $judulPKM }}">{{ $judulPKM }}</option>
+                                @endforeach
                             </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="Semester">Semester:</label>
-                            <select class="form-control" id="pemilihanSemester" name="Semester">
-                                <option value="Pilih">Pilih...</option>
-                                <option value="ganjil">Ganjil</option>
-                                <option value="genap">Genap</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="TahunAkademik">Tahun Akademik:</label>
-                            <select class="form-control" id="TahunAkademik" name="TahunAkademik">
-                                <option value="Pilih">Pilih...</option>
-                                <?php
-                        $currentYear = date('Y');
-                        for ($i = $currentYear - 5; $i <= $currentYear; $i++) {
-                            $academicYear = $i . '/' . ($i + 1);
-                            echo "<option value=\"$academicYear\">$academicYear</option>";
-                        }
-                        ?>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="NamaMitra">Nama Mitra:</label>
-                            <input type="text" class="form-control" id="NamaMitra" name="NamaMitra">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="AlamatMitra">Alamat Mitra:</label>
-                            <input type="text" class="form-control" id="AlamatMitra" name="AlamatMitra">
                         </div>
 
                         <div class="form-group mb-2">
