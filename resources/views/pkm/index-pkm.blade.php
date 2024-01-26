@@ -188,6 +188,80 @@
 
 <div class="card mb-4 mt-2">
     <div class="card-body">
+        <h1 class="mt-4">Laporan Kemajuan PKM</h1>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <table id="datatablesSimpleKemajuan">
+                    <thead>
+                        <tr>
+                            @foreach($headers_akhir_pkm as $header)
+                            @if ($header == 'Aksi')
+                            <th data-sortable="false">{{ $header }}</th>
+                            @elseif ($header == 'Status')
+                            <th data-sortable="false">{{ $header }}</th>
+                            @else
+                            <th>{{ $header }}</th>
+                            @endif
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            @foreach($headers_akhir_pkm as $header)
+                            @if ($header == 'Aksi')
+                            <th data-sortable="false">{{ $header }}</th>
+                            @elseif ($header == 'Status')
+                            <th data-sortable="false">{{ $header }}</th>
+                            @else
+                            <th>{{ $header }}</th>
+                            @endif
+                            @endforeach
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach($laporan_akhir as $item)
+                        <tr>
+                            <td>{{ $item->judul }}</td>
+                            <td>{{ $item->proposalPKM->nama_pelaksana }}</td>
+                            <td>{{ $item->proposalPKM->semester }}</td>
+                            <td>{{ $item->proposalPKM->tahun_akademik }}</td>
+                            <td>{{ $item->created_at }}</td>
+                            <td>
+                                <a href="{{ route('download.akhirpkm', ['filename' => $item->file]) }}"
+                                    class="btn btn-primary btn-sm">
+                                    <i class="fa-solid fa-file-arrow-down"></i>
+                                </a>
+
+                                <a href="{{ route('view.akhirpkm', ['filename' => $item->file]) }}"
+                                    class="btn btn-info btn-sm" target="_blank">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+
+                                <a href="{{ route('edit.akhirpkm', $item->id) }}" class="btn btn-warning btn-sm">
+                                    <i class="fa-solid fa-edit"></i>
+                                </a>
+
+                                <form action="{{ route('delete.akhirpkm', $item->id) }}" method="POST"
+                                    style="display: inline;">
+                                    @csrf
+                                    @method(' DELETE') <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="card mb-4 mt-2">
+    <div class="card-body">
         <h1 class="mt-4">Jurnal PKM</h1>
 
         <div class="card mb-4">

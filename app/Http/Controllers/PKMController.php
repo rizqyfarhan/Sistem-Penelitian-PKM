@@ -41,10 +41,12 @@ class PKMController extends Controller
         $data_pkm = [
             'proposal_pkm' => $proposal_pkm,
             'laporan_kemajuan' => $laporan_kemajuan,
+            'laporan_akhir' => $laporan_akhir,
             'jurnal_pkm' => $jurnal_pkm,
             'media_massa' => $media_massa,
             'hki_pkm' => $hki_pkm,
             'headers_proposal_pkm' => $headers_proposal_pkm, 
+            'headers_akhir_pkm' => $headers_akhir_pkm,
             'headers_kemajuan_pkm' => $headers_kemajuan_pkm,
             'headers_jurnal_pkm' => $headers_jurnal_pkm,
             'headers_media' => $headers_media,
@@ -193,6 +195,85 @@ class PKMController extends Controller
         }  
         
         return redirect()->route('show.pkm')->with('success', 'Proposal updated successfully');
+    }
+
+    // LAPORAN AKHIR PKM
+
+    public function storeAkhirPKM(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'judul' => 'required',
+            'file' => 'required|mimes:pdf,doc,docx|max:20480',
+        ]);
+
+        if($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
+
+        $file = $request->file('file');
+        $filename = $file->getClientOriginalName();
+
+        $lokasi_upload = 'akhir_pkm/';
+
+        Storage::putFileAs($lokasi_upload, $file, $filename);
+
+        $data = [
+            'judul' => $request->judul,
+            'file' => $filename,
+            'kemajuan_pkm_id' => Auth::user()->proposalPKM->id,
+        ];
+        
+        LaporanAkhirPKM::create($data);
+
+        return redirect()->to('/pkm');
+    }
+
+    public function editAkhirPKM($id)
+    {
+        $laporan = LaporanAkhirPKM::findOrFail($id);
+
+        return view('pkm.edit-akhir', compact('laporan'));
+    }
+
+    public function viewAkhirPKM($filename)
+    {
+        $path = 'akhir_pkm/' . $filename;
+
+        if (!Storage::exists($path)) {
+            abort(404, 'File not found');
+        }
+
+        $file = Storage::get($path);
+        $type = Storage::mimeType($path);
+
+        return Response::make($file, 200, [
+            'Content-Type' => $type,
+            'Content-Disposition' => 'inline; filename="' . $filename . '"',
+        ]);
+    }
+
+    public function downloadAkhirPKM($filename)
+    { 
+        $path = 'akhir_pkm/' . $filename;
+
+        if (!Storage::exists($path)) {
+            abort(404, 'File not found');
+        }
+
+        return Storage::download($path, $filename);
+    }
+
+    public function deleteAkhirPKM($id)
+    {
+        $laporan = LaporanAkhirPKM::find($id);
+
+        if (!$laporan) {
+            return redirect()->back()->with('error', 'Report not found');
+        }
+
+        Storage::delete('akhir_pkm/' . $laporan->file);
+
+        $laporan->delete();
+
+        return redirect()->back();
     }
 
     // LAPORAN KEMAJUAN PKM
