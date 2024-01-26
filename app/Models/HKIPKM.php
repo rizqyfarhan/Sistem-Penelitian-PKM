@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class HKIPenelitian extends Model
+class HKIPKM extends Model
 {
-    protected $table = 'hki_penelitian';
+    protected $table = 'hki_pkm';
 
     protected $fillable = [
         'judul',

@@ -13,9 +13,4 @@ class HomeController extends Controller
     
         return view('penelitian.penelitian', compact('judulPenelitians'));
     }
-
-    public function showPKM() 
-    {
-        return view('pkm.pkm');
-    }
 }

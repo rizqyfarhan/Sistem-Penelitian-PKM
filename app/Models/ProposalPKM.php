@@ -2,24 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProposalPenelitian extends Model
+class ProposalPKM extends Model
 {
-    protected $table = 'proposal_penelitian';
+    protected $table = 'proposal_pkm';
 
     protected $fillable = [
         'judul',
-        'ketua_peneliti',
+        'nama_pelaksana',
         'nidn',
         'nrk',
         'program_studi',
         'semester',
         'tahun_akademik',
-        'sumber_dana',
-        'nama_pendana',
-        'jumlah_dana',
+        'nama_mitra',
+        'alamat_mitra',
         'file',
         'user_id',
     ];

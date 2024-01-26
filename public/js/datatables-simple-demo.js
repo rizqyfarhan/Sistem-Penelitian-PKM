@@ -6,4 +6,37 @@ window.addEventListener("DOMContentLoaded", (event) => {
     if (datatablesSimple) {
         new simpleDatatables.DataTable(datatablesSimple);
     }
+
+    const datatablesSimpleHKI = document.getElementById("datatablesSimpleHKI");
+    if (datatablesSimpleHKI) {
+        new simpleDatatables.DataTable(datatablesSimpleHKI);
+    }
+
+    const datatablesSimpleMedia = document.getElementById(
+        "datatablesSimpleMedia"
+    );
+    if (datatablesSimpleMedia) {
+        new simpleDatatables.DataTable(datatablesSimpleMedia);
+    }
+
+    const datatablesSimpleJurnal = document.getElementById(
+        "datatablesSimpleJurnal"
+    );
+    if (datatablesSimpleJurnal) {
+        new simpleDatatables.DataTable(datatablesSimpleJurnal);
+    }
+
+    const datatablesSimpleKemajuan = document.getElementById(
+        "datatablesSimpleKemajuan"
+    );
+    if (datatablesSimpleKemajuan) {
+        new simpleDatatables.DataTable(datatablesSimpleKemajuan);
+    }
+
+    const datatablesSimpleArtikel = document.getElementById(
+        "datatablesSimpleArtikel"
+    );
+    if (datatablesSimpleArtikel) {
+        new simpleDatatables.DataTable(datatablesSimpleArtikel);
+    }
 });

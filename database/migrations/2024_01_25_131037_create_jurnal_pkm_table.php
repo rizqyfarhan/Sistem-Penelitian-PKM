@@ -11,11 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hki_penelitian', function (Blueprint $table) {
+        Schema::create('jurnal_pkm', function (Blueprint $table) {
             $table->increments('id');
             $table->string('judul');
-            $table->string('nama_pemegang');
-            $table->string('nomor_sertifikat');
+            $table->string('penerbit');
+            $table->string('tahun');
+            $table->integer('volume');
+            $table->integer('nomor');
+            $table->string('halaman');
+            $table->string('url');
+            $table->string('file');
             $table->timestamps();
         });
     }
@@ -25,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hki_penelitian');
+        Schema::dropIfExists('jurnal_pkm');
     }
 };

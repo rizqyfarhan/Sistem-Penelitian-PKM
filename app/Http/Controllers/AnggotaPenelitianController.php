@@ -7,6 +7,10 @@ use App\Models\AnggotaPenelitian;
 
 class AnggotaPenelitianController extends Controller
 {
+    public function showTambahAnggota()
+    {
+        return view('penelitian.tambah-anggota');
+    }
     public function store(Request $request)
     {
         $rules = [

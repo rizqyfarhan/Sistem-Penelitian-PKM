@@ -31,7 +31,7 @@
                     @elseif(auth()->user()->role == 'dosen')
                     <a class="btn btn-primary" href="{{ route('penelitian') }}">Dosen</a>
                     @elseif(auth()->user()->role == 'reviewer')
-                    <a class="btn btn-primary" href="{{ route('reviewer.penelitian') }}">Reviewer</a>
+                    <a class="btn btn-primary" href="{{ route('review.penelitian') }}">Reviewer</a>
                     @endif
                     @else
                     <a class="btn btn-primary" href="{{ route('login') }}">Login</a>
@@ -58,9 +58,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{{ $totalRecords }}</td>
+                                    <td>{{ $count_penelitian }}</td>
                                     <td>0</td>
-                                    <td>0</td>
+                                    <td>{{ $total_records }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -73,7 +73,7 @@
                     <div class="col-md-6">
                         <div class="card mb-4">
                             <div class="card-header">
-                                <h5 class="card-title fw-bold">PENGUMUMAN</h5>
+                                <h5 class="card-title fw-bold"><i class="fa-solid fa-flag"></i> PENGUMUMAN</h5>
                             </div>
 
                             @foreach($pengumuman as $p)
@@ -89,12 +89,13 @@
                     <div class="col-md-6">
                         <div class="card mb-4">
                             <div class="card-header">
-                                <h5 class="card-title fw-bold">FILE</h5>
+                                <h5 class="card-title fw-bold"><i class="fa-solid fa-file"></i> DOWNLOAD FILE</h5>
                             </div>
                             @foreach($files as $file)
                             <div class="card m-2">
                                 <div class="card-body">
-                                    <a href="#">{{ $file->path }}</a>
+                                    <a href="{{ route('download.file', ['filename' => $file->path]) }}"
+                                        download>{{ $file->path }}</a>
                                 </div>
                             </div>
                             @endforeach

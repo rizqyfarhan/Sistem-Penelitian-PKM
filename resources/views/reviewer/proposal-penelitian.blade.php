@@ -4,6 +4,30 @@
 <title>Proposal Penelitian</title>
 @endsection
 
+@section('sidenav')
+<div class="sb-sidenav-menu">
+    <div class="nav">
+        <div class="sb-sidenav-menu-heading">Menu</div>
+        <a class="nav-link collapsed" href="{{ route('dashboard') }}" aria-expanded="false">
+            <div class="sb-nav-link-icon"><i class="fa-solid fa-table-cells"></i></div>
+            Dashboard
+        </a>
+        <a class="nav-link collapsed" href="{{ route('review.penelitian') }}" aria-expanded="false">
+            <div class="sb-nav-link-icon"><i class="fa-solid fa-flask"></i></div>
+            Penelitian
+        </a>
+        <a class="nav-link collapsed" href="{{ route('review.pkm') }}" aria-expanded="false">
+            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+            PKM
+        </a>
+        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+            </nav>
+        </div>
+    </div>
+</div>
+@endsection
+
 @section('content')
 <div class="card mb-4 mt-2">
     <div class="card-body">
@@ -51,16 +75,17 @@
                                     method="POST" class="d-flex align-items-center">
                                     @csrf
                                     <select class="form-select w-50" name="status" id="statusSelect">
-                                        <option value="checking">Review</option>
-                                        <option value="accept">Accept</option>
-                                        <option value="reject">Reject</option>
+                                        <option value="review" @if($proposal->status == 'review') selected @endif>Review
+                                        </option>
+                                        <option value="accept" @if($proposal->status == 'accept') selected @endif>Accept
+                                        </option>
+                                        <option value="reject" @if($proposal->status == 'reject') selected @endif>Reject
+                                        </option>
                                     </select>
-
                                     <button type="submit" class="btn btn-primary btn-sm ml-2">
                                         <i class="fa-solid fa-check"></i>
                                     </button>
                                 </form>
-
                             </td>
                             <td>
                                 <form action="{{ route('proposalpenelitian.delete', $proposal->id) }}" method="GET"
@@ -80,6 +105,7 @@
                             </td>
                         </tr>
                         @endforeach
+
                     </tbody>
                 </table>
             </div>

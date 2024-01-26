@@ -45,28 +45,7 @@
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Menu</div>
-                        <a class="nav-link collapsed" href="{{ route('dashboard') }}" aria-expanded="false">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-table-cells"></i></div>
-                            Dashboard
-                        </a>
-                        <a class="nav-link collapsed" href="{{ route('penelitian') }}" aria-expanded="false">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-flask"></i></div>
-                            Penelitian
-                        </a>
-                        <a class="nav-link collapsed" href="{{ route('pkm') }}" aria-expanded="false">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                            PKM
-                        </a>
-                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
-                            data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                            </nav>
-                        </div>
-                    </div>
-                </div>
+                @yield('sidenav')
                 <div class="sb-sidenav-footer">
                     <div class="small">Logged in as:</div>
                     {{ Auth::check() ? Auth::user()->email : 'Guest' }}

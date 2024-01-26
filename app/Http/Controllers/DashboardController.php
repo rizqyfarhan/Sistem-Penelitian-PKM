@@ -12,11 +12,20 @@ class DashboardController extends Controller
 {
     public function show() 
     {
-        $totalRecords = ProposalPenelitian::count();
+        $count_penelitian = ProposalPenelitian::count();
+        $count_penelitian_accept = ProposalPenelitian::where('status', 'accept')->count();
+        $total_records = $count_penelitian_accept;
         $pengumuman = Pengumuman::all();
         $files = File::all();
 
-        return view('dashboard', compact('totalRecords', 'pengumuman', 'files'));
+        $data = [
+            'count_penelitian' => $count_penelitian,
+            'total_records' => $total_records,
+            'pengumuman' => $pengumuman,
+            'files' => $files,
+        ];
+
+        return view('dashboard', $data);
     }
 
     public function showAdmin()
@@ -57,5 +66,17 @@ class DashboardController extends Controller
         ]);
     
         return redirect()->route('admin.upload')->with('success', 'File uploaded successfully');
-    }    
+    }
+
+    public function downloadFile($filename) 
+    {
+        $path = 'admin_file/' . $filename;
+
+        if (!Storage::exists($path)) 
+        {
+            abort(404, 'File not found');
+        }
+
+        return Storage::download($path, $filename);
+    }
 }

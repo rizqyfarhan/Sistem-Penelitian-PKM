@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Laporan Kemajuan Penelitian</title>
+    <title>HKI PKM</title>
     <link href="{{ asset('https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css') }}"
         rel="stylesheet" />
     <link href="{{ asset('css/template.css') }}" rel="stylesheet" />
@@ -15,36 +15,47 @@
 </head>
 
 <body class="sb-nav-fixed d-flex flex-column h-100">
-    <h1 class="text-center mb-4">Edit Laporan Kemajuan Penelitian</h1>
+    <h1 class="text-center mb-4">Edit HKI PKM</h1>
 
     <div class="row justify-content-center mt-5">
         <div class="col-lg-8">
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="container">
-                        <form action="{{ route('update.kemajuanpenelitian', $laporan_kemajuan->id) }}" method="POST"
+                        <form action="{{ route('update.hkipkm', $hki->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="form-group">
-                                <label for="JudulPenelitian">Judul Penelitian:</label>
-                                <select class="form-control" id="JudulPenelitian" name="judul"
-                                    value="{{ old('judul', $laporan_kemajuan->judul) }}" required>
-                                    <option value="">Pilih...</option>
-                                    @foreach($judulPenelitians as $id => $judulPenelitian)
-                                    <option value="{{ $judulPenelitian }}"
-                                        {{ $laporan_kemajuan->judul == $judulPenelitian ? 'selected' : '' }}>
-                                        {{ $judulPenelitian }}
-                                    </option>
-                                    @endforeach
-                                </select>
+                                <div class=" form-group mb-2">
+                                    <label for="judul">Judul:</label>
+                                    <input type="text" class="form-control" id="judul" name="judul"
+                                        value="{{ old('judul', $hki->judul) }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class=" form-group mb-2">
+                                    <label for="nama_pemegang">Nama Pemegang:</label>
+                                    <input type="text" class="form-control" id="nama_pemegang" name="nama_pemegang"
+                                        value="{{ old('nama_pemegang', $hki->nama_pemegang) }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class=" form-group mb-2">
+                                    <label for="nomor_sertifikat">Nomor Sertifikat:</label>
+                                    <input type="text" class="form-control" id="nomor_sertifikat"
+                                        name="nomor_sertifikat"
+                                        value="{{ old('nomor_sertifikat', $hki->nomor_sertifikat) }}">
+                                </div>
                             </div>
 
                             <div class="form-group mb-2">
-                                <label for="file">Laporan Kemajuan:</label>
+                                <label for="file">HKI PKM:</label>
                                 <input type="file" class="form-control" id="file" name="file">
-                                @if($laporan_kemajuan->file)
-                                <p class="mt-2">Current File: {{ $laporan_kemajuan->file }}</p>
+                                @if($hki->file)
+                                <p class="mt-2">Current File: {{ $hki->file }}</p>
                                 @endif
                             </div>
 

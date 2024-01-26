@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ArtikelJurnalPenelitian extends Model
+class ArtikelJurnal extends Model
 {
-    protected $table = 'artikel_jurnal_penelitian';
+    protected $table = 'artikel_jurnal';
 
     protected $fillable = [
         'judul',
