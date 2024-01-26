@@ -16,7 +16,9 @@ class PKMController extends Controller
 {
     public function showPKM() 
     {
-        return view('pkm.pkm');
+        $judulPKMs = ProposalPKM::pluck('judul', 'id');
+        
+        return view('pkm.pkm', compact('judulPKMs'));
     }
 
     public function indexPKM() 
@@ -43,7 +45,7 @@ class PKMController extends Controller
         
         return view('pkm.index-pkm', $data_pkm);
     }
-    
+
     // PROPOSAL PKM
     
     public function storeProposalPKM(Request $request)

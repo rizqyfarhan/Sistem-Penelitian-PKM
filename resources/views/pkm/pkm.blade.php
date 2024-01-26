@@ -142,74 +142,18 @@
                 <div class="container">
                     <form action="{{ route('store.kemajuanpkm') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             <label for="JudulPKM">Judul PKM:</label>
-                            <input type="text" class="form-control" id="JudulPKM" name="judul" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="NamaPelaksana">Nama Pelaksana:</label>
-                            <input type="text" class="form-control" id="NamaPelaksana" name="nama_pelaksana">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="NIK">NIDN:</label>
-                            <input type="text" class="form-control" id="NIK" name="nidn">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="NIM">NRK:</label>
-                            <input type="text" class="form-control" id="NIM" name="nrk">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="ProgramStudi">Program Studi:</label>
-                            <select class="form-control" id="ProgramStudi" name="program_studi">
-                                <option value="Pilih">Pilih...</option>
-                                <option value="Informatika">Teknik Informatika</option>
-                                <option value="Industri">Teknik Industri</option>
-                                <option value="SI">Sistem Informasi</option>
-                                <option value="Elektro">Teknik Elektro</option>
-                                <option value="Mesin">Teknik Mesin</option>
-                                <option value="Sipil">Teknik Sipil</option>
+                            <select class="form-control" id="JudulPKM" name="judul" required>
+                                <option value="">Pilih...</option>
+                                @foreach($judulPKMs as $id => $judulPKM)
+                                <option value="{{  $judulPKM }}">{{ $judulPKM }}</option>
+                                @endforeach
                             </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="Semester">Semester:</label>
-                            <select class="form-control" id="pemilihanSemester" name="semester">
-                                <option value="Pilih">Pilih...</option>
-                                <option value="ganjil">Ganjil</option>
-                                <option value="genap">Genap</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="TahunAkademik">Tahun Akademik:</label>
-                            <select class="form-control" id="TahunAkademik" name="tahun_akademik">
-                                <option value="Pilih">Pilih...</option>
-                                <?php
-                        $currentYear = date('Y');
-                        for ($i = $currentYear - 5; $i <= $currentYear; $i++) {
-                            $academicYear = $i . '/' . ($i + 1);
-                            echo "<option value=\"$academicYear\">$academicYear</option>";
-                        }
-                        ?>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="NamaMitra">Nama Mitra:</label>
-                            <input type="text" class="form-control" id="NamaMitra" name="nama_mitra">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="AlamatMitra">Alamat Mitra:</label>
-                            <input type="text" class="form-control" id="AlamatMitra" name="alamat_mitra">
                         </div>
 
                         <div class="form-group mb-2">
-                            <label for="file">File:</label>
+                            <label for="file">Laporan Kemajuan:</label>
                             <input type="file" class="form-control" id="file" name="file">
                         </div>
 
@@ -302,7 +246,7 @@
                         </div>
 
                         <div class="form-group mb-2">
-                            <label for="file">File:</label>
+                            <label for="file">Laporan Akhir:</label>
                             <input type="file" class="form-control" id="file" name="file">
                         </div>
 
@@ -371,8 +315,8 @@
                             <input id="Link URL" class="form-control" name="url">
                         </div>
                         <div class="form-group mb-2">
-                            <label for="file">file</label>
-                            <input type="file" id="file" name="file">
+                            <label for="file">Jurnal PKM:</label>
+                            <input type="file" id="file" class="form-control" name="file">
                         </div>
                         <div class="w3-bar">
                             <input type="submit" button class="btn btn-primary"></button>
