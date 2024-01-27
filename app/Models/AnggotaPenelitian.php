@@ -10,6 +10,7 @@ class AnggotaPenelitian extends Model
     protected $table = 'anggota_penelitian';
 
     protected $fillable = [
+        'judul',
         'nama',
         'nidn',
         'nrk',

@@ -20,26 +20,30 @@
                     <div class="card-body">
                         <form action="{{ route('anggota.store') }}" method="POST">
                             @csrf
-
-                            <div class="form-group">
-                                <label for="nama">Nama</label>
-                                <input type="text" class="form-control" id="nama" name="nama" required>
+                            <div class="form-group mb-3">
+                                <label for="JudulPenelitian">Judul Penelitian</label>
+                                <select class="form-control" id="JudulPenelitian" name="judul" required>
+                                    <option value="">Pilih...</option>
+                                    @foreach($judulPenelitians as $id => $judulPenelitian)
+                                    <option value="{{  $judulPenelitian }}">{{ $judulPenelitian }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-
+                            <div class="form-group">
+                                <label for="Nama">Nama</label>
+                                <input type="text" class="form-control" id="Nama" name="nama" required>
+                            </div>
                             <div class="form-group">
                                 <label for="nidn">NIDN</label>
                                 <input type="text" class="form-control" id="nidn" name="nidn" required>
                             </div>
-
                             <div class="form-group">
                                 <label for="nrk">NRK</label>
                                 <input type="text" class="form-control" id="nrk" name="nrk" required>
                             </div>
-
                             <div>
-                                <p><a href="/upload-proposal-penelitian">kembali</a></p>
+                                <p><a href="{{ route('penelitian') }}">kembali</a></p>
                             </div>
-
                             <button type="submit" class="btn btn-primary">Tambah</button>
                         </form>
                     </div>

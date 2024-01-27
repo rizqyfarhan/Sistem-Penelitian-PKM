@@ -14,7 +14,7 @@ class LaporanAkhirPKM extends Model
         'akhir_pkm_id',
     ];
 
-    public function proposalPenelitian()
+    public function proposalPKM()
     {
         return $this->belongsTo(ProposalPKM::class, 'akhir_pkm_id');
     }

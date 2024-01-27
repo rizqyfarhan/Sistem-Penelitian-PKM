@@ -218,7 +218,7 @@ class PKMController extends Controller
         $data = [
             'judul' => $request->judul,
             'file' => $filename,
-            'kemajuan_pkm_id' => Auth::user()->proposalPKM->id,
+            'akhir_pkm_id' => Auth::user()->proposalPKM->id,
         ];
         
         LaporanAkhirPKM::create($data);

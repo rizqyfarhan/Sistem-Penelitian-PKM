@@ -41,11 +41,15 @@
         <h1 class="mt-4">Proposal Penelitian</h1>
         <div class="nav-scroller py-1 mb-2 border-bottom">
             <nav class="nav nav-underline justify-content-start">
-
             </nav>
-
         </div>
-        <a href="{{ route('anggota.show') }}">Tambah Anggota</a>
+        <nav class="nav justify-content-start">
+            <a href="{{ route('anggota.show') }}"
+                class="text-decoration-none nav-item nav-link link-body-emphasis active">Tambah Anggota</a>
+            <a href="{{ route('anggota.index') }}"
+                class="text-decoration-none nav-item nav-link link-body-emphasis">Anggota Saya</a>
+        </nav>
+
         <div class="card mb-4">
             <div class="card-body">
                 <div class="container">
@@ -228,7 +232,7 @@
         <div class="card mb-4">
             <div class="card-body">
                 <div class="container">
-                    <form action="{{ route('artikeljurnal.store') }}" method="POST" enctype="multipart/form-datav">
+                    <form action="{{ route('store.artikeljurnal') }}" method="POST" enctype="multipart/form-datav">
                         @csrf
                         <div class="form-group mb-2">
                             <label for="Judul Jurnal">Judul Jurnal:</label>
