@@ -370,7 +370,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for=" file">Bukti HKI:</label>
-                            <input type="file" id="file" name="file">
+                            <input type="file" id="file" class="form-control" name="file">
                         </div>
 
                         <div class="w3-bar">

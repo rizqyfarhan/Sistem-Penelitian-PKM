@@ -14,7 +14,7 @@ class ArtikelJurnal extends Model
         'tahun',
         'volume',
         'nomor',
-        'jumlah_halaman',
+        'halaman',
         'url',
         'file'
     ];

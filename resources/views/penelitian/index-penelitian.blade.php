@@ -99,7 +99,7 @@
                                 <form action="{{ route('delete.proposalpenelitian', $item->id) }}" method="POST"
                                     style="display: inline;">
                                     @csrf
-                                    @method(' DELETE') <button type="submit" class="btn btn-danger btn-sm">
+                                    @method('DELETE') <button type="submit" class="btn btn-danger btn-sm">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>

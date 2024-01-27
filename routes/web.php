@@ -141,11 +141,15 @@ Route::middleware(['auth', 'role:dosen'])->group(function() {
 Route::middleware(['auth', 'role:reviewer'])->group(function () {
     Route::get('/review-proposal-penelitian', [ReviewerController::class, 'showReviewerPenelitianIndex'])->name('review.penelitian');
     Route::get('/review-proposal-pkm', [ReviewerController::class, 'showReviewerPKMIndex'])->name('review.pkm');
-    Route::post('/update-status/{id}', [ProposalPenelitianController::class, 'updateStatus'])->name('proposalpenelitian.updateStatus');
+    Route::post('/update-status/{id}', [ReviewerController::class, 'updateStatus'])->name('proposalpenelitian.updateStatus');
+    Route::get('/reviewer/penelitian/download/{filename}', [ReviewerController::class, 'downloadReviewPenelitian'])->name('download.reviewPenelitian');
+    Route::get('/reviewer/pkm/download/{filename}', [ReviewerController::class, 'downloadReviewPKM'])->name('download.reviewPKM');
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin', [DashboardController::class, 'showAdmin'])->name('admin.upload'); 
     Route::post('/admin/upload-pengumuman', [DashboardController::class, 'uploadPengumuman'])->name('admin.uploadPengumuman');
     Route::post('/admin/upload-file', [DashboardController::class, 'uploadFile'])->name('admin.uploadFile');
+    Route::delete('/delete/pengumuman/{id}', [DashboardController::class, 'deletePengumuman'])->name('delete.pengumuman');
+    Route::delete('/delete/file/{id}', [DashboardController::class, 'deleteFile'])->name('delete.file');
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Reviewer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\ProposalPenelitian;
 use App\Models\ProposalPKM;
 
@@ -49,6 +50,37 @@ class ReviewerController extends Controller
         } else {
             abort(403, 'Unauthorized access');
         }
+    }
+
+    public function downloadReviewPenelitian($filename)
+    {
+        $path = 'proposal_penelitian/' . $filename;
+
+        if (!Storage::exists($path)) {
+            abort(404, 'File not found');
+        }
+
+        return Storage::download($path, $filename);
+    }
+
+    public function downloadReviewPKM($filename)
+    {
+        $path = 'proposal_pkm/' . $filename;
+
+        if (!Storage::exists($path)) {
+            abort(404, 'File not found');
+        }
+
+        return Storage::download($path, $filename);
+    }
+
+    public function updateStatus(Request $request, $id) 
+    {
+        $proposal = ProposalPenelitian::find($id);
+        $proposal->status = $request->input('status');
+        $proposal->save();
+
+        return redirect()->back();
     }
 
     public function showProposalPenelitian()

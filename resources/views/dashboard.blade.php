@@ -16,10 +16,8 @@
 <body class="sb-nav-fixed d-flex flex-column h-100">
     <nav class="sb-topnav navbar navbar-expand navbar-dark navbar-custom">
     </nav>
-
     <main class="flex-grow-1 mt-5">
         <div class="container-fluid px-4 mt-4">
-
             <div class="row">
                 <div class="col-md-6">
                     <h1 class="mt-4">Dashboard</h1>
@@ -37,9 +35,7 @@
                     <a class="btn btn-primary" href="{{ route('login') }}">Login</a>
                     @endauth
                 </div>
-
             </div>
-
             <div class="nav-scroller py-1 mb-3 border-bottom">
                 <nav class="nav nav-underline justify-content-start">
                 </nav>
@@ -59,7 +55,7 @@
                             <tbody>
                                 <tr>
                                     <td>{{ $count_penelitian }}</td>
-                                    <td>0</td>
+                                    <td>{{ $count_pkm }}</td>
                                     <td>{{ $total_records }}</td>
                                 </tr>
                             </tbody>
@@ -78,9 +74,20 @@
 
                             @foreach($pengumuman as $p)
                             <div class="card m-2">
-                                <div class="card-body">
-                                    <h6 class="card-title fw-bold">{{ $p->header }}</h6>
-                                    <p class="card-text">{{ $p->paragraph }}</p>
+                                <div class="card-body d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="card-title fw-bold">{{ $p->header }}</h6>
+                                        <p class="card-text">{{ $p->paragraph }}</p>
+                                    </div>
+                                    @if(auth()->user() && auth()->user()->role == 'admin')
+                                    <form action="{{ route('delete.pengumuman', $p->id) }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger"><i
+                                                class="fas fa-trash"></i></button>
+                                    </form>
+                                    @endif
                                 </div>
                             </div>
                             @endforeach
@@ -93,9 +100,18 @@
                             </div>
                             @foreach($files as $file)
                             <div class="card m-2">
-                                <div class="card-body">
+                                <div class="card-body d-flex justify-content-between align-items-center">
                                     <a href="{{ route('download.file', ['filename' => $file->path]) }}"
-                                        download>{{ $file->path }}</a>
+                                        class="text-decoration-none" download>{{ $file->path }}</a>
+                                    @if(auth()->user() && auth()->user()->role == 'admin')
+                                    <form action="{{ route('delete.file', $file->id) }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger"><i
+                                                class="fas fa-trash"></i></button>
+                                    </form>
+                                    @endif
                                 </div>
                             </div>
                             @endforeach
@@ -103,6 +119,8 @@
                     </div>
                 </div>
             </div>
+
+
         </div>
     </main>
     <footer class="py-4 bg-light">

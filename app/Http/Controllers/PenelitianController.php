@@ -455,6 +455,7 @@ class PenelitianController extends Controller
             'tahun' => 'required',
             'volume' => 'required',
             'nomor' => 'required',
+            'halaman' => 'required',
             'url' => 'required',
             'file' => 'required|mimes:pdf,doc,docx|max:20480',
         ]);
@@ -474,6 +475,7 @@ class PenelitianController extends Controller
             'tahun' => $request->tahun,
             'volume' => $request->volume,
             'nomor' => $request->nomor,
+            'halaman' => $request->halaman,
             'url' => $request->url,
             'file' => $filename,
         ];

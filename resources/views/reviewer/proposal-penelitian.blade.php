@@ -88,18 +88,10 @@
                                 </form>
                             </td>
                             <td>
-                                <form action="{{ route('proposalpenelitian.delete', $proposal->id) }}" method="GET"
+                                <form action="{{ route('download.reviewPenelitian', $proposal->file) }}" method="GET"
                                     style="display: inline;">
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         <i class="fa-solid fa-file-arrow-down"></i>
-                                    </button>
-                                </form>
-                                <form action="{{ route('proposalpenelitian.delete', $proposal->id) }}" method="POST"
-                                    style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
                             </td>

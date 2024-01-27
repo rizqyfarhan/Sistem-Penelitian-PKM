@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ProposalPenelitian;
+use App\Models\ProposalPKM;
 use App\Models\Pengumuman;
 use App\Models\File;
 
@@ -12,14 +13,17 @@ class DashboardController extends Controller
 {
     public function show() 
     {
-        $count_penelitian = ProposalPenelitian::count();
+        $count_penelitian = ProposalPenelitian::count(); 
+        $count_pkm = ProposalPKM::count();
         $count_penelitian_accept = ProposalPenelitian::where('status', 'accept')->count();
-        $total_records = $count_penelitian_accept;
+        $count_pkm_accept = ProposalPKM::where('status', 'accept')->count();
+        $total_records = $count_penelitian_accept + $count_pkm_accept;
         $pengumuman = Pengumuman::all();
         $files = File::all();
 
         $data = [
             'count_penelitian' => $count_penelitian,
+            'count_pkm' => $count_pkm,
             'total_records' => $total_records,
             'pengumuman' => $pengumuman,
             'files' => $files,
@@ -32,6 +36,8 @@ class DashboardController extends Controller
     {
         return view('admin.upload');
     }
+
+    // PENGUMUMAN
 
     public function uploadPengumuman(Request $request)
     {
@@ -47,6 +53,21 @@ class DashboardController extends Controller
 
         return redirect()->route('admin.upload')->with('success', 'Announcement uploaded successfully');
     }
+
+    public function deletePengumuman($id) 
+    {
+        $pengumuman = Pengumuman::find($id);
+
+        if (!$pengumuman) {
+            return redirect()->back()->with('error', 'Pengumuman not found');
+        }
+
+        $pengumuman->delete();
+
+        return redirect()->back();
+    }
+
+    // FILE
 
     public function uploadFile(Request $request)
     {
@@ -79,4 +100,20 @@ class DashboardController extends Controller
 
         return Storage::download($path, $filename);
     }
+
+    public function deleteFile($id) 
+    {
+        $file = File::find($id);
+
+        if (!$file) {
+            return redirect()->back()->with('error', 'File not found');
+        }
+
+        Storage::delete('admin_file/' . $file->path);
+
+        $file->delete();
+
+        return redirect()->back();
+    }
+
 }

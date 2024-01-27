@@ -232,7 +232,7 @@
         <div class="card mb-4">
             <div class="card-body">
                 <div class="container">
-                    <form action="{{ route('store.artikeljurnal') }}" method="POST" enctype="multipart/form-datav">
+                    <form action="{{ route('store.artikeljurnal') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group mb-2">
                             <label for="Judul Jurnal">Judul Jurnal:</label>
@@ -267,7 +267,7 @@
                         </div>
                         <div class="form-group mb-2">
                             <label for="Jumlah Halaman">Halaman</label>
-                            <input type="text" id="Jumlah Halaman" class="form-control" name="jumlah_halaman">
+                            <input type="text" id="Jumlah Halaman" class="form-control" name="halaman">
                         </div>
                         <div class="form-group mb-2">
                             <label for="Link URL">Link URL:</label>
