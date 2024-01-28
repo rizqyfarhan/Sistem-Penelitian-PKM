@@ -46,11 +46,21 @@ class User extends Authenticatable
 
     public function proposal()
     {
-        return $this->hasOne(ProposalPenelitian::class);
+        return $this->hasMany(ProposalPenelitian::class);
     }
 
     public function proposalPKM()
     {
         return $this->hasOne(ProposalPKM::class);
+    }
+
+    public function hkiPenelitian()
+    {
+        return $this->hasMany(HKIPenelitian::class, 'hki_id');
+    }
+
+    public function artikelJurnal()
+    {
+        return $this->hasMany(ArtikelJurnal::class, 'jurnal_id');
     }
 }

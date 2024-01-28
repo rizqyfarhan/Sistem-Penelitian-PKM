@@ -18,11 +18,21 @@ class PenelitianController extends Controller
     /******  PENELITIAN  **************/
     public function indexPenelitian() 
     {
-        $proposal_penelitian = ProposalPenelitian::all();
-        $laporan_kemajuan = LaporanKemajuanPenelitian::with('proposalPenelitian')->get();
-        $laporan_akhir = LaporanAkhirPenelitian::all();
-        $artikel_jurnal = ArtikelJurnal::all();
-        $hki_penelitian = HKIPenelitian::all();
+        $user = Auth::user();
+
+        $proposal_penelitian = $user->proposal;
+        $laporan_kemajuan = LaporanKemajuanPenelitian::with('proposalPenelitian')
+        ->whereHas('proposalPenelitian', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+        ->get();
+        $laporan_akhir = LaporanAkhirPenelitian::with('proposalPenelitian')
+        ->whereHas('proposalPenelitian', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+        ->get();
+        $artikel_jurnal = $user->artikelJurnal;
+        $hki_penelitian = $user->hkiPenelitian;
         $headers_proposal_penelitian = ['Judul Penelitian','Ketua Peneliti','Semester','Tahun Akademik','Status','Aksi'];
         $headers_kemajuan_penelitian = ['Judul Penelitian','Ketua Peneliti','Semester','Tahun Akademik', 'Tanggal Dikirim','Aksi'];
         $headers_akhir_penelitian = ['Judul Penelitian','Ketua Peneliti','Semester','Tahun Akademik','Aksi'];
@@ -478,6 +488,7 @@ class PenelitianController extends Controller
             'halaman' => $request->halaman,
             'url' => $request->url,
             'file' => $filename,
+            'jurnal_id' => Auth::id(),
         ];
         
         ArtikelJurnal::create($data);
@@ -564,6 +575,21 @@ class PenelitianController extends Controller
         return redirect()->route('show.penelitian')->with('success', 'Proposal updated successfully');
     }
 
+    public function deleteArtikelJurnal($id)
+    {
+        $artikel_jurnal = ArtikelJurnal::find($id);
+
+        if (!$artikel_jurnal) {
+            return redirect()->back()->with('error', 'Artikel jurnal not found');
+        }
+
+        Storage::delete('artikel_jurnal/' . $artikel_jurnal->file);
+
+        $artikel_jurnal->delete();
+
+        return redirect()->back();
+    }
+
     // HKI PENELITIAN
 
     public function storeHKIPenelitian(Request $request)
@@ -589,6 +615,7 @@ class PenelitianController extends Controller
             'nama_pemegang' => $request->nama_pemegang,
             'nomor_sertifikat' => $request->nomor_sertifikat,
             'file' => $filename,
+            'hki_id' => Auth::id(),
         ];
         
         HKIPenelitian::create($data);

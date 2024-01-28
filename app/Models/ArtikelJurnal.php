@@ -16,6 +16,12 @@ class ArtikelJurnal extends Model
         'nomor',
         'halaman',
         'url',
-        'file'
+        'file',
+        'jurnal_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'jurnal_id');
+    }
 }

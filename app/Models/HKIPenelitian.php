@@ -12,6 +12,12 @@ class HKIPenelitian extends Model
         'judul',
         'nama_pemegang',
         'nomor_sertifikat',
-        'file'
+        'file',
+        'hki_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'hki_id');
+    }
 }

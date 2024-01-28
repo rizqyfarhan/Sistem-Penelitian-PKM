@@ -6,6 +6,7 @@ use App\Http\Controllers\AnggotaPenelitianController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PenelitianController;
 use App\Http\Controllers\PKMController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Reviewer\ReviewerController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
@@ -40,12 +41,7 @@ Route::middleware(['auth', 'role:dosen'])->group(function() {
     Route::get('/pkm', [PKMController::class, 'showPKM'])->name('pkm');
     Route::get('/lihat-pkm', [PKMController::class, 'indexPKM'])->name('show.pkm');
     
-    Route::get('/tambah-anggota', [AnggotaPenelitianController::class, 'showTambahAnggota'])->name('anggota.show');
-    Route::post('/tambah-anggota', [AnggotaPenelitianController::class, 'store'])->name('anggota.store');
-    Route::get('/lihat-anggota', [AnggotaPenelitianController::class, 'indexAnggota'])->name('anggota.index');
-    Route::get('/edit/anggota/penelitian/{id}', [AnggotaPenelitianController::class, 'editAnggota'])->name('edit.anggota');
-    Route::put('/update/anggota/penelitian/{id}', [AnggotaPenelitianController::class, 'updateAnggota'])->name('update.anggota');
-    Route::delete('/delete/anggota/penelitian/{id}', [AnggotaPenelitianController::class, 'deleteAnggota'])->name('delete.anggota');
+    Route::get('/profile', [ProfileController::class, 'indexProfile'])->name('index.profile'); 
 
     /******  PENELITIAN -> PROPOSAL **************/
     Route::post('/store/proposal/penelitian/', [PenelitianController::class, 'storeProposalPenelitian'])->name('store.proposalpenelitian');
@@ -54,6 +50,14 @@ Route::middleware(['auth', 'role:dosen'])->group(function() {
     Route::get('/edit/proposal/penelitian/{id}', [PenelitianController::class, 'editProposalPenelitian'])->name('edit.proposalpenelitian');
     Route::put('/update/proposal/penelitian/{id}', [PenelitianController::class, 'updateProposalPenelitian'])->name('update.proposalpenelitian');
     Route::delete('/delete/proposal/penelitian/{id}', [PenelitianController::class, 'deleteProposalPenelitian'])->name('delete.proposalpenelitian');
+
+    /******  ANGGOTA PENELITIAN **************/
+    Route::get('/tambah-anggota', [AnggotaPenelitianController::class, 'showTambahAnggota'])->name('anggota.show');
+    Route::post('/tambah-anggota', [AnggotaPenelitianController::class, 'store'])->name('anggota.store');
+    Route::get('/lihat-anggota', [AnggotaPenelitianController::class, 'indexAnggota'])->name('anggota.index');
+    Route::get('/edit/anggota/penelitian/{id}', [AnggotaPenelitianController::class, 'editAnggota'])->name('edit.anggota');
+    Route::put('/update/anggota/penelitian/{id}', [AnggotaPenelitianController::class, 'updateAnggota'])->name('update.anggota');
+    Route::delete('/delete/anggota/penelitian/{id}', [AnggotaPenelitianController::class, 'deleteAnggota'])->name('delete.anggota');
 
     /******  PENELITIAN -> KEMAJUAN **************/
     Route::post('/store/kemajuan/penelitian/', [PenelitianController::class, 'storeKemajuanPenelitian'])->name('store.kemajuanpenelitian');
