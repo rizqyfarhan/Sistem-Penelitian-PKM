@@ -369,6 +369,7 @@
                             <td>{{ $item->nama_media }}</td>
                             <td>{{ $item->bulan_terbit }}</td>
                             <td>{{ $item->tahun_terbit }}</td>
+                            <td>{{ $item->url }}</td>
                             <td>
                                 <form action="{{ route('delete.mediapkm', $item->id) }}" method="POST"
                                     style="display: inline;">

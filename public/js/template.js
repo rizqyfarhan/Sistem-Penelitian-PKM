@@ -33,3 +33,16 @@ function toggleLembagaPendana() {
 
     toggleLembagaPendana();
 }
+
+function validateForm()
+{
+    let password = document.getElementById("password").value;
+    let confirmPassword = document.getElementById("password_confirm").value;
+
+    if (password != confirmPassword)
+    {
+        document.getElementById("message").innerHTML = "Password do not match";
+        return false;
+    }
+    return true;
+}

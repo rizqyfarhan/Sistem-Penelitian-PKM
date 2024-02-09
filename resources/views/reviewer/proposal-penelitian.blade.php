@@ -28,6 +28,10 @@
 </div>
 @endsection
 
+@section('profile')
+<li><a class="dropdown-item" href="{{ route('index.reviewerprofile') }}">Profile</a></li>
+@endsection
+
 @section('content')
 <div class="card mb-4 mt-2">
     <div class="card-body">

@@ -28,7 +28,7 @@
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">Profile</a></li>
+                    <li><a class="dropdown-item" href="{{ route('index.adminprofile') }}">Profile</a></li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
@@ -56,6 +56,14 @@
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-upload"></i></div>
                             Upload
                         </a>
+                        <a class="nav-link collapsed" href="{{ route('penelitian') }}" aria-expanded="false">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-flask"></i></div>
+                            Penelitian
+                        </a>
+                        <a class="nav-link collapsed" href="{{ route('pkm') }}" aria-expanded="false">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            PKM
+                        </a>
                         <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
@@ -72,15 +80,6 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <div class="nav-scroller py-1 mb-3 border-bottom">
-                        <nav class="nav nav-underline justify-content-start">
-                            <a class="nav-item nav-link link-body-emphasis active"
-                                href="{{ route('penelitian') }}">Upload</a>
-                            <a class="nav-item nav-link link-body-emphasis" href="{{ route('show.penelitian') }}">Upload
-                                Saya</a>
-                        </nav>
-                    </div>
-
                     <div class="card mb-4 mt-2">
                         <div class="card-body">
                             <h1 class="mt-4">Upload Pengumuman</h1>

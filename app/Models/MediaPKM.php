@@ -14,5 +14,11 @@ class MediaPKM extends Model
         'bulan_terbit',
         'tahun_terbit',
         'url',
+        'media_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'media_id');
+    }
 }

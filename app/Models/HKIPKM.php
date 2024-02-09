@@ -12,6 +12,12 @@ class HKIPKM extends Model
         'judul',
         'nama_pemegang',
         'nomor_sertifikat',
-        'file'
+        'file',
+        'hkipkm_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'hkipkm_id');
+    }
 }

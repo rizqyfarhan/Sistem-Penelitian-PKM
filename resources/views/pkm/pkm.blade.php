@@ -72,7 +72,7 @@
                         <div class="form-group">
                             <label for="ProgramStudi">Program Studi:</label>
                             <select class="form-control" id="ProgramStudi" name="program_studi">
-                                <option value="Pilih">Pilih...</option>
+                                <option value="">Pilih...</option>
                                 <option value="Informatika">Teknik Informatika</option>
                                 <option value="Industri">Teknik Industri</option>
                                 <option value="SI">Sistem Informasi</option>
@@ -85,7 +85,7 @@
                         <div class="form-group">
                             <label for="Semester">Semester:</label>
                             <select class="form-control" id="pemilihanSemester" name="semester">
-                                <option value="Pilih">Pilih...</option>
+                                <option value="">Pilih...</option>
                                 <option value="ganjil">Ganjil</option>
                                 <option value="genap">Genap</option>
                             </select>
@@ -94,7 +94,7 @@
                         <div class="form-group">
                             <label for="TahunAkademik">Tahun Akademik:</label>
                             <select class="form-control" id="TahunAkademik" name="tahun_akademik">
-                                <option value="Pilih">Pilih...</option>
+                                <option value="">Pilih...</option>
                                 <?php
                         $currentYear = date('Y');
                         for ($i = $currentYear - 5; $i <= $currentYear; $i++) {
@@ -229,7 +229,7 @@
                         <div class="form-group mb-2">
                             <label for="Tahun">Tahun</label>
                             <select id="Tahun" name="tahun" class="form-control w-25">
-                                <option value="Pilih">Pilih...</option>
+                                <option value="">Pilih...</option>
                                 <?php
                         $currentYear = date('Y');
                         for ($i = $currentYear - 5; $i <= $currentYear; $i++) {

@@ -17,5 +17,11 @@ class JurnalPKM extends Model
         'halaman',
         'url',
         'file',
+        'jurnalpkm_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'jurnalpkm_id');
+    }
 }

@@ -10,6 +10,16 @@ use App\Models\ProposalPKM;
 
 class ReviewerController extends Controller
 {
+    public function showProposalPenelitian()
+    {
+        return view('reviewer.proposal-penelitian');
+    }
+
+    public function showProposalPKM()
+    {
+        return view('reviewer.proposal-pkm');
+    }
+
     public function showReviewerPenelitianIndex()
     {
         $user = auth()->user();
@@ -22,7 +32,7 @@ class ReviewerController extends Controller
 
             $data = [
                 'proposals' => $proposals,
-                'table_headers' => $table_headers
+                'table_headers' => $table_headers,
             ];
 
             return view('reviewer.proposal-penelitian', $data);
@@ -81,15 +91,5 @@ class ReviewerController extends Controller
         $proposal->save();
 
         return redirect()->back();
-    }
-
-    public function showProposalPenelitian()
-    {
-        return view('reviewer.proposal-penelitian');
-    }
-
-    public function showProposalPKM()
-    {
-        return view('reviewer.proposal-pkm');
     }
 }

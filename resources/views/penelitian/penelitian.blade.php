@@ -28,6 +28,10 @@
 </div>
 @endsection
 
+@section('profile')
+<li><a class="dropdown-item" href="{{ route('index.dosenprofile') }}">Profile</a></li>
+@endsection
+
 @section('content')
 <div class="nav-scroller py-1 mb-3 border-bottom">
     <nav class="nav nav-underline justify-content-start">
@@ -78,7 +82,7 @@
                         <div class="form-group">
                             <label for="ProgramStudi">Program Studi:</label>
                             <select class="form-control" id="ProgramStudi" name="program_studi">
-                                <option value="Pilih">Pilih...</option>
+                                <option value="">Pilih...</option>
                                 <option value="Informatika">Teknik Informatika</option>
                                 <option value="Industri">Teknik Industri</option>
                                 <option value="SI">Sistem Informasi</option>
@@ -91,7 +95,7 @@
                         <div class="form-group">
                             <label for="Semester">Semester:</label>
                             <select class="form-control" id="Semester" name="semester">
-                                <option value="Pilih">Pilih...</option>
+                                <option value="">Pilih...</option>
                                 <option value="Ganjil">Ganjil</option>
                                 <option value="Genap">Genap</option>
                             </select>
@@ -100,7 +104,7 @@
                         <div class="form-group">
                             <label for="TahunAkademik">Tahun Akademik:</label>
                             <select class="form-control" id="TahunAkademik" name="tahun_akademik">
-                                <option value="Pilih">Pilih...</option>
+                                <option value="">Pilih...</option>
                                 <?php
                         $currentYear = date('Y');
                         for ($i = $currentYear - 5; $i <= $currentYear; $i++) {
@@ -115,7 +119,7 @@
                             <label for="Semester">Sumber Dana:</label>
                             <select class="form-control" id="SumberDana" name="sumber_dana"
                                 onchange="toggleLembagaPendana()">
-                                <option value="Pilih">Pilih...</option>
+                                <option value="">Pilih...</option>
                                 <option value="pribadi">Pribadi</option>
                                 <option value="internal">Internal</option>
                                 <option value="external">External</option>
@@ -330,6 +334,4 @@
         </div>
     </div>
 </div>
-
-
 @endsection

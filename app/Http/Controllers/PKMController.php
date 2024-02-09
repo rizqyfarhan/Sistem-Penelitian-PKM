@@ -25,18 +25,26 @@ class PKMController extends Controller
 
     public function indexPKM() 
     {
-        $proposal_pkm = ProposalPKM::all();
-        $laporan_kemajuan = LaporanKemajuanPKM::with('proposalPKM')->get();
-        $laporan_akhir = LaporanAkhirPKM::with('proposalPKM')->get();
-        $jurnal_pkm = JurnalPKM::all();
-        $hki_pkm = HKIPKM::all();
-        $media_massa = MediaPKM::all();
+        $user = Auth::user();
+
+        $proposal_pkm = $user->proposalPKM;
+        $laporan_kemajuan = LaporanKemajuanPKM::with('proposalPKM')->whereHas('proposalPKM', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+        ->get();
+        $laporan_akhir = LaporanAkhirPKM::with('proposalPKM')->whereHas('proposalPKM', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+        ->get();
+        $jurnal_pkm = $user->jurnalPKM;
+        $hki_pkm = $user->hkiPKM;
+        $media_massa = $user->media;
         $headers_proposal_pkm = ['Judul','Nama Pelaksana','Semester','Tahun Akademik','Status','Aksi'];
         $headers_kemajuan_pkm = ['Judul','Nama pelaksana','Semester','Tahun Akademik', 'Tanggal Dikirim','Aksi'];
         $headers_akhir_pkm = ['Judul', 'Nama Pelaksana', 'Semster', 'Tahun Akademik', 'Aksi'];
         $headers_jurnal_pkm = ['Judul', 'Penerbit', 'Tahun', 'Volume', 'Nomor', 'Aksi'];
         $headers_hki = ['Judul','Nama Pemegang', 'Nomor Sertifikat', 'Aksi'];
-        $headers_media = ['Judul', 'Nama Media Massa', 'Bulan Terbit', 'Tahun Terbit', 'Aksi'];
+        $headers_media = ['Judul', 'Nama Media Massa', 'Bulan Terbit', 'Tahun Terbit', 'URL', 'Aksi'];
 
         $data_pkm = [
             'proposal_pkm' => $proposal_pkm,
@@ -380,6 +388,7 @@ class PKMController extends Controller
             'nama_pemegang' => $request->nama_pemegang,
             'nomor_sertifikat' => $request->nomor_sertifikat,
             'file' => $filename,
+            'hki_id' => Auth::id(),
         ];
         
         HKIPKM::create($data);
@@ -504,6 +513,7 @@ class PKMController extends Controller
             'halaman' => $request->halaman,
             'url' => $request->url,
             'file' => $filename,
+            'jurnalpkm_id' => Auth::id(),
         ];
         
         JurnalPKM::create($data);
@@ -546,6 +556,7 @@ class PKMController extends Controller
             'bulan_terbit' => $request->bulan_terbit,
             'tahun_terbit' => $request->tahun_terbit,
             'url' => $request->url,
+            'media_id' => Auth::id(),
         ];
         
         MediaPKM::create($data);

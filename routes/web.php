@@ -41,7 +41,7 @@ Route::middleware(['auth', 'role:dosen'])->group(function() {
     Route::get('/pkm', [PKMController::class, 'showPKM'])->name('pkm');
     Route::get('/lihat-pkm', [PKMController::class, 'indexPKM'])->name('show.pkm');
     
-    Route::get('/profile', [ProfileController::class, 'indexProfile'])->name('index.profile'); 
+    Route::get('/profile', [ProfileController::class, 'indexProfile'])->name('index.dosenprofile'); 
 
     /******  PENELITIAN -> PROPOSAL **************/
     Route::post('/store/proposal/penelitian/', [PenelitianController::class, 'storeProposalPenelitian'])->name('store.proposalpenelitian');
@@ -143,6 +143,8 @@ Route::middleware(['auth', 'role:dosen'])->group(function() {
 });
 
 Route::middleware(['auth', 'role:reviewer'])->group(function () {
+    Route::get('/reviewer/profile', [ProfileController::class, 'indexProfile'])->name('index.reviewerprofile');
+
     Route::get('/review-proposal-penelitian', [ReviewerController::class, 'showReviewerPenelitianIndex'])->name('review.penelitian');
     Route::get('/review-proposal-pkm', [ReviewerController::class, 'showReviewerPKMIndex'])->name('review.pkm');
     Route::post('/update-status/{id}', [ReviewerController::class, 'updateStatus'])->name('proposalpenelitian.updateStatus');
@@ -151,6 +153,8 @@ Route::middleware(['auth', 'role:reviewer'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/profile', [ProfileController::class, 'indexProfile'])->name('index.adminprofile');
+
     Route::get('/admin', [DashboardController::class, 'showAdmin'])->name('admin.upload'); 
     Route::post('/admin/upload-pengumuman', [DashboardController::class, 'uploadPengumuman'])->name('admin.uploadPengumuman');
     Route::post('/admin/upload-file', [DashboardController::class, 'uploadFile'])->name('admin.uploadFile');

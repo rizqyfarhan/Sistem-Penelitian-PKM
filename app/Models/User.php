@@ -51,7 +51,7 @@ class User extends Authenticatable
 
     public function proposalPKM()
     {
-        return $this->hasOne(ProposalPKM::class);
+        return $this->hasMany(ProposalPKM::class);
     }
 
     public function hkiPenelitian()
@@ -62,5 +62,19 @@ class User extends Authenticatable
     public function artikelJurnal()
     {
         return $this->hasMany(ArtikelJurnal::class, 'jurnal_id');
+    }
+
+    public function jurnalPKM()
+    {
+        return $this->hasMany(jurnalPKM::class, 'jurnalpkm_id');
+    }
+
+    public function hkiPKM()
+    {
+        return $this->hasMany(HKIPKM::class, 'hkipkm_id');
+    }
+    public function media()
+    {
+        return $this->hasMany(MediaPKM::class, 'media_id');
     }
 }
