@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PenelitianController;
 use App\Http\Controllers\PKMController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminPenelitianController;
 use App\Http\Controllers\Reviewer\ReviewerController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
@@ -160,4 +161,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/upload-file', [DashboardController::class, 'uploadFile'])->name('admin.uploadFile');
     Route::delete('/delete/pengumuman/{id}', [DashboardController::class, 'deletePengumuman'])->name('delete.pengumuman');
     Route::delete('/delete/file/{id}', [DashboardController::class, 'deleteFile'])->name('delete.file');
+
+    /******  PENELITIAN -> PROPOSAL **************/
+    Route::post('/admin/store/proposal/', [AdminPenelitianController::class, 'storeProposalAdmin'])->name('store.proposaladmin');
+    Route::get('/admin/download/proposal/{filename}', [AdminPenelitianController::class, 'downloadProposalAdmin'])->name('download.proposaladmin');
+    Route::get('/admin/view/proposal/{filename}', [AdminPenelitianController::class, 'viewProposalAdmin'])->name('view.proposaladmin');
+    Route::get('/admin/edit/proposal/{id}', [AdminPenelitianController::class, 'editProposalAdmin'])->name('edit.proposaladmin');
+    Route::put('/admin/update/proposal/{id}', [AdminPenelitianController::class, 'updateProposalAdmin'])->name('update.proposaladmin');
+    Route::delete('/admin/delete/proposal/{id}', [AdminPenelitianController::class, 'deleteProposalAdmin'])->name('delete.proposaladmin');
 });
