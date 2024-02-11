@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    @yield('title')
+    <title>Admin - Upload</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="{{ asset('css/template.css') }}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -28,7 +28,7 @@
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    @yield('profile')
+                    <li><a class="dropdown-item" href="{{ route('index.adminprofile') }}">Profile</a></li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
@@ -45,7 +45,33 @@
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
-                @yield('sidenav')
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Menu</div>
+                        <a class="nav-link collapsed" href="{{ route('dashboard') }}" aria-expanded="false">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-table-cells"></i></div>
+                            Dashboard
+                        </a>
+                        <a class="nav-link collapsed" href="{{ route('admin.upload') }}" aria-expanded="false">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-upload"></i></div>
+                            Upload
+                        </a>
+                        <a class="nav-link collapsed" href="{{ route('index.proposaladmin') }}" aria-expanded="false">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-flask"></i></div>
+                            Penelitian
+                        </a>
+                        <a class="nav-link collapsed" href="{{ route('index.proposalpkmadmin') }}"
+                            aria-expanded="false">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            PKM
+                        </a>
+                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                            </nav>
+                        </div>
+                    </div>
+                </div>
                 <div class="sb-sidenav-footer">
                     <div class="small">Logged in as:</div>
                     {{ Auth::check() ? Auth::user()->email : 'Guest' }}
@@ -55,7 +81,7 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    @yield('content')
+                    @yield('adm-content')
                 </div>
             </main>
             <footer class="py-4 bg-light mt-auto">

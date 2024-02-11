@@ -3,42 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Response;
 use App\Models\ProposalPKM;
+use App\Models\LaporanKemajuanPKM;
+use App\Models\LaporanAkhirPKM;
 use App\Models\JurnalPKM;
 use App\Models\HKIPKM;
 use App\Models\MediaPKM;
-use App\Models\LaporanKemajuanPKM;
-use App\Models\LaporanAkhirPKM;
 
-class PKMController extends Controller
+class AdminPKMController extends Controller
 {
-    public function showPKM() 
+    public function indexProposalPKMAdmin()
     {
-        $judulPKMs = ProposalPKM::pluck('judul', 'id');
-        
-        return view('pkm.pkm', compact('judulPKMs'));
-    }
+        $proposal_pkm = ProposalPKM::all();
+        $laporan_kemajuan = LaporanKemajuanPKM::all();
+        $laporan_akhir = LaporanAkhirPKM::all();
+        $jurnal_pkm = JurnalPKM::all();
+        $hki_pkm = HKIPKM::all();
+        $media_massa = MediaPKM::all();
 
-    public function indexPKM() 
-    {
-        $user = Auth::user();
-
-        $proposal_pkm = $user->proposalPKM;
-        $laporan_kemajuan = LaporanKemajuanPKM::with('proposalPKM')->whereHas('proposalPKM', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        })
-        ->get();
-        $laporan_akhir = LaporanAkhirPKM::with('proposalPKM')->whereHas('proposalPKM', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        })
-        ->get();
-        $jurnal_pkm = $user->jurnalPKM;
-        $hki_pkm = $user->hkiPKM;
-        $media_massa = $user->media;
         $headers_proposal_pkm = ['Judul','Nama Pelaksana','Semester','Tahun Akademik','Status','Aksi'];
         $headers_kemajuan_pkm = ['Judul','Nama pelaksana','Semester','Tahun Akademik', 'Tanggal Dikirim','Aksi'];
         $headers_akhir_pkm = ['Judul', 'Nama Pelaksana', 'Semster', 'Tahun Akademik', 'Aksi'];
@@ -46,27 +28,34 @@ class PKMController extends Controller
         $headers_hki = ['Judul','Nama Pemegang', 'Nomor Sertifikat', 'Aksi'];
         $headers_media = ['Judul', 'Nama Media Massa', 'Bulan Terbit', 'Tahun Terbit', 'URL', 'Aksi'];
 
-        $data_pkm = [
+        $data = [
+            'headers_proposal_pkm' => $headers_proposal_pkm,
+            'headers_kemajuan_pkm' => $headers_kemajuan_pkm,
+            'headers_akhir_pkm' => $headers_akhir_pkm,
+            'headers_jurnal_pkm' => $headers_jurnal_pkm,
+            'headers_hki' => $headers_hki,
+            'headers_media' => $headers_media,
             'proposal_pkm' => $proposal_pkm,
             'laporan_kemajuan' => $laporan_kemajuan,
             'laporan_akhir' => $laporan_akhir,
             'jurnal_pkm' => $jurnal_pkm,
-            'media_massa' => $media_massa,
             'hki_pkm' => $hki_pkm,
-            'headers_proposal_pkm' => $headers_proposal_pkm, 
-            'headers_akhir_pkm' => $headers_akhir_pkm,
-            'headers_kemajuan_pkm' => $headers_kemajuan_pkm,
-            'headers_jurnal_pkm' => $headers_jurnal_pkm,
-            'headers_media' => $headers_media,
-            'headers_hki' => $headers_hki,
+            'media_massa' => $media_massa,
         ];
-        
-        return view('pkm.index-pkm', $data_pkm);
+
+        return view('admin.index-pkm', $data);
+    }
+
+    public function showProposalPKMAdmin()
+    {
+        $judulPKMs = ProposalPKM::pluck('judul', 'id');
+
+        return view('admin.pkm-adm', compact('judulPKMs'));
     }
 
     // PROPOSAL PKM
-    
-    public function storeProposalPKM(Request $request)
+
+    public function storeProposalPKMAdmin(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'judul' => 'required',
@@ -106,10 +95,10 @@ class PKMController extends Controller
         
         ProposalPKM::create($data);
 
-        return redirect()->to('/pkm');
+        return redirect()->to('/admin');
     }
     
-    public function deleteProposalPKM($id)
+    public function deleteProposalPKMAdmin($id)
     {
         $proposal = ProposalPKM::find($id);
 
@@ -124,7 +113,7 @@ class PKMController extends Controller
         return redirect()->back();
     }
 
-    public function downloadProposalPKM($filename)
+    public function downloadProposalPKMAdmin($filename)
     { 
         $path = 'proposal_pkm/' . $filename;
 
@@ -135,7 +124,7 @@ class PKMController extends Controller
         return Storage::download($path, $filename);
     }
 
-    public function viewProposalPKM($filename)
+    public function viewProposalPKMAdmin($filename)
     {
         $path = 'proposal_pkm/' . $filename;
 
@@ -152,14 +141,14 @@ class PKMController extends Controller
         ]);
     }
 
-    public function editProposalPKM($id)
+    public function editProposalPKMAdmin($id)
     {
         $proposal = ProposalPKM::findOrFail($id);
 
-        return view('pkm.edit-pkm', compact('proposal'));
+        return view('admin.edit.edit-pkm', compact('proposal'));
     }
 
-    public function updateProposalPKM(Request $request, $id)
+    public function updateProposalPKMAdmin(Request $request, $id)
     {
         
         $request->validate([
@@ -202,91 +191,12 @@ class PKMController extends Controller
             ]);
         }  
         
-        return redirect()->route('show.pkm')->with('success', 'Proposal updated successfully');
+        return redirect()->route('index.proposalpkmadmin')->with('success', 'Proposal updated successfully');
     }
 
-    // LAPORAN AKHIR PKM
+    // LAPORAN KEMAJUAN
 
-    public function storeAkhirPKM(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'judul' => 'required',
-            'file' => 'required|mimes:pdf,doc,docx|max:20480',
-        ]);
-
-        if($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
-
-        $file = $request->file('file');
-        $filename = $file->getClientOriginalName();
-
-        $lokasi_upload = 'akhir_pkm/';
-
-        Storage::putFileAs($lokasi_upload, $file, $filename);
-
-        $data = [
-            'judul' => $request->judul,
-            'file' => $filename,
-            'akhir_pkm_id' => Auth::user()->proposalPKM->id,
-        ];
-        
-        LaporanAkhirPKM::create($data);
-
-        return redirect()->to('/pkm');
-    }
-
-    public function editAkhirPKM($id)
-    {
-        $laporan = LaporanAkhirPKM::findOrFail($id);
-
-        return view('pkm.edit-akhir', compact('laporan'));
-    }
-
-    public function viewAkhirPKM($filename)
-    {
-        $path = 'akhir_pkm/' . $filename;
-
-        if (!Storage::exists($path)) {
-            abort(404, 'File not found');
-        }
-
-        $file = Storage::get($path);
-        $type = Storage::mimeType($path);
-
-        return Response::make($file, 200, [
-            'Content-Type' => $type,
-            'Content-Disposition' => 'inline; filename="' . $filename . '"',
-        ]);
-    }
-
-    public function downloadAkhirPKM($filename)
-    { 
-        $path = 'akhir_pkm/' . $filename;
-
-        if (!Storage::exists($path)) {
-            abort(404, 'File not found');
-        }
-
-        return Storage::download($path, $filename);
-    }
-
-    public function deleteAkhirPKM($id)
-    {
-        $laporan = LaporanAkhirPKM::find($id);
-
-        if (!$laporan) {
-            return redirect()->back()->with('error', 'Report not found');
-        }
-
-        Storage::delete('akhir_pkm/' . $laporan->file);
-
-        $laporan->delete();
-
-        return redirect()->back();
-    }
-
-    // LAPORAN KEMAJUAN PKM
-
-    public function storeKemajuanPKM(Request $request)
+    public function storeKemajuanPKMAdmin(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'judul' => 'required',
@@ -310,10 +220,36 @@ class PKMController extends Controller
         
         LaporanKemajuanPKM::create($data);
 
-        return redirect()->to('/pkm');
+        return redirect()->to('/admin');
     }
 
-    public function viewKemajuanPKM($filename)
+    public function deleteKemajuanPKMAdmin($id)
+    {
+        $laporan = LaporanKemajuanPKM::find($id);
+
+        if (!$laporan) {
+            return redirect()->back()->with('error', 'Report not found');
+        }
+
+        Storage::delete('kemajuan_pkm/' . $laporan->file);
+
+        $laporan->delete();
+
+        return redirect()->back();
+    }
+
+    public function downloadKemajuanPKMAdmin($filename)
+    { 
+        $path = 'kemajuan_pkm/' . $filename;
+
+        if (!Storage::exists($path)) {
+            abort(404, 'File not found');
+        }
+
+        return Storage::download($path, $filename);
+    }
+
+    public function viewKemajuanPKMAdmin($filename)
     {
         $path = 'Kemajuan_pkm/' . $filename;
 
@@ -330,16 +266,100 @@ class PKMController extends Controller
         ]);
     }
 
-    public function editKemajuanPKM($id)
+    public function editKemajuanPKMAdmin($id)
     {
         $proposal = LaporanKemajuanPKM::findOrFail($id);
 
-        return view('pkm.edit-kemajuan', compact('proposal'));
+        return view('admin.edit.edit-kemajuanpkm', compact('proposal'));
     }
 
-    public function downloadKemajuanPKM($filename)
+    public function updateKemajuanPKMAdmin(Request $request, $id)
+    {
+        
+        $request->validate([
+            'judul' => 'required',
+            'file' => 'required|mimes:pdf,doc,docx|max:20480',
+        ]);
+
+        $proposal = LaporanKemajuanPenelitian::findOrFail($id);
+
+        $proposal->update([
+            'judul' => $request->input('judul'),
+        ]);
+
+        $file = $request->file('file');
+        
+        if ($request->hasFile('file')) {
+            $filename = $file->getClientOriginalName();
+
+            $lokasi_upload = 'kemajuan_pkm/';
+
+            Storage::putFileAs($lokasi_upload, $file, $filename);
+
+            $proposal->update([
+                'file' => $filename,
+            ]);
+        } 
+        
+        return redirect()->route('index.proposalpkmadmin')->with('success', 'Proposal updated successfully');
+    }
+
+    // LAPORAN AKHIR
+
+    public function storeAkhirPKMAdmin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'judul' => 'required',
+            'file' => 'required|mimes:pdf,doc,docx|max:20480',
+        ]);
+
+        if($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
+
+        $file = $request->file('file');
+        $filename = $file->getClientOriginalName();
+
+        $lokasi_upload = 'akhir_pkm/';
+
+        Storage::putFileAs($lokasi_upload, $file, $filename);
+
+        $data = [
+            'judul' => $request->judul,
+            'file' => $filename,
+            'akhir_pkm_id' => Auth::user()->proposalPKM->id,
+        ];
+        
+        LaporanAkhirPKM::create($data);
+
+        return redirect()->to('/admin');
+    }
+
+    public function editAkhirPKMAdmin($id)
+    {
+        $laporan = LaporanAkhirPKM::findOrFail($id);
+
+        return view('admin.edit.edit-akhirpkm', compact('laporan'));
+    }
+
+    public function viewAkhirPKMAdmin($filename)
+    {
+        $path = 'akhir_pkm/' . $filename;
+
+        if (!Storage::exists($path)) {
+            abort(404, 'File not found');
+        }
+
+        $file = Storage::get($path);
+        $type = Storage::mimeType($path);
+
+        return Response::make($file, 200, [
+            'Content-Type' => $type,
+            'Content-Disposition' => 'inline; filename="' . $filename . '"',
+        ]);
+    }
+
+    public function downloadAkhirPKMAdmin($filename)
     { 
-        $path = 'kemajuan_pkm/' . $filename;
+        $path = 'akhir_pkm/' . $filename;
 
         if (!Storage::exists($path)) {
             abort(404, 'File not found');
@@ -348,24 +368,24 @@ class PKMController extends Controller
         return Storage::download($path, $filename);
     }
 
-    public function deleteKemajuanPKM($id)
+    public function deleteAkhirPKMAdmin($id)
     {
-        $laporan = LaporanKemajuanPKM::find($id);
+        $laporan = LaporanAkhirPKM::find($id);
 
         if (!$laporan) {
             return redirect()->back()->with('error', 'Report not found');
         }
 
-        Storage::delete('kemajuan_pkm/' . $laporan->file);
+        Storage::delete('akhir_pkm/' . $laporan->file);
 
         $laporan->delete();
 
         return redirect()->back();
     }
 
-    // HKI PKM
+    // HKI 
 
-    public function storeHKIPKM(Request $request)
+    public function storeHKIPKMAdmin(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'judul' => 'required',
@@ -393,10 +413,10 @@ class PKMController extends Controller
         
         HKIPKM::create($data);
 
-        return redirect()->to('/pkm');
+        return redirect()->to('/admin');
     }
 
-    public function downloadHKIPKM($filename)
+    public function downloadHKIPKMAdmin($filename)
     { 
         $path = 'hki_pkm/' . $filename;
 
@@ -407,7 +427,7 @@ class PKMController extends Controller
         return Storage::download($path, $filename);
     }
 
-    public function viewHKIPKM($filename)
+    public function viewHKIPKMAdmin($filename)
     {
         $path = 'hki_pkm/' . $filename;
 
@@ -424,15 +444,31 @@ class PKMController extends Controller
         ]);
     }
 
-    public function editHKIPKM($id)
+    public function editHKIPKMAdmin($id)
     {
         $hki = HKIPKM::findOrFail($id);
 
-        return view('pkm.edit-hki', compact('hki'));
+        return view('admin.edit.edit-hkipkm', compact('hki'));
     }
 
-    public function updateHKIPKM(Request $request, $id)
+    public function deleteHKIPKMAdmin($id)
     {
+        $hki = HKIPKM::find($id);
+
+        if (!$hki) {
+            return redirect()->back()->with('error', 'HKI not found');
+        }
+
+        Storage::delete('hki_pkm/' . $hki->file);
+
+        $hki->delete();
+
+        return redirect()->back();
+    }
+    
+    public function updateHKIPKMAdmin(Request $request, $id)
+    {
+        
         $request->validate([
             'judul' => 'required',
             'nama_pemegang' => 'required',
@@ -463,25 +499,125 @@ class PKMController extends Controller
         
         return redirect()->route('index.proposalpkmadmin')->with('success', 'HKI updated successfully');
     }
+    
+    // MEDIA MASSA
 
-    public function deleteHKIPKM($id)
+    public function storeMediaPKMAdmin(Request $request)
     {
-        $hki = HKIPKM::find($id);
+        $validator = Validator::make($request->all(), [
+            'judul' => 'required',
+            'nama_media' => 'required',
+            'bulan_terbit' => 'required',
+            'tahun_terbit' => 'required',
+            'url' => 'required',
+        ]);
 
-        if (!$hki) {
-            return redirect()->back()->with('error', 'HKI not found');
+        if($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
+
+        $data = [
+            'judul' => $request->judul,
+            'nama_media' => $request->nama_media,
+            'bulan_terbit' => $request->bulan_terbit,
+            'tahun_terbit' => $request->tahun_terbit,
+            'url' => $request->url,
+            'media_id' => Auth::id(),
+        ];
+        
+        MediaPKM::create($data);
+
+        return redirect()->to('/admin');
+    }
+
+    public function downloadMediaPKMAdmin($filename)
+    { 
+        $path = 'media_pkm/' . $filename;
+
+        if (!Storage::exists($path)) {
+            abort(404, 'File not found');
         }
 
-        Storage::delete('hki_pkm/' . $hki->file);
+        return Storage::download($path, $filename);
+    }
 
-        $hki->delete();
+    public function viewMediaPKMAdmin($filename)
+    {
+        $path = 'media_pkm/' . $filename;
+
+        if (!Storage::exists($path)) {
+            abort(404, 'File not found');
+        }
+
+        $file = Storage::get($path);
+        $type = Storage::mimeType($path);
+
+        return Response::make($file, 200, [
+            'Content-Type' => $type,
+            'Content-Disposition' => 'inline; filename="' . $filename . '"',
+        ]);
+    }
+
+    public function editMediaPKMAdmin($id)
+    {
+        $hki = MediaPKM::findOrFail($id);
+
+        return view('admin.edit.edit-hkipkm', compact('hki'));
+    }
+
+    public function deleteMediaPKMAdmin($id)
+    {
+        $media = MediaPKM::find($id);
+
+        if (!$media) {
+            return redirect()->back()->with('error', 'Media Massa not found');
+        }
+
+        Storage::delete('media_pkm/' . $media->file);
+
+        $media->delete();
 
         return redirect()->back();
     }
 
+    public function updateMediaPKMAdmin(Request $request, $id)
+    {
+        $request->validate([
+            'judul' => 'required',
+            'nama_media' => 'required',
+            'bulan_terbit' => 'required',
+            'tahun_terbit' => 'required',
+            'url' => 'required',
+        ]);
+
+        $hki = MediaPKM::findOrFail($id);
+
+        $hki->update([
+            'judul' => $request->input('judul'),
+            'nama_media' => $request->input('nama_media'),
+            'bulan_terbit' => $request->input('bulan_terbit'),
+            'tahun_terbit' => $request->input('tahun_terbit'),
+            'url' => $request->input('url'),
+        ]);
+
+        $file = $request->file('file');
+        
+        if ($request->hasFile('file')) {
+            $filename = $file->getClientOriginalName();
+
+            $lokasi_upload = 'media_pkm/';
+
+            Storage::putFileAs($lokasi_upload, $file, $filename);
+
+            $proposal->update([
+                'file' => $filename,
+            ]);
+        } 
+        
+        return redirect()->route('index.proposalpkmadmin')->with('success', 'HKI updated successfully');
+    }
+
     // JURNAL PKM
-    
-    public function storeJurnalPKM(Request $request)
+
+    public function storeJurnalPKMAdmin(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'judul' => 'required',
@@ -517,10 +653,10 @@ class PKMController extends Controller
         
         JurnalPKM::create($data);
 
-        return redirect()->to('/pkm');
+        return redirect()->to('/admin');
     }
 
-    public function deleteJurnalPKM($id)
+    public function deleteJurnalPKMAdmin($id)
     {
         $jurnal = JurnalPKM::find($id);
 
@@ -531,77 +667,6 @@ class PKMController extends Controller
         Storage::delete('jurnal_pkm/' . $jurnal->file);
 
         $jurnal->delete();
-
-        return redirect()->back();
-    }
-    
-    // MEDIA MASSA
-
-    public function storeMediaPKM(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'judul' => 'required',
-            'nama_media' => 'required',
-            'bulan_terbit' => 'required',
-            'tahun_terbit' => 'required',
-            'url' => 'required',
-        ]);
-
-        if($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
-
-        $data = [
-            'judul' => $request->judul,
-            'nama_media' => $request->nama_media,
-            'bulan_terbit' => $request->bulan_terbit,
-            'tahun_terbit' => $request->tahun_terbit,
-            'url' => $request->url,
-            'media_id' => Auth::id(),
-        ];
-        
-        MediaPKM::create($data);
-
-        return redirect()->to('/pkm');
-    }
-
-    public function downloadMediaPKM($filename)
-    { 
-        $path = 'media_pkm/' . $filename;
-
-        if (!Storage::exists($path)) {
-            abort(404, 'File not found');
-        }
-
-        return Storage::download($path, $filename);
-    }
-
-    public function viewMediaPKM($filename)
-    {
-        $path = 'media_pkm/' . $filename;
-
-        if (!Storage::exists($path)) {
-            abort(404, 'File not found');
-        }
-
-        $file = Storage::get($path);
-        $type = Storage::mimeType($path);
-
-        return Response::make($file, 200, [
-            'Content-Type' => $type,
-            'Content-Disposition' => 'inline; filename="' . $filename . '"',
-        ]);
-    }
-
-    public function deleteMediaPKM($id)
-    {
-        $media = MediaPKM::find($id);
-
-        if (!$media) {
-            return redirect()->back()->with('error', 'Media Massa not found');
-        }
-
-        Storage::delete('media_pkm/' . $media->file);
-
-        $media->delete();
 
         return redirect()->back();
     }

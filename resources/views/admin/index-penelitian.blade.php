@@ -1,39 +1,11 @@
-@extends('template')
+@extends('admin.template-adm')
 
-@section('title')
-<title>Penelitian</title>
-@endsection
-
-@section('sidenav')
-<div class="sb-sidenav-menu">
-    <div class="nav">
-        <div class="sb-sidenav-menu-heading">Menu</div>
-        <a class="nav-link collapsed" href="{{ route('dashboard') }}" aria-expanded="false">
-            <div class="sb-nav-link-icon"><i class="fa-solid fa-table-cells"></i></div>
-            Dashboard
-        </a>
-        <a class="nav-link collapsed" href="{{ route('penelitian') }}" aria-expanded="false">
-            <div class="sb-nav-link-icon"><i class="fa-solid fa-flask"></i></div>
-            Penelitian
-        </a>
-        <a class="nav-link collapsed" href="{{ route('pkm') }}" aria-expanded="false">
-            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-            PKM
-        </a>
-        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-            </nav>
-        </div>
-    </div>
-</div>
-@endsection
-
-
-@section('content')
+@section('adm-content')
 <div class="nav-scroller py-1 mb-3 border-bottom">
     <nav class="nav nav-underline justify-content-start">
-        <a class="nav-item nav-link link-body-emphasis active" href="{{ route('penelitian') }}">Upload</a>
-        <a class="nav-item nav-link link-body-emphasis" href="{{ route('show.penelitian') }}">Upload Saya</a>
+        <a class="nav-item nav-link link-body-emphasis active" href="{{ route('upload.proposaladmin') }}">Upload</a>
+        <a class="nav-item nav-link link-body-emphasis" href="{{ route('index.proposaladmin') }}">Upload
+            Saya</a>
     </nav>
 </div>
 
@@ -45,7 +17,7 @@
                 <table id="datatablesSimple">
                     <thead>
                         <tr>
-                            @foreach($headers_proposal_penelitian as $header)
+                            @foreach($headers_proposal as $header)
                             @if ($header == 'Aksi')
                             <th data-sortable="false">{{ $header }}</th>
                             @elseif ($header == 'Status')
@@ -58,7 +30,7 @@
                     </thead>
                     <tfoot>
                         <tr>
-                            @foreach($headers_proposal_penelitian as $header)
+                            @foreach($headers_proposal as $header)
                             @if ($header == 'Aksi')
                             <th data-sortable="false">{{ $header }}</th>
                             @elseif ($header == 'Status')
@@ -109,6 +81,7 @@
                 </table>
             </div>
         </div>
+
     </div>
 </div>
 
