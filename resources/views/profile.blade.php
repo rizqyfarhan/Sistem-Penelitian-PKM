@@ -12,6 +12,12 @@
             <div class="sb-nav-link-icon"><i class="fa-solid fa-table-cells"></i></div>
             Dashboard
         </a>
+        @if(Auth::user()->role == 'admin')
+        <a class="nav-link collapsed" href="{{ route('admin.upload') }}" aria-expanded="false">
+            <div class="sb-nav-link-icon"><i class="fa-solid fa-upload"></i></div>
+            Upload
+        </a>
+        @endif
         <a class="nav-link collapsed" href="{{ route('penelitian') }}" aria-expanded="false">
             <div class="sb-nav-link-icon"><i class="fa-solid fa-flask"></i></div>
             Penelitian
