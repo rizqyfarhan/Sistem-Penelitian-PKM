@@ -175,12 +175,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/admin/delete/proposal/{id}', [AdminPenelitianController::class, 'deleteProposalAdmin'])->name('delete.proposaladmin');
 
     /******  (ADMIN) ANGGOTA PENELITIAN **************/
-    Route::get('/admin/tambah-anggota', [AnggotaPenelitianController::class, 'showTambahAnggota'])->name('anggota.show');
-    Route::post('/admin/tambah-anggota', [AnggotaPenelitianController::class, 'store'])->name('anggota.store');
-    Route::get('/admin/lihat-anggota', [AnggotaPenelitianController::class, 'indexAnggota'])->name('anggota.index');
-    Route::get('/admin/edit/anggota/penelitian/{id}', [AnggotaPenelitianController::class, 'editAnggota'])->name('edit.anggota');
-    Route::put('/admin/update/anggota/penelitian/{id}', [AnggotaPenelitianController::class, 'updateAnggota'])->name('update.anggota');
-    Route::delete('/admin/delete/anggota/penelitian/{id}', [AnggotaPenelitianController::class, 'deleteAnggota'])->name('delete.anggota');
+    Route::get('/admin/tambah-anggota', [AnggotaPenelitianController::class, 'showTambahAnggota'])->name('anggota.showadmin');
+    Route::post('/admin/tambah-anggota', [AnggotaPenelitianController::class, 'store'])->name('anggota.storeadmin');
+    Route::get('/admin/lihat-anggota', [AnggotaPenelitianController::class, 'indexAnggota'])->name('anggota.indexadmin');
+    Route::get('/admin/edit/anggota/penelitian/{id}', [AnggotaPenelitianController::class, 'editAnggota'])->name('edit.anggotaadmin');
+    Route::put('/admin/update/anggota/penelitian/{id}', [AnggotaPenelitianController::class, 'updateAnggota'])->name('update.anggotaadmin');
+    Route::delete('/admin/delete/anggota/penelitian/{id}', [AnggotaPenelitianController::class, 'deleteAnggota'])->name('delete.anggotaadmin');
     
     /******  (ADMIN) PENELITIAN -> KEMAJUAN **************/
     Route::post('/admin/store/kemajuan/penelitian', [AdminPenelitianController::class, 'storeKemajuanAdmin'])->name('store.kemajuanadmin');
