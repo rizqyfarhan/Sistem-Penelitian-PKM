@@ -133,7 +133,11 @@ class ProposalPenelitianController extends Controller
             'jumlah_dana' => 'required',
         ]);
 
-        $proposal = ProposalPenelitian::findOrFail($id);
+        $proposal = ProposalPenelitian::find($id);
+
+        if (is_null($proposal)) {
+            return redirect()->route('penelitian.edit-penelitian')->with('error', 'Proposal tidak ditemukan!');
+        }
 
         $proposal->update([
             'judul' => $request->input('judul'),
