@@ -297,7 +297,7 @@ class PenelitianController extends Controller
 
     public function editKemajuanPenelitian($id)
     {
-        $laporan_kemajuan = LaporanKemajuanPenelitian::findOrFail($id);
+        $laporan_kemajuan = LaporanKemajuanPenelitian::find($id);
         $judulPenelitians = ProposalPenelitian::pluck('judul', 'id');
 
         $data_penelitian = [
@@ -316,7 +316,7 @@ class PenelitianController extends Controller
             'file' => 'required|mimes:pdf,doc,docx|max:20480',
         ]);
 
-        $proposal = LaporanKemajuanPenelitian::findOrFail($id);
+        $proposal = LaporanKemajuanPenelitian::find($id);
 
         $proposal->update([
             'judul' => $request->input('judul'),
@@ -413,15 +413,15 @@ class PenelitianController extends Controller
 
     public function editAKhirPenelitian($id)
     {
-        $akhir_kemajuan = LaporanAkhirPenelitian::findOrFail($id);
+        $akhir_kemajuan = LaporanAkhirPenelitian::find($id);
         $judulPenelitians = ProposalPenelitian::pluck('judul', 'id');
 
         $data_penelitian = [
-            'laporan_kemajuan' => $akhir_kemajuan,
+            'laporan_akhir' => $akhir_kemajuan,
             'judulPenelitians' => $judulPenelitians,
         ];
 
-        return view('penelitian.edit-kemajuan', $data_penelitian);
+        return view('penelitian.edit-akhir', $data_penelitian);
     }
 
     public function updateAkhirPenelitian(Request $request, $id)
@@ -432,7 +432,7 @@ class PenelitianController extends Controller
             'file' => 'required|mimes:pdf,doc,docx|max:20480',
         ]);
 
-        $proposal = LaporanAkhirPenelitian::findOrFail($id);
+        $proposal = LaporanAkhirPenelitian::find($id);
 
         $proposal->update([
             'judul' => $request->input('judul'),
@@ -526,7 +526,7 @@ class PenelitianController extends Controller
 
     public function editArtikelJurnal($id)
     {
-        $artikel_jurnal = ArtikelJurnal::findOrFail($id);
+        $artikel_jurnal = ArtikelJurnal::find($id);
 
         $data = [
             'artikel_jurnal' => $artikel_jurnal,
@@ -547,7 +547,7 @@ class PenelitianController extends Controller
             'file' => 'required|mimes:pdf,doc,docx|max:20480',
         ]);
 
-        $artikel_jurnal = ArtikelJurnal::findOrFail($id);
+        $artikel_jurnal = ArtikelJurnal::find($id);
 
         $artikel_jurnal->update([
             'judul' => $request->input('judul'),
@@ -639,7 +639,7 @@ class PenelitianController extends Controller
         $hki = HKIPenelitian::find($id);
 
         if (!$hki) {
-            return redirect()->back()->with('error', 'Laporan kemajuan not found');
+            return redirect()->back()->with('error', 'HKI penelitian not found');
         }
 
         Storage::delete('hki_penelitian/' . $hki->file);
@@ -668,7 +668,7 @@ class PenelitianController extends Controller
 
     public function editHKIPenelitian($id)
     {
-        $hki = HKIPenelitian::findOrFail($id);
+        $hki = HKIPenelitian::find($id);
 
         $data_penelitian = [
             'hki_penelitian' => $hki,

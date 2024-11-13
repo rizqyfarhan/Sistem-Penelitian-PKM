@@ -28,7 +28,6 @@
 </div>
 @endsection
 
-
 @section('content')
 <div class="nav-scroller py-1 mb-3 border-bottom">
     <nav class="nav nav-underline justify-content-start">

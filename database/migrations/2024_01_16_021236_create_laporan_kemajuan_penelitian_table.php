@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('laporan_kemajuan_penelitian', function (Blueprint $table) {
@@ -21,10 +18,7 @@ return new class extends Migration
             $table->foreign('laporan_kemajuan_id')->references('id')->on('proposal_penelitian')->cascadeOnDelete();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down(): void
     {
         Schema::dropIfExists('laporan_kemajuan_penelitian');
