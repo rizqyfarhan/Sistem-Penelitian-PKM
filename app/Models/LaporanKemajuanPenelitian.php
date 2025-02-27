@@ -11,11 +11,16 @@ class LaporanKemajuanPenelitian extends Model
     protected $fillable = [
         'judul',
         'file',
-        'laporan_kemajuan_id',
+        'laporan_kemajuan_nrk',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'laporan_kemajuan_nrk', 'nrk');
+    }
 
     public function proposalPenelitian()
     {
-        return $this->belongsTo(ProposalPenelitian::class, 'laporan_kemajuan_id');
+        return $this->belongsTo(ProposalPenelitian::class, 'laporan_kemajuan_nrk', 'nrk');
     }
 }

@@ -24,7 +24,7 @@
                                 <select class="form-control" id="JudulPenelitian" name="judul" required>
                                     <option value="">Pilih...</option>
                                     @foreach($judulPenelitians as $id => $judulPenelitian)
-                                    <option value="{{  $judulPenelitian }}">{{ $judulPenelitian }}</option>
+                                    <option value="{{ $id }}">{{ $judulPenelitian }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -41,7 +41,11 @@
                                 <input type="text" class="form-control" id="nrk" name="nrk" required>
                             </div>
                             <div>
-                                <p><a href="{{ route('penelitian') }}">kembali</a></p>
+                                @if(auth()->user()->role === 'admin')
+                                    <p><a href="{{ route('upload.proposaladmin') }}">kembali</a></p>
+                                @elseif(auth()->user()->role === 'dosen')
+                                    <p><a href="{{ route('penelitian') }}">kembali</a></p>    
+                                @endif
                             </div>
                             <button type="submit" class="btn btn-primary">Tambah</button>
                         </form>

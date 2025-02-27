@@ -81,7 +81,6 @@ class ProposalPenelitianController extends Controller
 
         return redirect()->back();
     }
- 
 
     public function download($filename)
     { 

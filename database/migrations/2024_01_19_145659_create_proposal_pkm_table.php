@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('proposal_pkm', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('user_id');
+            $table->string('user_nrk', 10);
             $table->string('judul');
             $table->string('nama_pelaksana');
             $table->string('nidn');
@@ -27,7 +27,7 @@ return new class extends Migration
             $table->enum('status', ['review', 'accept', 'reject'])->default('review');
             $table->timestamps();
             
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_nrk')->references('nrk')->on('users');
         });
     }
 

@@ -16,14 +16,14 @@
             </nav>
         </div>
         <nav class="nav justify-content-start">
-            <a href="" class="text-decoration-none nav-item nav-link link-body-emphasis active">Tambah Anggota</a>
-            <a href="" class="text-decoration-none nav-item nav-link link-body-emphasis">Anggota Saya</a>
+            <a href="{{ route('anggota.showadmin') }}" class="text-decoration-none nav-item nav-link link-body-emphasis active">Tambah Anggota</a>
+            <a href="{{ route('anggota.indexadmin') }}" class="text-decoration-none nav-item nav-link link-body-emphasis">Anggota Saya</a>
         </nav>
 
         <div class="card mb-4">
             <div class="card-body">
                 <div class="container">
-                    <form action="" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('store.proposaladmin') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label for="JudulPenelitian">Judul Penelitian:</label>
@@ -68,16 +68,16 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="TahunAkademik">Tahun Akademik:</label>
+                        <label for="TahunAkademik">Tahun Akademik:</label>
                             <select class="form-control" id="TahunAkademik" name="tahun_akademik">
                                 <option value="">Pilih...</option>
                                 <?php
-                        $currentYear = date('Y');
-                        for ($i = $currentYear - 5; $i <= $currentYear; $i++) {
-                            $academicYear = $i . '/' . ($i + 1);
-                            echo "<option value=\"$academicYear\">$academicYear</option>";
-                        }
-                        ?>
+                                    $currentYear = date('Y');
+                                    for ($i = $currentYear; $i <= $currentYear + 5; $i++) {
+                                        $academicYear = $i . '/' . ($i + 1);
+                                        echo "<option value=\"$academicYear\">$academicYear</option>";
+                                    }
+                                ?>
                             </select>
                         </div>
 

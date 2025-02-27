@@ -12,7 +12,7 @@ class AnggotaPenelitianController extends Controller
 {
     public function showTambahAnggota()
     {
-        $judulPenelitians = ProposalPenelitian::pluck('judul', 'id');
+        $judulPenelitians = ProposalPenelitian::pluck('judul', 'nrk');
 
         return view('penelitian.tambah-anggota', compact('judulPenelitians'));
     }
@@ -35,23 +35,70 @@ class AnggotaPenelitianController extends Controller
         $validator = Validator::make($request->all(), [
             'judul' => 'required',
             'nama' => 'required',
-            'nidn' => 'required',
-            'nrk' => 'required',
+            'nidn' => 'required|max:10',
+            'nrk' => 'required|max:10',
         ]);
 
         if($validator->fails()) return redirect()->back()->withInput()->withErrors($validator);
 
-        $data = [
-            'judul' => $request->judul,
-            'nama' => $request->nama,
-            'nidn' => $request->nidn,
-            'nrk' => $request->nrk,
-            'proposal_id' => Auth::user()->proposal->id,
-        ];
-    
-        AnggotaPenelitian::create($data);
-    
-        return redirect()->route('penelitian')->with('success', 'Anggota Penelitian created successfully');
+        $proposalNrk = $request->input('judul');
+        $proposal = ProposalPenelitian::where('nrk', $proposalNrk)->first();
+
+        if ($proposal) {
+            $data = [
+                'judul' => $proposal->judul,
+                'nama' => $request->nama,
+                'nidn' => $request->nidn,
+                'nrk' => $request->nrk,
+                'proposal_nrk' => $proposal->nrk,
+            ];
+
+            try {
+                AnggotaPenelitian::create($data);
+            
+                return redirect()->route('penelitian')->with('success', 'Anggota Penelitian berhasil disimpan');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Gagal memasukkan anggota');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Proposal tidak ditemukan');
+        }
+    }
+
+    public function editAnggota($id) 
+    {
+        $anggota = AnggotaPenelitian::findOrFail($id);
+        $judulPenelitians = ProposalPenelitian::pluck('judul', 'nrk');
+        return view('penelitian.edit-anggota', compact('anggota', 'judulPenelitians'));
+    }
+
+    public function updateAnggota(Request $request, $id)
+    {
+        $request->validate([
+            'judul' => 'required', 
+            'nama' => 'required', 
+            'nidn' => 'required|max:10', 
+            'nrk' => 'required|max:10',
+        ]);
+
+        $anggota = AnggotaPenelitian::findOrFail($id);
+
+        $proposalNrk = $request->input('judul');
+        $proposal = ProposalPenelitian::where('nrk', $proposalNrk)->first();
+
+        if ($proposal) {
+            $anggota->update([
+                'judul' => $proposal->judul,
+                'nama' => $request->input('nama'),
+                'nidn' => $request->input('nidn'),
+                'nrk' => $request->input('nrk'),
+                'proposal_id' => $proposal->id,
+            ]);
+
+            return redirect()->route('anggota.index')->with('success', 'Anggota Penelitian berhasil diubah.');
+        } else {
+            return redirect()->back()->with('error', 'Proposal tidak ditemukan.');
+        }
     }
 
     public function deleteAnggota($id)
@@ -61,9 +108,9 @@ class AnggotaPenelitianController extends Controller
         if ($anggota) {
             $anggota->delete();
             
-            return redirect()->route('anggota.index')->with('success', 'Anggota deleted successfully');
+            return redirect()->route('anggota.index')->with('success', 'Anggota berhasil dihapus');
         } else {
-            return redirect()->route('anggota.index')->with('error', 'Anggota not found');
-    }
+            return redirect()->route('anggota.index')->with('error', 'Anggota tidak ditemukan');
+        }
     }
 }

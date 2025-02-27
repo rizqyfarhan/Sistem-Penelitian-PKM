@@ -7,25 +7,31 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+
+    protected $primaryKey = 'nrk';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     /**
-     * The attributes that are mass assignable.
+     * 
      *
      * @var array<int, string>
      */
     protected $fillable = [
         'name',
-        'email',
+        'nrk',
+        'nidn',
         'password',
         'role',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * 
      *
      * @var array<int, string>
      */
@@ -35,33 +41,32 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * 
      *
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 
-    public function proposal()
+    public function proposalPenelitian()
     {
-        return $this->hasMany(ProposalPenelitian::class);
+        return $this->hasMany(ProposalPenelitian::class, 'user_nrk', 'nrk');
     }
 
     public function proposalPKM()
     {
-        return $this->hasMany(ProposalPKM::class);
+        return $this->hasMany(ProposalPKM::class, 'nrk', 'nrk');
     }
 
     public function hkiPenelitian()
     {
-        return $this->hasMany(HKIPenelitian::class, 'hki_id');
+        return $this->hasMany(HKIPenelitian::class, 'hki_penelitian_nrk');
     }
 
     public function artikelJurnal()
     {
-        return $this->hasMany(ArtikelJurnal::class, 'jurnal_id');
+        return $this->hasMany(ArtikelJurnal::class, 'artikel_jurnal_nrk');
     }
 
     public function jurnalPKM()

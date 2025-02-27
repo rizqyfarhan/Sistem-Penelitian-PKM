@@ -1,6 +1,12 @@
 @extends('admin.template-adm')
 
 @section('adm-content')
+@if (session('success')) 
+    <div class="alert alert-success"> 
+        {{ session('success') }} 
+    </div> 
+@endif
+
 <div class="nav-scroller py-1 mb-3 border-bottom">
     <nav class="nav nav-underline justify-content-start">
         <a class="nav-item nav-link link-body-emphasis active" href="{{ route('upload.proposaladmin') }}">Upload</a>
@@ -52,22 +58,22 @@
                                 {{ $item->status }}
                             </td>
                             <td>
-                                <a href="{{ route('download.proposalpenelitian', ['filename' => $item->file]) }}"
+                                <a href="{{ route('download.proposaladmin', ['filename' => $item->file]) }}"
                                     class="btn btn-primary btn-sm">
                                     <i class="fa-solid fa-file-arrow-down"></i>
                                 </a>
 
-                                <a href="{{ route('view.proposalpenelitian', ['filename' => $item->file]) }}"
+                                <a href="{{ route('view.proposaladmin', ['filename' => $item->file]) }}"
                                     class="btn btn-info btn-sm" target="_blank">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
 
-                                <a href="{{ route('edit.proposalpenelitian', $item->id) }}"
+                                <a href="{{ route('edit.proposaladmin', $item->nrk) }}"
                                     class="btn btn-warning btn-sm">
                                     <i class="fa-solid fa-edit"></i>
                                 </a>
 
-                                <form action="{{ route('delete.proposalpenelitian', $item->id) }}" method="POST"
+                                <form action="{{ route('delete.proposaladmin', $item->nrk) }}" method="POST"
                                     style="display: inline;">
                                     @csrf
                                     @method('DELETE') <button type="submit" class="btn btn-danger btn-sm">
@@ -127,22 +133,22 @@
                             <td>{{ $item->proposalPenelitian->tahun_akademik }}</td>
                             <td>{{ $item->created_at->format('Y-m-d') }}</td>
                             <td>
-                                <a href="{{ route('download.kemajuanpenelitian', ['filename' => $item->file]) }}"
+                                <a href="{{ route('download.kemajuanadmin', ['filename' => $item->file]) }}"
                                     class="btn btn-primary btn-sm">
                                     <i class="fa-solid fa-file-arrow-down"></i>
                                 </a>
 
-                                <a href="{{ route('view.kemajuanpenelitian', ['filename' => $item->file]) }}"
+                                <a href="{{ route('view.kemajuanadmin', ['filename' => $item->file]) }}"
                                     class="btn btn-info btn-sm" target="_blank">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
 
-                                <a href="{{ route('edit.kemajuanpenelitian', $item->id) }}"
+                                <a href="{{ route('edit.kemajuanadmin', $item->id) }}"
                                     class="btn btn-warning btn-sm">
                                     <i class="fa-solid fa-edit"></i>
                                 </a>
 
-                                <form action="{{ route('delete.kemajuanpenelitian', $item->id) }}" method="POST"
+                                <form action="{{ route('delete.kemajuanadmin', $item->id) }}" method="POST"
                                     style="display: inline;">
                                     @csrf
                                     @method(' DELETE') <button type="submit" class="btn btn-danger btn-sm">
@@ -201,17 +207,17 @@
                             <td>{{ $item->proposalPenelitian->semester }}</td>
                             <td>{{ $item->proposalPenelitian->tahun_akademik }}</td>
                             <td>
-                                <a href="{{ route('download.akhirpenelitian', ['filename' => $item->file]) }}"
+                                <a href="{{ route('download.akhiradmin', ['filename' => $item->file]) }}"
                                     class="btn btn-primary btn-sm">
                                     <i class="fa-solid fa-file-arrow-down"></i>
                                 </a>
 
-                                <a href="{{ route('view.akhirpenelitian', ['filename' => $item->file]) }}"
+                                <a href="{{ route('view.akhiradmin', ['filename' => $item->file]) }}"
                                     class="btn btn-info btn-sm" target="_blank">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
 
-                                <form action="{{ route('delete.akhirpenelitian', $item->id) }}" method="POST"
+                                <form action="{{ route('delete.akhiradmin', $item->id) }}" method="POST"
                                     style="display: inline;">
                                     @csrf
                                     @method(' DELETE') <button type="submit" class="btn btn-danger btn-sm">
@@ -270,21 +276,21 @@
                             <td>{{ $item->volume }}</td>
                             <td>{{ $item->nomor }}</td>
                             <td>
-                                <a href="{{ route('download.artikeljurnal', ['filename' => $item->file]) }}"
+                                <a href="{{ route('download.artikeladmin', ['filename' => $item->file]) }}"
                                     class="btn btn-primary btn-sm">
                                     <i class="fa-solid fa-file-arrow-down"></i>
                                 </a>
 
-                                <a href="{{ route('view.artikeljurnal', ['filename' => $item->file]) }}"
+                                <a href="{{ route('view.artikeladmin', ['filename' => $item->file]) }}"
                                     class="btn btn-info btn-sm" target="_blank">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
 
-                                <a href="{{ route('edit.artikeljurnal', $item->id) }}" class="btn btn-warning btn-sm">
+                                <a href="{{ route('edit.artikeladmin', $item->id) }}" class="btn btn-warning btn-sm">
                                     <i class="fa-solid fa-edit"></i>
                                 </a>
 
-                                <form action="{{ route('delete.artikeljurnal', $item->id) }}" method="POST"
+                                <form action="{{ route('delete.artikeladmin', $item->id) }}" method="POST"
                                     style="display: inline;">
                                     @csrf
                                     @method(' DELETE') <button type="submit" class="btn btn-danger btn-sm">
@@ -342,21 +348,21 @@
                             <td>{{ $item->nama_pemegang }}</td>
                             <td>{{ $item->nomor_sertifikat }}</td>
                             <td>
-                                <a href="{{ route('download.hkipenelitian', ['filename' => $item->file]) }}"
+                                <a href="{{ route('download.hkiadmin', ['filename' => $item->file]) }}"
                                     class="btn btn-primary btn-sm">
                                     <i class="fa-solid fa-file-arrow-down"></i>
                                 </a>
 
-                                <a href="{{ route('view.hkipenelitian', ['filename' => $item->file]) }}"
+                                <a href="{{ route('view.hkiadmin', ['filename' => $item->file]) }}"
                                     class="btn btn-info btn-sm" target="_blank">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
 
-                                <a href="{{ route('edit.hkipenelitian', $item->id) }}" class="btn btn-warning btn-sm">
+                                <a href="{{ route('edit.hkiadmin', $item->id) }}" class="btn btn-warning btn-sm">
                                     <i class="fa-solid fa-edit"></i>
                                 </a>
 
-                                <form action="{{ route('delete.hkipenelitian', $item->id) }}" method="POST"
+                                <form action="{{ route('delete.hkiadmin', $item->id) }}" method="POST"
                                     style="display: inline;">
                                     @csrf
                                     @method('DELETE') <button type="submit" class="btn btn-danger btn-sm">

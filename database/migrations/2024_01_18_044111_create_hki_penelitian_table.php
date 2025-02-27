@@ -14,7 +14,10 @@ return new class extends Migration
             $table->string('nama_pemegang');
             $table->string('nomor_sertifikat');
             $table->string('file');
+            $table->string('hki_penelitian_nrk', 10);
             $table->timestamps();
+
+            $table->foreign('hki_penelitian_nrk')->references('nrk')->on('users')->cascadeOnDelete();
         });
     }
 

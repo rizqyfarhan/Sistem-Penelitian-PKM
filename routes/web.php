@@ -49,9 +49,9 @@ Route::middleware(['auth', 'role:dosen'])->group(function() {
     Route::post('/store/proposal/penelitian', [PenelitianController::class, 'storeProposalPenelitian'])->name('store.proposalpenelitian');
     Route::get('/download/proposal/penelitian/{filename}', [PenelitianController::class, 'downloadProposalPenelitian'])->name('download.proposalpenelitian');
     Route::get('/view/proposal/penelitian/{filename}', [PenelitianController::class, 'viewProposalPenelitian'])->name('view.proposalpenelitian');
-    Route::get('/edit/proposal/penelitian/{id}', [PenelitianController::class, 'editProposalPenelitian'])->name('edit.proposalpenelitian');
-    Route::put('/update/proposal/penelitian/{id}', [PenelitianController::class, 'updateProposalPenelitian'])->name('update.proposalpenelitian');
-    Route::delete('/delete/proposal/penelitian/{id}', [PenelitianController::class, 'deleteProposalPenelitian'])->name('delete.proposalpenelitian');
+    Route::get('/edit/proposal/penelitian/{nrk}', [PenelitianController::class, 'editProposalPenelitian'])->name('edit.proposalpenelitian');
+    Route::put('/update/proposal/penelitian/{nrk}', [PenelitianController::class, 'updateProposalPenelitian'])->name('update.proposalpenelitian');
+    Route::delete('/delete/proposal/penelitian/{nrk}', [PenelitianController::class, 'deleteProposalPenelitian'])->name('delete.proposalpenelitian');
 
     /******  ANGGOTA PENELITIAN **************/
     Route::get('/tambah-anggota', [AnggotaPenelitianController::class, 'showTambahAnggota'])->name('anggota.show');
@@ -65,9 +65,9 @@ Route::middleware(['auth', 'role:dosen'])->group(function() {
     Route::post('/store/kemajuan/penelitian', [PenelitianController::class, 'storeKemajuanPenelitian'])->name('store.kemajuanpenelitian');
     Route::get('/download/kemajuan/penelitian/{filename}', [PenelitianController::class, 'downloadKemajuanPenelitian'])->name('download.kemajuanpenelitian');
     Route::get('/view/kemajuan/penelitian/{filename}', [PenelitianController::class, 'viewKemajuanPenelitian'])->name('view.kemajuanpenelitian');
-    Route::get('/edit/kemajuan/penelitian/{id}', [PenelitianController::class, 'editKemajuanPenelitian'])->name('edit.kemajuanpenelitian');
-    Route::put('/update/kemajuan/penelitian/{id}', [PenelitianController::class, 'updateKemajuanPenelitian'])->name('update.kemajuanpenelitian');
-    Route::delete('/delete/kemajuan/penelitian/{id}', [PenelitianController::class, 'deleteKemajuanPenelitian'])->name('delete.kemajuanpenelitian');
+    Route::get('/edit/kemajuan/penelitian/{nrk}', [PenelitianController::class, 'editKemajuanPenelitian'])->name('edit.kemajuanpenelitian');
+    Route::put('/update/kemajuan/penelitian/{nrk}', [PenelitianController::class, 'updateKemajuanPenelitian'])->name('update.kemajuanpenelitian');
+    Route::delete('/delete/kemajuan/penelitian/{nrk}', [PenelitianController::class, 'deleteKemajuanPenelitian'])->name('delete.kemajuanpenelitian');
     
     /******  PENELITIAN -> AKHIR **************/
     Route::post('/store/akhir/penelitian', [PenelitianController::class, 'storeAkhirPenelitian'])->name('store.akhirpenelitian');
@@ -149,7 +149,7 @@ Route::middleware(['auth', 'role:reviewer'])->group(function () {
 
     Route::get('/review-proposal-penelitian', [ReviewerController::class, 'showReviewerPenelitianIndex'])->name('review.penelitian');
     Route::get('/review-proposal-pkm', [ReviewerController::class, 'showReviewerPKMIndex'])->name('review.pkm');
-    Route::post('/update-status/{id}', [ReviewerController::class, 'updateStatus'])->name('proposalpenelitian.updateStatus');
+    Route::post('/update-status/{nrk}', [ReviewerController::class, 'updateStatus'])->name('proposalpenelitian.updateStatus');
     Route::get('/reviewer/penelitian/download/{filename}', [ReviewerController::class, 'downloadReviewPenelitian'])->name('download.reviewPenelitian');
     Route::get('/reviewer/pkm/download/{filename}', [ReviewerController::class, 'downloadReviewPKM'])->name('download.reviewPKM');
 });
@@ -170,9 +170,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/store/proposal', [AdminPenelitianController::class, 'storeProposalAdmin'])->name('store.proposaladmin');
     Route::get('/admin/download/proposal/{filename}', [AdminPenelitianController::class, 'downloadProposalAdmin'])->name('download.proposaladmin');
     Route::get('/admin/view/proposal/{filename}', [AdminPenelitianController::class, 'viewProposalAdmin'])->name('view.proposaladmin');
-    Route::get('/admin/edit/proposal/{id}', [AdminPenelitianController::class, 'editProposalAdmin'])->name('edit.proposaladmin');
-    Route::put('/admin/update/proposal/{id}', [AdminPenelitianController::class, 'updateProposalAdmin'])->name('update.proposaladmin');
-    Route::delete('/admin/delete/proposal/{id}', [AdminPenelitianController::class, 'deleteProposalAdmin'])->name('delete.proposaladmin');
+    Route::get('/admin/edit/proposal/{nrk}', [AdminPenelitianController::class, 'editProposalAdmin'])->name('edit.proposaladmin');
+    Route::put('/admin/update/proposal/{nrk}', [AdminPenelitianController::class, 'updateProposalAdmin'])->name('update.proposaladmin');
+    Route::delete('/admin/delete/proposal/{nrk}', [AdminPenelitianController::class, 'deleteProposalAdmin'])->name('delete.proposaladmin');
 
     /******  (ADMIN) ANGGOTA PENELITIAN **************/
     Route::get('/admin/tambah-anggota', [AnggotaPenelitianController::class, 'showTambahAnggota'])->name('anggota.showadmin');

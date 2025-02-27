@@ -33,6 +33,13 @@
 @endsection
 
 @section('content')
+
+@if (session('success')) 
+    <div class="alert alert-success"> 
+        {{ session('success') }} 
+    </div> 
+@endif
+
 <div class="nav-scroller py-1 mb-3 border-bottom">
     <nav class="nav nav-underline justify-content-start">
         <a class="nav-item nav-link link-body-emphasis active" href="{{ route('penelitian') }}">Upload</a>
@@ -106,12 +113,12 @@
                             <select class="form-control" id="TahunAkademik" name="tahun_akademik">
                                 <option value="">Pilih...</option>
                                 <?php
-                        $currentYear = date('Y');
-                        for ($i = $currentYear - 5; $i <= $currentYear; $i++) {
-                            $academicYear = $i . '/' . ($i + 1);
-                            echo "<option value=\"$academicYear\">$academicYear</option>";
-                        }
-                        ?>
+                                    $currentYear = date('Y');
+                                    for ($i = $currentYear - 5; $i <= $currentYear; $i++) {
+                                        $academicYear = $i . '/' . ($i + 1);
+                                        echo "<option value=\"$academicYear\">$academicYear</option>";
+                                    }
+                                ?>
                             </select>
                         </div>
 
@@ -126,9 +133,9 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="LembagaPendana" id="LabelLembagaPendana">Nama Lembaga Pendana: </label>
-                            <input type="text" class="form-control" id="LembagaPendana" name="lembaga_pendana">
+                        <div class="form-group" id="NamaPendanaGroup">
+                            <label for="NamaPendana" id="LabelNamaPendana">Nama Lembaga Pendana: </label>
+                            <input type="text" class="form-control" id="NamaPendana" name="nama_pendana">
                         </div>
 
                         <div class="form-group">
@@ -168,8 +175,8 @@
                             <label for="JudulPenelitian">Judul Penelitian:</label>
                             <select class="form-control" id="JudulPenelitian" name="judul" required>
                                 <option value="">Pilih...</option>
-                                @foreach($judulPenelitians as $id => $judulPenelitian)
-                                <option value="{{  $judulPenelitian }}">{{ $judulPenelitian }}</option>
+                                @foreach($judulPenelitians as $nrk => $judulPenelitian)
+                                    <option value="{{ $nrk }}">{{ $judulPenelitian }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -206,7 +213,7 @@
                             <select class="form-control" id="JudulPenelitian" name="judul" required>
                                 <option value="">Pilih...</option>
                                 @foreach($judulPenelitians as $id => $judulPenelitian)
-                                <option value="{{  $judulPenelitian }}">{{ $judulPenelitian }}</option>
+                                <option value="{{ $id }}">{{ $judulPenelitian }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -251,12 +258,12 @@
                             <select class="form-control w-25" id="TahunAkademik" name="tahun">
                                 <option value="Pilih">Pilih...</option>
                                 <?php
-                        $currentYear = date('Y');
-                        for ($i = $currentYear - 5; $i <= $currentYear; $i++) {
-                            $academicYear = $i . '/' . ($i + 1);
-                            echo "<option value=\"$academicYear\">$academicYear</option>";
-                        }
-                        ?>
+                                    $currentYear = date('Y');
+                                    for ($i = $currentYear - 5; $i <= $currentYear; $i++) {
+                                        $academicYear = $i . '/' . ($i + 1);
+                                        echo "<option value=\"$academicYear\">$academicYear</option>";
+                                    }
+                                ?>
                             </select>
                         </div>
                         <div class="form-group mb-2">

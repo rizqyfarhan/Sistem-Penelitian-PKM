@@ -18,7 +18,10 @@ return new class extends Migration
             $table->string('bulan_terbit');
             $table->string('tahun_terbit');
             $table->string('url');
+            $table->string('media_pkm_nrk', 10);
             $table->timestamps();
+
+            $table->foreign('media_pkm_nrk')->references('nrk')->on('users')->cascadeOnDelete();
         });
     }
 

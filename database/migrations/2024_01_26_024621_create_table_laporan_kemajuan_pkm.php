@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('laporan_kemajuan_pkm', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('kemajuan_pkm_id');
             $table->string('judul');
             $table->string('file');
+            $table->string('kemajuan_pkm_nrk', 10);
             $table->timestamps();
 
-            $table->foreign('kemajuan_pkm_id')->references('id')->on('proposal_pkm')->cascadeOnDelete();
+            $table->foreign('kemajuan_pkm_nrk')->references('nrk')->on('users')->cascadeOnDelete();
         });
     }
 

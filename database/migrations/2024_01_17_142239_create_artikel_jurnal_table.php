@@ -12,13 +12,16 @@ return new class extends Migration
             $table->increments('id');
             $table->string('judul');
             $table->string('penerbit');
-            $table->integer('tahun');
+            $table->string('tahun');
             $table->integer('volume');
             $table->integer('nomor');
             $table->string('halaman');
             $table->string('url');
             $table->string('file');
+            $table->string('artikel_jurnal_nrk', 10);
             $table->timestamps();
+
+            $table->foreign('artikel_jurnal_nrk')->references('nrk')->on('users')->cascadeOnDelete();
         });
     }
 

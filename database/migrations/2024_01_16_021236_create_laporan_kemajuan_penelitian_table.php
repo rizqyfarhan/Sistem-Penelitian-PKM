@@ -10,12 +10,12 @@ return new class extends Migration
     {
         Schema::create('laporan_kemajuan_penelitian', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('laporan_kemajuan_id');
+            $table->string('laporan_kemajuan_nrk', 10);
             $table->string('judul');
             $table->string('file');
             $table->timestamps();
             
-            $table->foreign('laporan_kemajuan_id')->references('id')->on('proposal_penelitian')->cascadeOnDelete();
+            $table->foreign('laporan_kemajuan_nrk')->references('nrk')->on('proposal_penelitian')->cascadeOnDelete();
         });
     }
     

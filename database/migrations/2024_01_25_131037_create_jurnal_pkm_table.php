@@ -21,7 +21,10 @@ return new class extends Migration
             $table->string('halaman');
             $table->string('url');
             $table->string('file');
+            $table->string('jurnal_pkm_nrk', 10);
             $table->timestamps();
+
+            $table->foreign('jurnal_pkm_nrk')->references('nrk')->on('users')->cascadeOnDelete();
         });
     }
 

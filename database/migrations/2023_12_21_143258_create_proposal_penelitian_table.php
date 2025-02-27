@@ -9,11 +9,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('proposal_penelitian', function (Blueprint $table) {
-            $table->increments('id');
             $table->string('judul');
             $table->string('ketua_peneliti');
-            $table->string('nidn');
-            $table->string('nrk');
+            $table->string('nidn', 10)->unique();
+            $table->string('nrk', 10)->primary();
             $table->string('program_studi');
             $table->string('semester');
             $table->string('tahun_akademik');
@@ -21,11 +20,11 @@ return new class extends Migration
             $table->string('nama_pendana')->nullable();
             $table->bigInteger('jumlah_dana');
             $table->string('file');
-            $table->enum('status', ['pending', 'checking', 'accept', 'reject'])->default('pending');
-            $table->unsignedBigInteger('user_id');
+            $table->enum('status', ['review', 'accept', 'reject'])->default('review');
+            $table->string('user_nrk', 10);
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_nrk')->references('nrk')->on('users');
         });
     }
 

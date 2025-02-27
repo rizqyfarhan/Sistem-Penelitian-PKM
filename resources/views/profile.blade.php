@@ -34,6 +34,16 @@
 </div>
 @endsection
 
+@section('profile')
+    @if ($role == 'dosen')
+        <li><a class="dropdown-item" href="{{ route('index.dosenprofile') }}">Profile</a></li>
+    @elseif ($role == 'reviewer')
+        <li><a class="dropdown-item" href="{{ route('index.reviewerprofile') }}">Profile</a></li>
+    @elseif ($role == 'admin')
+        <li><a class="dropdown-item" href="{{ route('index.adminprofile') }}">Profile</a></li>
+    @endif
+@endsection
+
 @section('content')
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -43,7 +53,7 @@
 
                 <div class="card-body">
                     <p><strong>Name:</strong> {{ Auth::user()->name }}</p>
-                    <p><strong>Email:</strong> {{ Auth::user()->email }}</p>
+                    <p><strong>NRK:</strong> {{ Auth::user()->nrk }}</p>
                     <p><strong>Role:</strong> {{ Auth::user()->role }}</p>
                 </div>
             </div>

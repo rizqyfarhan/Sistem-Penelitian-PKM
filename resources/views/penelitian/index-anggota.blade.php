@@ -30,6 +30,12 @@
 
 
 @section('content')
+@if (session('success')) 
+    <div class="alert alert-success"> 
+        {{ session('success') }} 
+    </div> 
+@endif
+
 <div class="nav-scroller py-1 mb-3 border-bottom">
     <nav class="nav nav-underline justify-content-start">
         <a class="nav-item nav-link link-body-emphasis active" href="{{ route('anggota.show') }}">Tambah Anggota</a>
@@ -78,11 +84,11 @@
                             <td>{{ $item->nrk }}</td>
                             <td>{{ $item->judul }}</td>
                             <td>
-                                <a href="{{ route('edit.anggota', $item->id) }}" class="btn btn-warning btn-sm">
+                                <a href="{{ route('edit.anggota', $item->nrk) }}" class="btn btn-warning btn-sm">
                                     <i class="fa-solid fa-edit"></i>
                                 </a>
 
-                                <form action="{{ route('delete.anggota', $item->id) }}" method="POST"
+                                <form action="{{ route('delete.anggota', $item->nrk) }}" method="POST"
                                     style="display: inline;">
                                     @csrf
                                     @method(' DELETE') <button type="submit" class="btn btn-danger btn-sm">

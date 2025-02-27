@@ -86,20 +86,21 @@
                         </select>
                     </div>
 
+
                     <div class="form-group">
                         <label for="Semester">Sumber Dana:</label>
                         <select class="form-control" id="SumberDana" name="sumber_dana"
-                            onchange="toggleEditLembagaPendana()" value="{{ old('sumber_dana', $proposal->sumber_dana) }}">
+                            value="{{ old('sumber_dana', $proposal->sumber_dana) }}">
                             <option value="">Pilih...</option>
-                            <option value="pribadi" {{ old('sumber_dana', $proposal->sumber_dana) == 'pribadi' ? 'selected' : '' }}>Pribadi</option>
+                            <option value="pribadi" {{ old('sumber_dana', $proposal->sumber_dana) == 'pribadi' ? 'selected' : ''  }}>Pribadi</option>
                             <option value="internal" {{ old('sumber_dana', $proposal->sumber_dana) == 'internal' ? 'selected' : '' }}>Internal</option>
-                            <option value="external" {{ old('sumber_dana', $proposal->sumber_dana) == 'external' ? 'selected' : '' }}>External</option>
+                            <option value="external" {{ old('sumber_dana', $proposal->sumber_dana) == 'external' ? 'selected' : ''  }}>External</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="NamaPendana">Nama Lembaga Pendana: </label>
-                        <input type="text" class="form-control" id="NamaPendana" name="nama_pendana"
+                        <input type="text" class="form-control" id="nama_pendana" name="nama_pendana"
                             value="{{ old('nama_pendana', $proposal->nama_pendana) }}">
                     </div>
 
@@ -112,6 +113,9 @@
                     <div class="form-group mb-2">
                         <label for="file">Proposal Penelitian:</label>
                         <input type="file" class="form-control" id="file" name="file">
+                        @if($proposal->file)
+                        <p class="mt-2">Current File: {{ $proposal->file }}</p>
+                        @endif
                     </div>
 
                     <button type="submit" class="btn btn-primary">Update</button>

@@ -13,11 +13,11 @@ class HKIPenelitian extends Model
         'nama_pemegang',
         'nomor_sertifikat',
         'file',
-        'hki_id',
+        'hki_penelitian_nrk',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'hki_id');
+        return $this->belongsTo(User::class, 'hki_penelitian_nrk', 'nrk');
     }
 }

@@ -17,11 +17,11 @@ class ArtikelJurnal extends Model
         'halaman',
         'url',
         'file',
-        'jurnal_id',
+        'artikel_jurnal_nrk',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'jurnal_id');
+        return $this->belongsTo(User::class, 'artikel_jurnal_nrk', 'nrk');
     }
 }

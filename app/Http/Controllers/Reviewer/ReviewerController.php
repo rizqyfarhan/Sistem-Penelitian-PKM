@@ -25,9 +25,7 @@ class ReviewerController extends Controller
         $user = auth()->user();
 
         if($user->role === 'reviewer') {
-            $proposals = ProposalPenelitian::whereHas('user', function($query) {
-                $query->where('role', 'dosen');
-            })->get();
+            $proposals = ProposalPenelitian::all();
             $table_headers = ['Judul', 'Ketua Peneliti', 'Semester', 'Tahun Akademik','Status','Aksi'];
 
             $data = [

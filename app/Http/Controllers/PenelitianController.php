@@ -19,20 +19,17 @@ class PenelitianController extends Controller
     public function indexPenelitian() 
     {
         $user = Auth::user();
-
-        $proposal_penelitian = $user->proposal;
-        $laporan_kemajuan = LaporanKemajuanPenelitian::with('proposalPenelitian')
-        ->whereHas('proposalPenelitian', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        })
+        $proposal_penelitian = ProposalPenelitian::all();
+        $laporan_kemajuan = LaporanKemajuanPenelitian::with(['proposalPenelitian'])
+        ->whereHas('proposalPenelitian', function($query) use ($user) {})->get();
+        $laporan_akhir = LaporanAkhirPenelitian::with(['proposalPenelitian'])
+        ->whereHas('proposalPenelitian', function ($query) use ($user) {})->get();
+        $artikel_jurnal = ArtikelJurnal::with(['user'])
+        ->whereHas('user', function ($query) use ($user) {})
         ->get();
-        $laporan_akhir = LaporanAkhirPenelitian::with('proposalPenelitian')
-        ->whereHas('proposalPenelitian', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        })
+        $hki_penelitian = HKIPenelitian::with(['user'])
+        ->whereHas('user', function ($query) use ($user) {})
         ->get();
-        $artikel_jurnal = $user->artikelJurnal;
-        $hki_penelitian = $user->hkiPenelitian;
         $headers_proposal_penelitian = ['Judul Penelitian','Ketua Peneliti','Semester','Tahun Akademik','Status','Aksi'];
         $headers_kemajuan_penelitian = ['Judul Penelitian','Ketua Peneliti','Semester','Tahun Akademik', 'Tanggal Dikirim','Aksi'];
         $headers_akhir_penelitian = ['Judul Penelitian','Ketua Peneliti','Semester','Tahun Akademik','Aksi'];
@@ -57,34 +54,30 @@ class PenelitianController extends Controller
     
     public function showPenelitian() 
     {
-        $judulPenelitians = ProposalPenelitian::pluck('judul', 'id');
+        $judulPenelitians = ProposalPenelitian::pluck('judul', 'nrk');
     
         return view('penelitian.penelitian', compact('judulPenelitians'));
     }
 
     public function showEditPenelitian()
     {
-        $judulPenelitians = ProposalPenelitian::pluck('judul', 'id');
+        $judulPenelitians = ProposalPenelitian::pluck('judul', 'nrk');
     
         return view('penelitian.edit-penelitian', compact('judulPenelitians'));
-    }
-
-    public function proposalPenelitian()
-    {
-        return $this->belongsTo(ProposalPenelitian::class, 'laporan_kemajuan_id', 'id');
     }
 
     public function storeProposalPenelitian(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'judul' => 'required',
+            'judul' => 'required|string|max:255',
             'ketua_peneliti' => 'required',
-            'nidn' => 'required',
-            'nrk' => 'required',
+            'nidn' => 'string|max:10',
+            'nrk' => 'required|string|max:10',
             'program_studi' => 'required',
             'semester' => 'required',
             'tahun_akademik' => 'required',
             'sumber_dana' => 'required',
+            'nama_pendana' => 'nullable',
             'jumlah_dana' => 'required',
             'file' => 'required|mimes:pdf,doc,docx|max:20480',
         ]);
@@ -107,14 +100,17 @@ class PenelitianController extends Controller
             'semester' => $request->semester,
             'tahun_akademik' => $request->tahun_akademik,
             'sumber_dana' => $request->sumber_dana,
+            'nama_pendana' => $request->nama_pendana ?? null,
             'jumlah_dana' => $request->jumlah_dana,
             'file' => $filename,
-            'user_id' => Auth::id(),
+            'user_nrk' => Auth::user()->role === 'admin'
+                ? $request->input('nrk')
+                : Auth::user()->nrk,
         ];
         
         ProposalPenelitian::create($data);
 
-        return redirect()->to('/penelitian');
+        return redirect()->route('show.penelitian')->with('success', 'Proposal Penelitian berhasil disimpan');
     }
 
     public function deleteProposalPenelitian($id)
@@ -122,14 +118,14 @@ class PenelitianController extends Controller
         $proposal = ProposalPenelitian::find($id);
 
         if (!$proposal) {
-            return redirect()->back()->with('error', 'Proposal not found');
+            return redirect()->back()->with('error', 'Proposal tidak ditemukan');
         }
 
         Storage::delete('proposal_penelitian/' . $proposal->file);
 
         $proposal->delete();
 
-        return redirect()->back();
+        return redirect()->route('show.penelitian')->with('success', 'Proposal Penelitian berhasil dihapus');
     }
 
     public function downloadProposalPenelitian($filename)
@@ -169,17 +165,18 @@ class PenelitianController extends Controller
 
     public function updateProposalPenelitian(Request $request, $id)
     {
-        
         $request->validate([
-            'judul' => 'required',
-            'ketua_peneliti' => 'required',
-            'nidn' => 'required',
-            'nrk' => 'required',
-            'program_studi' => 'required',
-            'semester' => 'required',
-            'tahun_akademik' => 'required',
-            'sumber_dana' => 'required',
+            'judul' => 'required|string|max:255',
+            'ketua_peneliti' => 'required|string|max:255',
+            'nidn' => 'required|string|max:10',
+            'nrk' => 'required|string|max:10',
+            'program_studi' => 'required|string|max:255',
+            'semester' => 'required|string|max:255',
+            'tahun_akademik' => 'required|string|max:255',
+            'sumber_dana' => 'required|string|max:255',
+            'nama_pendana' => 'nullable|string|max:255',
             'jumlah_dana' => 'required',
+            'file' => 'nullable|mimes:pdf,doc,docx|max:20480',
         ]);
 
         $proposal = ProposalPenelitian::findOrFail($id);
@@ -187,14 +184,15 @@ class PenelitianController extends Controller
         $proposal->update([
             'judul' => $request->input('judul'),
             'ketua_peneliti' => $request->input('ketua_peneliti'),
-            'ketua_peneliti' => $request->input('ketua_peneliti'),
             'nidn' => $request->input('nidn'),
             'nrk' => $request->input('nrk'),
             'program_studi' => $request->input('program_studi'),
             'semester' => $request->input('semester'),
             'tahun_akademik' => $request->input('tahun_akademik'),
             'sumber_dana' => $request->input('sumber_dana'),
+            'nama_pendana' => $request->input('nama_pendana'),
             'jumlah_dana' => $request->input('jumlah_dana'),
+            
         ]);
 
         $file = $request->file('file');
@@ -211,7 +209,7 @@ class PenelitianController extends Controller
             ]);
         }  
         
-        return redirect()->route('show.penelitian')->with('success', 'Proposal updated successfully');
+        return redirect()->route('show.penelitian')->with('success', 'Proposal Penelitian berhasil diubah');
     }
 
     public function updateStatus(Request $request, $id) 
@@ -241,15 +239,23 @@ class PenelitianController extends Controller
 
         Storage::putFileAs($lokasi_upload, $file, $filename);
 
-        $data = [
-            'judul' => $request->judul,
-            'file' => $filename,
-            'laporan_kemajuan_id' => Auth::user()->proposal->id,
-        ];
-        
-        LaporanKemajuanPenelitian::create($data);
+        $proposalNrk = $request->input('judul');
+        $proposal = ProposalPenelitian::where('nrk', $proposalNrk)->first();
 
-        return redirect()->to('/penelitian');
+        if ($proposal) { 
+
+            $data = [ 
+                'judul' => $proposal->judul, 
+                'file' => $filename, 
+                'laporan_kemajuan_nrk' => $proposal->nrk, 
+            ]; 
+            
+            LaporanKemajuanPenelitian::create($data); 
+            
+            return redirect()->to('/penelitian')->with('success', 'Laporan Kemajuan Penelitian sukses disimpan.'); 
+        } else { 
+            return redirect()->back()->with('error', 'Proposal tidak ditemukan.');
+        }
     }
 
     public function downloadKemajuanPenelitian($filename)
@@ -268,14 +274,14 @@ class PenelitianController extends Controller
         $proposal = LaporanKemajuanPenelitian::find($id);
 
         if (!$proposal) {
-            return redirect()->back()->with('error', 'Laporan kemajuan not found');
+            return redirect()->back()->with('error', 'Laporan kemajuan Penelitian tidak ditemukan');
         }
 
         Storage::delete('kemajuan_penelitian/' . $proposal->file);
 
         $proposal->delete();
 
-        return redirect()->back();
+        return redirect()->route('show.penelitian')->with('success', 'Laporan Kemajuan Penelitian berhasil dihapus');
     }
 
     public function viewKemajuanPenelitian($filename)
@@ -295,10 +301,15 @@ class PenelitianController extends Controller
         ]);
     }
 
-    public function editKemajuanPenelitian($id)
+    public function editKemajuanPenelitian($nrk)
     {
-        $laporan_kemajuan = LaporanKemajuanPenelitian::find($id);
-        $judulPenelitians = ProposalPenelitian::pluck('judul', 'id');
+        $laporan_kemajuan = LaporanKemajuanPenelitian::where('laporan_kemajuan_nrk', $nrk)->first();
+
+        if (!$laporan_kemajuan) {
+            return redirect()->back()->with('error', 'Laporan Kemajuan Penelitian tidak ditemukan.');
+        }
+
+        $judulPenelitians = ProposalPenelitian::pluck('judul', 'nrk');
 
         $data_penelitian = [
             'laporan_kemajuan' => $laporan_kemajuan,
@@ -336,7 +347,7 @@ class PenelitianController extends Controller
             ]);
         } 
         
-        return redirect()->route('show.penelitian')->with('success', 'Proposal updated successfully');
+        return redirect()->route('show.penelitian')->with('success', 'Laporan Kemajuan Penelitian berhasil diubah');
     }
 
     // AKHIR PENELITIAN
@@ -344,7 +355,7 @@ class PenelitianController extends Controller
     public function storeAkhirPenelitian(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'judul' => 'required',
+            'judul' => 'required|string|max:255',
             'file' => 'required|mimes:pdf,doc,docx|max:20480',
         ]);
 
@@ -357,15 +368,22 @@ class PenelitianController extends Controller
 
         Storage::putFileAs($lokasi_upload, $file, $filename);
 
-        $data = [
-            'judul' => $request->judul,
-            'file' => $filename,
-            'laporan_akhir_id' => Auth::user()->proposal->id,
-        ];
-        
-        LaporanAkhirPenelitian::create($data);
+        $proposalNrk = $request->input('judul');
+        $proposal = ProposalPenelitian::find($proposalNrk);
 
-        return redirect()->to('/penelitian');
+        if ($proposal) {
+            $data = [
+                'judul' => $proposal->judul,
+                'file' => $filename,
+                'laporan_akhir_nrk' => $proposalNrk,
+            ];
+            
+            LaporanAkhirPenelitian::create($data);
+    
+            return redirect()->route('show.penelitian')->with('success', 'Laporan Akhir sukses disimpan.');
+        } else {
+            return redirect()->back()->with('error', 'Laporan tidak ditemukan.');
+        }
     }
 
     public function downloadAkhirPenelitian($filename)
@@ -391,7 +409,7 @@ class PenelitianController extends Controller
 
         $proposal->delete();
 
-        return redirect()->back();
+        return redirect()->route('show.penelitian')->with('success', 'Laporan Akhir Penelitian berhasil dihapus');
     }
 
     public function viewAkhirPenelitian($filename)
@@ -425,8 +443,7 @@ class PenelitianController extends Controller
     }
 
     public function updateAkhirPenelitian(Request $request, $id)
-    {
-        
+    {   
         $request->validate([
             'judul' => 'required',
             'file' => 'required|mimes:pdf,doc,docx|max:20480',
@@ -452,7 +469,7 @@ class PenelitianController extends Controller
             ]);
         } 
         
-        return redirect()->route('show.penelitian')->with('success', 'Proposal updated successfully');
+        return redirect()->route('show.penelitian')->with('success', 'Laporan Akhir Penelitian berhasil diubah');
     }
 
     // ARTIKEL JURNAL
@@ -460,7 +477,7 @@ class PenelitianController extends Controller
     public function storeArtikelJurnal(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'judul' => 'required',
+            'judul' => 'required|string|max:255',
             'penerbit' => 'required',
             'tahun' => 'required',
             'volume' => 'required',
@@ -488,12 +505,12 @@ class PenelitianController extends Controller
             'halaman' => $request->halaman,
             'url' => $request->url,
             'file' => $filename,
-            'jurnal_id' => Auth::id(),
+            'artikel_jurnal_nrk' => Auth::user()->nrk,
         ];
         
         ArtikelJurnal::create($data);
 
-        return redirect()->to('/penelitian');
+        return redirect()->route('show.penelitian')->with('success', 'Artikel Jurnal berhasil disimpan');
     }
     
     public function downloadArtikelJurnal($filename)
@@ -537,17 +554,26 @@ class PenelitianController extends Controller
 
     public function updateArtikelJurnal(Request $request, $id)
     {
-        $request->validate([
-            'judul' => 'required',
-            'penerbit' => 'required',
-            'tahun' => 'required',
-            'volume' => 'required',
-            'nomor' => 'required',
+        $validator = Validator::make($request->all(), [
+            'judul' => 'required|string|max:255',
+            'penerbit' => 'required|string|max:255',
+            'tahun' => 'required|string|max:255',
+            'volume' => 'required|integer|max:11',
+            'nomor' => 'required|integer|max:11',
+            'halaman' => 'required|string|max:255',
             'url' => 'required',
-            'file' => 'required|mimes:pdf,doc,docx|max:20480',
+            'file' => 'nullable|mimes:pdf,doc,docx|max:20480',
         ]);
+        
+        if($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         $artikel_jurnal = ArtikelJurnal::find($id);
+    
+        if(!$artikel_jurnal) {
+            return redirect()->back()->with('error', 'Artikel Jurnal Tidak Ditemukan');
+        }
 
         $artikel_jurnal->update([
             'judul' => $request->input('judul'),
@@ -555,6 +581,7 @@ class PenelitianController extends Controller
             'tahun' => $request->input('tahun'),
             'volume' => $request->input('volume'),
             'nomor' => $request->input('nomor'),
+            'halaman' => $request->input('halaman'),
             'url' => $request->input('url'),
         ]);
 
@@ -567,12 +594,12 @@ class PenelitianController extends Controller
 
             Storage::putFileAs($lokasi_upload, $file, $filename);
 
-            $proposal->update([
+            $artikel_jurnal->update([
                 'file' => $filename,
             ]);
         } 
         
-        return redirect()->route('show.penelitian')->with('success', 'Proposal updated successfully');
+        return redirect()->route('show.penelitian')->with('success', 'Artikel Jurnal berhasil diubah');
     }
 
     public function deleteArtikelJurnal($id)
@@ -587,7 +614,7 @@ class PenelitianController extends Controller
 
         $artikel_jurnal->delete();
 
-        return redirect()->back();
+        return redirect()->route('show.penelitian')->with('success', 'Artikel Jurnal berhasil dihapus');
     }
 
     // HKI PENELITIAN
@@ -595,7 +622,7 @@ class PenelitianController extends Controller
     public function storeHKIPenelitian(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'judul' => 'required',
+            'judul' => 'required|string|max:255',
             'nama_pemegang' => 'required',
             'nomor_sertifikat' => 'required',
             'file' => 'required|mimes:pdf,doc,docx|max:20480',
@@ -615,12 +642,12 @@ class PenelitianController extends Controller
             'nama_pemegang' => $request->nama_pemegang,
             'nomor_sertifikat' => $request->nomor_sertifikat,
             'file' => $filename,
-            'hki_id' => Auth::id(),
+            'hki_penelitian_nrk' => Auth::user()->nrk,
         ];
         
         HKIPenelitian::create($data);
 
-        return redirect()->to('/penelitian');
+        return redirect()->route('show.penelitian')->with('success', 'HKI Penelitian berhasil disimpan');
     }
 
     public function downloadHKIPenelitian($filename)
@@ -646,7 +673,7 @@ class PenelitianController extends Controller
 
         $hki->delete();
 
-        return redirect()->back();
+        return redirect()->route('show.penelitian')->with('success', 'HKI Penelitian berhasil dihapus');
     }
 
     public function viewHKIPenelitian($filename)
@@ -708,7 +735,7 @@ class PenelitianController extends Controller
             ]);
         } 
         
-        return redirect()->route('show.penelitian')->with('success', 'Proposal updated successfully');
+        return redirect()->route('show.penelitian')->with('success', 'HKI Penelitian berhasil diubah');
     }
     /***********************************/
 

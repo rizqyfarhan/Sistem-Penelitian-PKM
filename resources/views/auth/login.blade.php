@@ -21,19 +21,19 @@
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="text" class="form-control" id="email" name="email"
-                                    placeholder="Enter your email" value="{{ old('email') }}">
-                                @error('email')
-                                <span class="text-danger">{{ $message }}</span>
+                                <label for="nrk">NRK</label>
+                                <input type="text" class="form-control" id="nrk" name="nrk"
+                                    placeholder="Masukkan NRK anda" value="{{ old('nrk') }}">
+                                @error('nrk')
+                                    <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" name="password"
-                                    placeholder="Enter your password">
+                                    placeholder="Masukkan password anda">
                                 @error('password')
-                                <span class="text-danger">{{ $message }}</span>
+                                    <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div>

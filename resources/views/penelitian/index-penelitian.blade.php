@@ -29,6 +29,17 @@
 @endsection
 
 @section('content')
+
+@if (session('success')) 
+    <div class="alert alert-success"> 
+        {{ session('success') }} 
+    </div> 
+@endif
+
+@section('profile')
+<li><a class="dropdown-item" href="{{ route('index.dosenprofile') }}">Profile</a></li>
+@endsection
+
 <div class="nav-scroller py-1 mb-3 border-bottom">
     <nav class="nav nav-underline justify-content-start">
         <a class="nav-item nav-link link-body-emphasis active" href="{{ route('penelitian') }}">Upload</a>
@@ -79,6 +90,8 @@
                                 {{ $item->status }}
                             </td>
                             <td>
+                            @if(Auth::user()->role === 'admin' || 
+                            (Auth::user()->role === 'dosen' && Auth::user()->nrk === $item->user->nrk))
                                 <a href="{{ route('download.proposalpenelitian', ['filename' => $item->file]) }}"
                                     class="btn btn-primary btn-sm">
                                     <i class="fa-solid fa-file-arrow-down"></i>
@@ -89,18 +102,19 @@
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
 
-                                <a href="{{ route('edit.proposalpenelitian', $item->id) }}"
+                                <a href="{{ route('edit.proposalpenelitian', $item->nrk) }}"
                                     class="btn btn-warning btn-sm">
                                     <i class="fa-solid fa-edit"></i>
                                 </a>
 
-                                <form action="{{ route('delete.proposalpenelitian', $item->id) }}" method="POST"
+                                <form action="{{ route('delete.proposalpenelitian', $item->nrk) }}" method="POST"
                                     style="display: inline;">
                                     @csrf
                                     @method('DELETE') <button type="submit" class="btn btn-danger btn-sm">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
+                            @endif
                             </td>
                         </tr>
                         @endforeach
@@ -145,14 +159,16 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        @foreach($laporan_kemajuan as $item)
-                        <tr>
-                            <td>{{ $item->judul }}</td>
-                            <td>{{ $item->proposalPenelitian->ketua_peneliti }}</td>
-                            <td>{{ $item->proposalPenelitian->semester }}</td>
-                            <td>{{ $item->proposalPenelitian->tahun_akademik }}</td>
-                            <td>{{ $item->created_at->format('Y-m-d') }}</td>
-                            <td>
+                    @foreach($laporan_kemajuan as $item)
+                    <tr>
+                        <td>{{ $item->judul }}</td>
+                        <td>{{ $item->proposalPenelitian->ketua_peneliti }}</td>
+                        <td>{{ $item->proposalPenelitian->semester }}</td>
+                        <td>{{ $item->proposalPenelitian->tahun_akademik }}</td>
+                        <td>{{ $item->created_at->format('Y-m-d') }}</td>
+                        <td>
+                        @if(Auth::user()->role === 'admin' || 
+                            (Auth::user()->role === 'dosen' && Auth::user()->nrk === $item->proposalPenelitian->user_nrk))
                                 <a href="{{ route('download.kemajuanpenelitian', ['filename' => $item->file]) }}"
                                     class="btn btn-primary btn-sm">
                                     <i class="fa-solid fa-file-arrow-down"></i>
@@ -163,7 +179,7 @@
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
 
-                                <a href="{{ route('edit.kemajuanpenelitian', $item->id) }}"
+                                <a href="{{ route('edit.kemajuanpenelitian', $item->proposalPenelitian->nrk) }}"
                                     class="btn btn-warning btn-sm">
                                     <i class="fa-solid fa-edit"></i>
                                 </a>
@@ -171,13 +187,15 @@
                                 <form action="{{ route('delete.kemajuanpenelitian', $item->id) }}" method="POST"
                                     style="display: inline;">
                                     @csrf
-                                    @method(' DELETE') <button type="submit" class="btn btn-danger btn-sm">
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
-                            </td>
-                        </tr>
-                        @endforeach
+                        @endif
+                        </td>
+                    </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
@@ -227,6 +245,8 @@
                             <td>{{ $item->proposalPenelitian->semester }}</td>
                             <td>{{ $item->proposalPenelitian->tahun_akademik }}</td>
                             <td>
+                            @if(Auth::user()->role === 'admin' || 
+                            (Auth::user()->role === 'dosen' && Auth::user()->nrk === $item->proposalPenelitian->user_nrk))
                                 <a href="{{ route('download.akhirpenelitian', ['filename' => $item->file]) }}"
                                     class="btn btn-primary btn-sm">
                                     <i class="fa-solid fa-file-arrow-down"></i>
@@ -240,10 +260,11 @@
                                 <form action="{{ route('delete.akhirpenelitian', $item->id) }}" method="POST"
                                     style="display: inline;">
                                     @csrf
-                                    @method(' DELETE') <button type="submit" class="btn btn-danger btn-sm">
+                                    @method('DELETE') <button type="submit" class="btn btn-danger btn-sm">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
+                            @endif
                             </td>
                         </tr>
                         @endforeach
@@ -290,12 +311,14 @@
                     </tfoot>
                     <tbody>
                         @foreach($artikel_jurnal as $item)
-                        <tr>
+                        <tr>    
                             <td>{{ $item->judul }}</td>
                             <td>{{ $item->tahun }}</td>
                             <td>{{ $item->volume }}</td>
                             <td>{{ $item->nomor }}</td>
                             <td>
+                            @if(Auth::user()->role === 'admin' || 
+                            (Auth::user()->role === 'dosen' && Auth::user()->nrk === $item->user->nrk))    
                                 <a href="{{ route('download.artikeljurnal', ['filename' => $item->file]) }}"
                                     class="btn btn-primary btn-sm">
                                     <i class="fa-solid fa-file-arrow-down"></i>
@@ -317,6 +340,7 @@
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
+                            @endif    
                             </td>
                         </tr>
                         @endforeach
@@ -368,6 +392,8 @@
                             <td>{{ $item->nama_pemegang }}</td>
                             <td>{{ $item->nomor_sertifikat }}</td>
                             <td>
+                            @if(Auth::user()->role === 'admin' || 
+                            (Auth::user()->role === 'dosen' && Auth::user()->nrk === $item->user->nrk))
                                 <a href="{{ route('download.hkipenelitian', ['filename' => $item->file]) }}"
                                     class="btn btn-primary btn-sm">
                                     <i class="fa-solid fa-file-arrow-down"></i>
@@ -389,6 +415,7 @@
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
+                            @endif 
                             </td>
                         </tr>
                         @endforeach

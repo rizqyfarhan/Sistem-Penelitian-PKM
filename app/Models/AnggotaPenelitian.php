@@ -8,17 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class AnggotaPenelitian extends Model
 {
     protected $table = 'anggota_penelitian';
+    protected $primaryKey = 'nrk';
+    protected $keyType = 'string';
 
     protected $fillable = [
-        'judul',
         'nama',
+        'judul',
         'nidn',
         'nrk',
-        'proposal_id',
+        'proposal_nrk',
     ];
 
     public function proposal()
     {
-        return $this->belongsTo(ProposalPenelitian::class, 'proposal_id');
+        return $this->belongsTo(ProposalPenelitian::class, 'proposal_nrk', 'nrk');
     }
 }

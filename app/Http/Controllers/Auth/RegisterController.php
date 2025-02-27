@@ -26,23 +26,33 @@ class RegisterController extends Controller
     public function register(Request $request) 
     {
         $validator = Validator::make($request->all(), [
+            'nrk' => ['required', 'string', 'max:10', 'unique:users,nrk'],
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => ['required', 'string', 'in:dosen,reviewer,admin'],
         ]);
+
+        if($request->input('role') === 'dosen') {
+            $rules['nidn'] = ['required', 'string', 'max:10', 'unique:users,nidn'];
+        }
 
         if ($validator->fails())
         {
             return redirect('register')->withErrors($validator)->withInput();
         }
 
-        $user = User::create([
+        $userData = [
+            'nrk' => $request->input('nrk'),
             'name' => $request->input('name'),
-            'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
             'role' => $request->input('role'),
-        ]);
+        ];
+
+        if ($request->input('role') === 'dosen') {
+            $userData['nidn'] = $request->input('nidn');
+        }
+
+        $user = User::create($userData);
 
         auth()->login($user);
 

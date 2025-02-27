@@ -75,7 +75,7 @@
                             <td>{{ $proposal->semester }}</td>
                             <td>{{ $proposal->tahun_akademik }}</td>
                             <td>
-                                <form action="{{ route('proposalpenelitian.updateStatus', $proposal->id) }}"
+                                <form action="{{ route('proposalpenelitian.updateStatus', $proposal->nrk) }}"
                                     method="POST" class="d-flex align-items-center">
                                     @csrf
                                     <select class="form-select w-50" name="status" id="statusSelect">

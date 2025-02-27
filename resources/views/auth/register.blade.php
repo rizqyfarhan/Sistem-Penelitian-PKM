@@ -10,60 +10,6 @@
 
 <body>
 
-    <!-- <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        Penelitian dan PKM
-                    </div>
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('register') }}">
-                            @csrf
-
-                            <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
-                                    required autofocus>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="email"
-                                    value="{{ old('email') }}" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="password_confirmation">Confirm Password</label>
-                                <input type="password" class="form-control" id="password_confirmation"
-                                    name="password_confirmation" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="role">Select Role</label>
-                                <select class="form-control" id="role" name="role">
-                                    <option value="dosen">Dosen</option>
-                                    <option value="reviewer">Reviewer</option>
-                                    <option value="admin">Admin</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <p>Sudah memiliki akun? <a href="/login">Login</a></p>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">Register</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -76,15 +22,21 @@
                             @csrf
 
                             <div class="form-group">
-                                <label for="name">Name</label>
+                                <label for="name">Nama</label>
                                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
                                     required autofocus>
                             </div>
 
                             <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="email"
-                                    value="{{ old('email') }}" required>
+                                <label for="nrk">NRK</label>
+                                <input type="text" class="form-control" id="nrk" name="nrk"
+                                    value="{{ old('nrk') }}" required>
+                            </div>
+
+                            <div class="form-group" id="nidn-form" style="display: none;">
+                                <label for="nidn">NIDN</label>
+                                <input type="text" class="form-control" id="nidn" name="nidn"
+                                    value="{{ old('nidn') }}" required>
                             </div>
 
                             <div class="form-group">
@@ -101,7 +53,7 @@
 
                             <div class="form-group">
                                 <label for="role">Select Role</label>
-                                <select class="form-control" id="role" name="role">
+                                <select class="form-control" id="role" name="role" onchange="toggleNIDN()">
                                     <option value="dosen">Dosen</option>
                                     <option value="reviewer">Reviewer</option>
                                     <option value="admin">Admin</option>

@@ -48,7 +48,7 @@
                 @yield('sidenav')
                 <div class="sb-sidenav-footer">
                     <div class="small">Logged in as:</div>
-                    {{ Auth::check() ? Auth::user()->email : 'Guest' }}
+                    {{ Auth::check() ? Auth::user()->name : 'Guest' }}
                 </div>
             </nav>
         </div>

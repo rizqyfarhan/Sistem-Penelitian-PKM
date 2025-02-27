@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 use App\Models\ProposalPenelitian;
 use App\Models\LaporanKemajuanPenelitian;
 use App\Models\LaporanAkhirPenelitian;
@@ -15,7 +18,8 @@ class AdminPenelitianController extends Controller
     public function indexProposalAdmin()
     {
         $proposal_penelitian = ProposalPenelitian::all();
-        $laporan_kemajuan = LaporanKemajuanPenelitian::all();
+        $laporan_kemajuan = LaporanKemajuanPenelitian::with(['proposalPenelitian'])
+        ->whereHas('proposalPenelitian', function($query) {})->get();
         $laporan_akhir = LaporanAkhirPenelitian::all();
         $artikel_jurnal = ArtikelJurnal::all();
         $hki_penelitian = HKIPenelitian::all();
@@ -44,21 +48,16 @@ class AdminPenelitianController extends Controller
     
     public function showProposalAdmin()
     {
-        $judulPenelitians = ProposalPenelitian::pluck('judul', 'id');
+        $judulPenelitians = ProposalPenelitian::pluck('judul', 'nrk');
 
         return view('admin.penelitian-adm', compact('judulPenelitians'));
     }
 
     public function showEditPenelitian()
     {
-        $judulPenelitians = ProposalPenelitian::pluck('judul', 'id');
+        $judulPenelitians = ProposalPenelitian::pluck('judul', 'nrk');
     
         return view('penelitian.edit-penelitian', compact('judulPenelitians'));
-    }
-
-    public function proposalPenelitian() 
-    {
-        return $this->belongsTo(ProposalPenelitian::class, 'laporan_kemajuan_id', 'id'); 
     }
 
     // PROPOSAL PENELITIAN
@@ -66,10 +65,10 @@ class AdminPenelitianController extends Controller
     public function storeProposalAdmin(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'judul' => 'required',
+            'judul' => 'required|string|max:255',
             'ketua_peneliti' => 'required',
-            'nidn' => 'required',
-            'nrk' => 'required',
+            'nidn' => 'string|max:10',
+            'nrk' => 'required|string|max:10',
             'program_studi' => 'required',
             'semester' => 'required',
             'tahun_akademik' => 'required',
@@ -98,12 +97,12 @@ class AdminPenelitianController extends Controller
             'sumber_dana' => $request->sumber_dana,
             'jumlah_dana' => $request->jumlah_dana,
             'file' => $filename,
-            'user_id' => Auth::id(),
+            'user_nrk' => Auth::user()->nrk,
         ];
         
         ProposalPenelitian::create($data);
 
-        return redirect()->to('/admin');
+        return redirect()->route('index.proposaladmin')->with('success', 'Proposal Penelitian berhasil disimpan');
     }
 
     public function downloadProposalAdmin($filename)
@@ -138,7 +137,7 @@ class AdminPenelitianController extends Controller
     {
         $proposal = ProposalPenelitian::findOrFail($id);
 
-        return view('admin.edit.edit-penelitian', compact('proposal'));
+        return view('admin.edit-penelitian', compact('proposal'));
     }
 
     public function updateProposalAdmin(Request $request, $id)
@@ -185,7 +184,7 @@ class AdminPenelitianController extends Controller
             ]);
         }  
         
-        return redirect()->route('index.proposaladmin')->with('success', 'Proposal updated successfully');
+        return redirect()->route('index.proposaladmin')->with('success', 'Proposal Penelitian berhasil diubah');
     }
 
     public function deleteProposalAdmin($id)
@@ -200,7 +199,7 @@ class AdminPenelitianController extends Controller
 
         $proposal->delete();
 
-        return redirect()->back();
+        return redirect()->route('index.proposaladmin')->with('success', 'Proposal Penelitian berhasil dihapus');
     }
 
     // KEMAJUAN PENELITIAN
@@ -229,7 +228,7 @@ class AdminPenelitianController extends Controller
         
         LaporanKemajuanPenelitian::create($data);
 
-        return redirect()->to('/admin');
+        return redirect()->route('index.proposaladmin')->with('success', 'Laporan Kemajuan Penelitian berhasil disimpan');
     }
 
     public function downloadKemajuanAdmin($filename)
@@ -255,7 +254,7 @@ class AdminPenelitianController extends Controller
 
         $proposal->delete();
 
-        return redirect()->back();
+        return redirect()->route('index.proposaladmin')->with('success', 'Laporan Kemajuan Penelitian berhasil dihapus');
     }
 
     public function viewKemajuanAdmin($filename)
@@ -277,15 +276,20 @@ class AdminPenelitianController extends Controller
 
     public function editKemajuanAdmin($id)
     {
-        $laporan_kemajuan = LaporanKemajuanPenelitian::findOrFail($id);
-        $judulPenelitians = ProposalPenelitian::pluck('judul', 'id');
+        $laporan_kemajuan = LaporanKemajuanPenelitian::where('laporan_kemajuan_nrk', $id)->first();
+        
+        if (!$laporan_kemajuan) {
+            return redirect()->back()->with('error', 'Laporan Kemajuan Penelitian tidak ditemukan.');
+        }
+        
+        $judulPenelitians = ProposalPenelitian::pluck('judul', 'nrk');
 
         $data_penelitian = [
             'laporan_kemajuan' => $laporan_kemajuan,
             'judulPenelitians' => $judulPenelitians,
         ];
 
-        return view('admin.edit.edit-kemajuan', $data_penelitian);
+        return view('admin.edit-kemajuan', $data_penelitian);
     }
 
     public function updateKemajuanAdmin(Request $request, $id)
@@ -315,7 +319,7 @@ class AdminPenelitianController extends Controller
             ]);
         } 
         
-        return redirect()->route('index.proposaladmin')->with('success', 'Proposal updated successfully');
+        return redirect()->route('index.proposaladmin')->with('success', 'Laporan Kemajuan Penelitian berhasil diubah');
     }
 
     // AKHIR PENELITIAN
@@ -344,7 +348,7 @@ class AdminPenelitianController extends Controller
         
         LaporanAkhirPenelitian::create($data);
 
-        return redirect()->to('/admin');
+        return redirect()->route('index.proposaladmin')->with('success', 'Laporan Akhir Penelitian berhasil disimpan');
     }
 
     public function downloadAkhirAdmin($filename)
@@ -363,14 +367,14 @@ class AdminPenelitianController extends Controller
         $proposal = LaporanAkhirPenelitian::find($id);
 
         if (!$proposal) {
-            return redirect()->back()->with('error', 'Laporan kemajuan not found');
+            return redirect()->back()->with('error', 'Laporan kemajuan tidak ditemukan');
         }
 
         Storage::delete('akhir_penelitian/' . $proposal->file);
 
         $proposal->delete();
 
-        return redirect()->back();
+        return redirect()->route('index.proposaladmin')->with('success', 'Laporan Akhir Penelitian berhasil dihapus');
     }
 
     public function viewAkhirAdmin($filename)
@@ -431,7 +435,7 @@ class AdminPenelitianController extends Controller
             ]);
         } 
         
-        return redirect()->route('index.proposaladmin')->with('success', 'Proposal updated successfully');
+        return redirect()->route('index.proposaladmin')->with('success', 'Laporan Akhir Penelitian berhasil diubah');
     }
     
     // ARTIKEL JURNAL
@@ -472,7 +476,7 @@ class AdminPenelitianController extends Controller
         
         ArtikelJurnal::create($data);
 
-        return redirect()->to('/admin');
+        return redirect()->route('index.proposaladmin')->with('success', 'Artikel Jurnal berhasil disimpan');
     }
     
     public function downloadArtikelAdmin($filename)
@@ -511,7 +515,7 @@ class AdminPenelitianController extends Controller
             'artikel_jurnal' => $artikel_jurnal,
         ];
 
-        return view('admin.edit.edit-artikel', $data);
+        return view('admin.edit-artikel', $data);
     }
 
     public function updateArtikelAdmin(Request $request, $id)
@@ -523,7 +527,7 @@ class AdminPenelitianController extends Controller
             'volume' => 'required',
             'nomor' => 'required',
             'url' => 'required',
-            'file' => 'required|mimes:pdf,doc,docx|max:20480',
+            'file' => 'nullable|mimes:pdf,doc,docx|max:20480',
         ]);
 
         $artikel_jurnal = ArtikelJurnal::findOrFail($id);
@@ -551,7 +555,7 @@ class AdminPenelitianController extends Controller
             ]);
         } 
         
-        return redirect()->route('index.proposaladmin')->with('success', 'Proposal updated successfully');
+        return redirect()->route('index.proposaladmin')->with('success', 'Artikel Jurnal Berhasil diubah');
     }
 
     public function deleteArtikelAdmin($id)
@@ -566,7 +570,7 @@ class AdminPenelitianController extends Controller
 
         $artikel_jurnal->delete();
 
-        return redirect()->back();
+        return redirect()->route('index.proposaladmin')->with('success', 'Artikel Jurnal berhasil dihapus');
     }
 
     // HKI PENELITIAN
@@ -599,7 +603,7 @@ class AdminPenelitianController extends Controller
         
         HKIPenelitian::create($data);
 
-        return redirect()->to('/admin');
+        return redirect()->route('index.proposaladmin')->with('success', 'HKI Penelitian berhasil disimpan');;
     }
 
     public function downloadHKIAdmin($filename)
@@ -625,7 +629,7 @@ class AdminPenelitianController extends Controller
 
         $hki->delete();
 
-        return redirect()->back();
+        return redirect()->route('index.proposaladmin')->with('success', 'HKI Penelitian berhasil dihapus');
     }
 
     public function viewHKIAdmin($filename)
@@ -687,7 +691,7 @@ class AdminPenelitianController extends Controller
             ]);
         } 
         
-        return redirect()->route('index.proposaladmin')->with('success', 'Proposal updated successfully');
+        return redirect()->route('index.proposaladmin')->with('success', 'HKI Penelitian berhasil diubah');
     }
     /***********************************/
 }

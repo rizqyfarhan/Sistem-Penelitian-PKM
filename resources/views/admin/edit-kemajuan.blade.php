@@ -22,7 +22,7 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="container">
-                        <form action="{{ route('update.kemajuanpenelitian', $laporan_kemajuan->id) }}" method="POST"
+                        <form action="{{ route('update.kemajuanadmin', $laporan_kemajuan->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
