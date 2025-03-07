@@ -181,7 +181,7 @@ class PenelitianController extends Controller
 
         $proposal = ProposalPenelitian::findOrFail($id);
 
-        $proposal->update([
+        $data = [
             'judul' => $request->input('judul'),
             'ketua_peneliti' => $request->input('ketua_peneliti'),
             'nidn' => $request->input('nidn'),
@@ -193,11 +193,18 @@ class PenelitianController extends Controller
             'nama_pendana' => $request->input('nama_pendana'),
             'jumlah_dana' => $request->input('jumlah_dana'),
             
-        ]);
+        ];
 
-        $file = $request->file('file');
+        if ($request->input('sumber_dana') === 'pribadi') {
+            $data['nama_pendana'] = '';
+        } else {
+            $data['nama_pendana'] = $request->input('nama_pendana');
+        }
+
+        $proposal->update($data);
         
         if ($request->hasFile('file')) {
+            $file = $request->file('file');
             $filename = $file->getClientOriginalName();
 
             $lokasi_upload = 'proposal_penelitian/';

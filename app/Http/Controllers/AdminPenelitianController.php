@@ -144,22 +144,23 @@ class AdminPenelitianController extends Controller
     {
         
         $request->validate([
-            'judul' => 'required',
-            'ketua_peneliti' => 'required',
-            'nidn' => 'required',
-            'nrk' => 'required',
-            'program_studi' => 'required',
-            'semester' => 'required',
-            'tahun_akademik' => 'required',
-            'sumber_dana' => 'required',
+            'judul' => 'required|string|max:255',
+            'ketua_peneliti' => 'required|string|max:255',
+            'nidn' => 'required|string|max:10',
+            'nrk' => 'required|string|max:10',
+            'program_studi' => 'required|string|max:255',
+            'semester' => 'required|string|max:255',
+            'tahun_akademik' => 'required|string|max:255',
+            'sumber_dana' => 'required|string|max:255',
+            'nama_pendana' => 'nullable|string|max:255',
             'jumlah_dana' => 'required',
+            'file' => 'nullable|mimes:pdf,doc,docx|max:20480',
         ]);
 
         $proposal = ProposalPenelitian::findOrFail($id);
 
-        $proposal->update([
+        $data = [
             'judul' => $request->input('judul'),
-            'ketua_peneliti' => $request->input('ketua_peneliti'),
             'ketua_peneliti' => $request->input('ketua_peneliti'),
             'nidn' => $request->input('nidn'),
             'nrk' => $request->input('nrk'),
@@ -167,12 +168,20 @@ class AdminPenelitianController extends Controller
             'semester' => $request->input('semester'),
             'tahun_akademik' => $request->input('tahun_akademik'),
             'sumber_dana' => $request->input('sumber_dana'),
+            'nama_pendana' => $request->input('nama_pendana'),
             'jumlah_dana' => $request->input('jumlah_dana'),
-        ]);
+        ];
 
-        $file = $request->file('file');
-        
+        if ($request->input('sumber_dana') === 'pribadi') {
+            $data['nama_pendana'] = '';
+        } else {
+            $data['nama_pendana'] = $request->input('nama_pendana');
+        }
+
+        $proposal->update($data);
+
         if ($request->hasFile('file')) {
+            $file = $request->file('file');
             $filename = $file->getClientOriginalName();
 
             $lokasi_upload = 'proposal_penelitian/';

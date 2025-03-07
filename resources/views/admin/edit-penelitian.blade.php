@@ -62,7 +62,7 @@
                     <div class="form-group">
                         <label for="Semester">Semester:</label>
                         <select class="form-control" id="Semester" name="semester">
-                            <option value="Pilih" {{ $proposal->semester == 'Pilih' ? 'selected' : '' }}>Pilih...
+                            <option value="" {{ $proposal->semester == 'Pilih' ? 'selected' : '' }}>Pilih...
                             </option>
                             <option value="Ganjil" {{ $proposal->semester == 'Ganjil' ? 'selected' : '' }}>Ganjil
                             </option>
@@ -86,9 +86,8 @@
                         </select>
                     </div>
 
-
                     <div class="form-group">
-                        <label for="Semester">Sumber Dana:</label>
+                        <label for="SumberDana">Sumber Dana:</label>
                         <select class="form-control" id="SumberDana" name="sumber_dana"
                             value="{{ old('sumber_dana', $proposal->sumber_dana) }}">
                             <option value="">Pilih...</option>

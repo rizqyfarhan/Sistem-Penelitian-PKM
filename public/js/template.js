@@ -34,16 +34,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function toggleEditLembagaPendana() {
         const sumberDana = document.getElementById('SumberDana').value;
-        const namaPendana = document.getElementById('NamaPendana');
+        const namaPendana = document.getElementById('nama_pendana');
+        const namaPendanaLabel = document.querySelector('label[for="nama_pendana"]');
     
         if (sumberDana === 'pribadi') {
             namaPendana.value = '';
+            namaPendana.disabled = true;
+            namaPendanaLabel.style.display = 'none';
+            namaPendana.style.display = 'none';
+        } else {
+            namaPendana.disabled = false;
+            namaPendanaLabel.style.display = 'block';
+            namaPendana.style.display = 'block';
         }
     }
 
     toggleNIDN();
-    document.getElementById('role').addEventListener('change', toggleNIDN);
     toggleEditLembagaPendana();
+
+    document.getElementById('role').addEventListener('change', toggleNIDN);
+    document.getElementById('SumberDana').addEventListener('change', toggleEditLembagaPendana);
 });
 
 let sumberDanaDropDown = document.getElementById("SumberDana");
@@ -68,8 +78,6 @@ function toggleLembagaPendana() {
 sumberDanaDropDown.addEventListener('change', toggleLembagaPendana);
 
 document.addEventListener('DOMContentLoaded', toggleLembagaPendana);
-
-
 
 function validateForm()
 {
