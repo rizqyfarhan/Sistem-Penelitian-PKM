@@ -134,8 +134,8 @@
                             <label for="JudulPenelitian">Judul Penelitian:</label>
                             <select class="form-control" id="JudulPenelitian" name="judul" required>
                                 <option value="">Pilih...</option>
-                                @foreach($judulPenelitians as $id => $judulPenelitian)
-                                <option value="{{  $judulPenelitian }}">{{ $judulPenelitian }}</option>
+                                @foreach($judulPenelitians as $nrk => $judulPenelitian)
+                                    <option value="{{ $nrk }}">{{ $judulPenelitian }}</option>
                                 @endforeach
                             </select>
                         </div>

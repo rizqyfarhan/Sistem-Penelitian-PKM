@@ -18,10 +18,17 @@
             Upload
         </a>
         @endif
-        <a class="nav-link collapsed" href="{{ route('penelitian') }}" aria-expanded="false">
-            <div class="sb-nav-link-icon"><i class="fa-solid fa-flask"></i></div>
-            Penelitian
-        </a>
+        @if(Auth::user()->role == 'dosen')
+            <a class="nav-link collapsed" href="{{ route('penelitian') }}" aria-expanded="false">
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-flask"></i></div>
+                Penelitian
+            </a>
+        @elseif(Auth::user()->role == 'admin')
+            <a class="nav-link collapsed" href="{{ route('index.proposaladmin') }}" aria-expanded="false">    
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-flask"></i></div>
+                Penelitian
+            </a>
+        @endif    
         <a class="nav-link collapsed" href="{{ route('pkm') }}" aria-expanded="false">
             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
             PKM

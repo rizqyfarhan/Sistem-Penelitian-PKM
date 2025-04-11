@@ -403,7 +403,7 @@ class AdminPenelitianController extends Controller
         ]);
     }
 
-    public function editAKhirAdmin($id)
+    public function editAkhirAdmin($id)
     {
         $akhir_kemajuan = LaporanAkhirPenelitian::findOrFail($id);
         $judulPenelitians = ProposalPenelitian::pluck('judul', 'id');
@@ -666,7 +666,7 @@ class AdminPenelitianController extends Controller
             'hki_penelitian' => $hki,
         ];
 
-        return view('admin.edit.edit-hki', $data_penelitian);
+        return view('admin.edit-hki', $data_penelitian);
     }
 
     public function updateHKIAdmin(Request $request, $id)
